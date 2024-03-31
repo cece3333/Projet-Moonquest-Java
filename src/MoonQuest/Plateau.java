@@ -10,17 +10,16 @@ import java.io.ObjectOutputStream;
 public class Plateau {
     public static ArrayList<Piece> joueur2 = new ArrayList<Piece>();
     public static ArrayList<Piece> joueur1 = new ArrayList<Piece>();
+    public static ArrayList<Piece> currentPlayer;
 
     public static Piece board[][] = new Piece[16][16];
 
     static Scanner scanner = new Scanner(System.in);
 
-    //préciser que le joueur 2 possède les pièces  aux icones G2 et V2
-
-    //implémenter une fonction qui permet de switcher de player à chaque tour (tour % 2 etc.)
-
     //on déclare turn comme une variable de cette classe :
     static int turn = 1;
+    static int scoreJoueur1 = 0;
+    static int scoreJoueur2 = 0;
 
     public static void main(String[] args) {
         // Démarrer le jeu et initialiser le plateau
@@ -68,103 +67,85 @@ public class Plateau {
     
     // glace (row 1)
     static void startGame() {
-        System.out.println("How to play:");
-    
+        System.out.println("Ajout des pièces sur le plateau :");
+        
         // Initialisation des pièces du joueur 1
-
-        // glace (row 1)
-        setPiece(0, 0, new Glace(0, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(2, 0, new Glace(2, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(4, 0, new Glace(4, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(6, 0, new Glace(6, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(8, 0, new Glace(8, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(10, 0, new Glace(10, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(12, 0, new Glace(12, 0, "G1", "None", Couleurs.CYAN));
-        setPiece(14, 0, new Glace(14, 0, "G1", "None", Couleurs.CYAN));
-    
-        // véhicules (alternance entre types méthanes et type eau)
-        setPiece(1, 1, new Vehicule(1, 1, "V1", "Methane", Couleurs.YELLOW, false));
-        setPiece(5, 1, new Vehicule(5, 1, "V1", "Water", Couleurs.CYAN, false));
-        setPiece(7, 1, new Vehicule(7, 1, "V1", "Methane", Couleurs.YELLOW, false));
-        setPiece(9, 1, new Vehicule(9, 1, "V1", "Water", Couleurs.CYAN, false));
-        setPiece(11, 1, new Vehicule(11, 1, "V1", "Methane", Couleurs.YELLOW, false));
-        setPiece(13, 1, new Vehicule(13, 1, "V1", "Water", Couleurs.CYAN, false));
-        setPiece(15, 1, new Vehicule(15, 1, "V1", "Methane", Couleurs.YELLOW, false));
-
-        // glace (row 2)
-        setPiece(1, 2, new Glace(1, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(3, 2, new Glace(3, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(5, 2, new Glace(5, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(7, 2, new Glace(7, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(9, 2, new Glace(9, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(11, 2, new Glace(11, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(13, 2, new Glace(13, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(15, 2, new Glace(15, 2, "G1", "None", Couleurs.CYAN));
-
-        // glace (row 3)
-        setPiece(0, 3, new Glace(1, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(2, 3, new Glace(3, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(4, 3, new Glace(5, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(6, 3, new Glace(7, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(8, 3, new Glace(9, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(10, 3, new Glace(11, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(12, 3, new Glace(13, 2, "G1", "None", Couleurs.CYAN));
-        setPiece(14, 3, new Glace(15, 2, "G1", "None", Couleurs.CYAN));
-    
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////
         
+        // Boucle pour initialiser les pièces de glace sur la première ligne
+        for (int i = 0; i < 8; i++) {
+            Glace glace = new Glace(2 * i, 0, "G1", "None", Couleurs.CYAN);
+            setPiece(2 * i, 0, glace);
+            joueur1.add(glace); // Ajoute la pièce à l'arraylist du joueur 1
+        }
+        
+        // Initialisation des pièces de véhicule sur la deuxième ligne
+        String[] vehicleTypes = {"Methane", "Eau", "Methane", "Eau", "Methane", "Eau", "Methane"};
+        for (int i = 0; i < 7; i++) {
+            Vehicule vehicule = new Vehicule(2 * i + 1, 1, "V1", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Couleurs.YELLOW : Couleurs.BLUE, false);
+            setPiece(2 * i + 1, 1, vehicule);
+            joueur1.add(vehicule); // Ajoute la pièce à l'arraylist du joueur 1
+        }
+    
+        // Boucle pour initialiser les pièces de glace sur la deuxième ligne
+        for (int i = 0; i < 8; i++) {
+            Glace glace = new Glace(2 * i, 2, "G1", "None", Couleurs.CYAN);
+            setPiece(2 * i, 2, glace);
+            joueur1.add(glace); // Ajoute la pièce à l'arraylist du joueur 1
+        }
+    
+        // Boucle pour initialiser les pièces de glace sur la troisième ligne
+        for (int i = 0; i < 8; i++) {
+            Glace glace = new Glace(2 * i + 1, 3, "G1", "None", Couleurs.CYAN);
+            setPiece(2 * i + 1, 3, glace);
+            joueur1.add(glace); // Ajoute la pièce à l'arraylist du joueur 1
+        }
+    
         // Initialisation des pièces du joueur 2
-        // glace (row 1)
-        setPiece(1, 15, new Glace(1, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(3, 15, new Glace(3, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(5, 15, new Glace(5, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(7, 15, new Glace(7, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(9, 15, new Glace(9, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(11, 15, new Glace(11, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(13, 15, new Glace(13, 15, "G2", "None", Couleurs.PURPLE));
-        setPiece(15, 15, new Glace(15, 15, "G2", "None", Couleurs.PURPLE));
-
-        // véhicules (alternance entre types méthanes et type eau)
-        setPiece(1, 14, new Vehicule(1, 14, "V2", "Methane", Couleurs.YELLOW, false));
-        setPiece(5, 14, new Vehicule(5, 14, "V2", "Water", Couleurs.CYAN, false));
-        setPiece(7, 14, new Vehicule(7, 14, "V2", "Methane", Couleurs.YELLOW, false));
-        setPiece(9, 14, new Vehicule(9, 14, "V2", "Water", Couleurs.CYAN, false));
-        setPiece(11, 14, new Vehicule(11, 14, "V2", "Methane", Couleurs.YELLOW, false));
-        setPiece(13, 14, new Vehicule(13, 14, "V2", "Water", Couleurs.CYAN, false));
-        setPiece(15, 14, new Vehicule(15, 14, "V2", "Methane", Couleurs.YELLOW, false));
         
-        // glace (row 2)
-        setPiece(0, 13, new Glace(0, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(2, 13, new Glace(2, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(4, 13, new Glace(4, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(6, 13, new Glace(6, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(8, 13, new Glace(8, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(10, 13, new Glace(10, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(12, 13, new Glace(12, 13, "G2", "None", Couleurs.PURPLE));
-        setPiece(14, 13, new Glace(14, 13, "G2", "None", Couleurs.PURPLE));
-
-
-        // glace (row 3)
-        setPiece(1, 12, new Glace(1, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(3, 12, new Glace(3, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(5, 12, new Glace(5, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(7, 12, new Glace(7, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(9, 12, new Glace(9, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(11, 12, new Glace(11, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(13, 12, new Glace(13, 12, "G2", "None", Couleurs.PURPLE));
-        setPiece(15, 12, new Glace(15, 12, "G2", "None", Couleurs.PURPLE));
+        // Boucle pour initialiser les pièces de glace sur la quatorzième ligne
+        for (int i = 0; i < 8; i++) {
+            Glace glace = new Glace(2 * i, 13, "G2", "None", Couleurs.PURPLE);
+            setPiece(2 * i, 13, glace);
+            joueur2.add(glace); // Ajoute la pièce à l'arraylist du joueur 2
+        }
+    
+        // Initialisation des pièces de véhicule sur la quinzième ligne
+        for (int i = 0; i < 7; i++) {
+            Vehicule vehicule = new Vehicule(2 * i + 1, 14, "V2", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Couleurs.YELLOW : Couleurs.BLUE, false);
+            setPiece(2 * i + 1, 14, vehicule);
+            joueur2.add(vehicule); // Ajoute la pièce à l'arraylist du joueur 2
+        }
+    
+        // Boucle pour initialiser les pièces de glace sur la quinzième ligne
+        for (int i = 0; i < 8; i++) {
+            Glace glace = new Glace(2 * i, 15, "G2", "None", Couleurs.PURPLE);
+            setPiece(2 * i, 15, glace);
+            joueur2.add(glace); // Ajoute la pièce à l'arraylist du joueur 2
+        }
+    
+        // Boucle pour initialiser les pièces de glace sur la quatorzième ligne
+        for (int i = 0; i < 8; i++) {
+            Glace glace = new Glace(2 * i + 1, 12, "G2", "None", Couleurs.PURPLE);
+            setPiece(2 * i + 1, 12, glace);
+            joueur2.add(glace); // Ajoute la pièce à l'arraylist du joueur 2
+        }
     }
+    
+    // methodes des nuages : 
     public static void addClouds() {
         Random random = new Random();
         int cloudsAdded = 0;
-
+    
         while (cloudsAdded < 30) {
-            int x = random.nextInt(16); // Générer une coordonnée x aléatoire entre 0 et 15
-            int y = random.nextInt(16); // Générer une coordonnée y aléatoire entre 0 et 15
-
-            // Vérifier si les coordonnées générées correspondent à une case vide sur le plateau
+            // Générer une coordonnée x aléatoire entre 0 et 15
+            int x = random.nextInt(16);
+            
+            // Générer une coordonnée y aléatoire entre 5 et 12 inclusivement (correspond rééllement aux lignes 4 à 11 sur le tableau)
+            int y = random.nextInt(8) + 4;
+    
+            // Vérifier si les coordonnées générées correspondent à une case vide sur le plateau et dans la plage spécifiée
             if (board[y][x] == null) {
-                // Ajouter un nuage de méthane si le nombre de nuages de méthane ajoutés est inférieur à 15
+                // Ajouter un nuage de méthane si le nombre de nuages ajoutés est inférieur à 15
                 if (cloudsAdded < 15) {
                     setPiece(x, y, new Nuage(x, y, "N", "Methane", Couleurs.YELLOW));
                 } else { // Sinon, ajouter un nuage d'eau
@@ -174,6 +155,56 @@ public class Plateau {
             }
         }
     }
+    
+    //mouvements des nuages :
+    static void moveClouds() {
+        Random random = new Random();
+    
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[y].length; x++) {
+                // Vérifier si la case contient un nuage
+                if (board[y][x] instanceof Nuage) {
+                    // Générer un nombre aléatoire entre 0 et 4 inclusivement
+                    int randomNumber = random.nextInt(5);
+                    // Vérifier si le nuage doit se déplacer (1 chance sur 5)
+                    if (randomNumber == 0) {
+                        // Choisir une direction de déplacement aléatoire (0: haut, 1: bas, 2: gauche, 3: droite)
+                        int direction = random.nextInt(4);
+                        int destX = x, destY = y;
+    
+                        // Déplacer le nuage dans la direction choisie si la case adjacente est libre et respecte les règles du déplacement aérien
+                        switch (direction) {
+                            case 0: // Haut
+                                destY -= 2;
+                                break;
+                            case 1: // Bas
+                                destY += 2;
+                                break;
+                            case 2: // Gauche
+                                destX -= 2;
+                                break;
+                            case 3: // Droite
+                                destX += 2;
+                                break;
+                        }
+    
+                        // Vérifier si la destination est valide et si la case est libre
+                        if (isValidDestination(destX, destY) && board[destY][destX] == null) {
+                            // Vérifier s'il n'y a pas de glace entre la position actuelle et la destination
+                            if (!isGlaceBetween(x, y, destX, destY)) {
+                                // Effectuer le déplacement du nuage
+                                board[destY][destX] = board[y][x];
+                                board[y][x] = null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
 
     static void playGame() {
         // Variable pour garder une trace du tour actuel
@@ -186,14 +217,30 @@ public class Plateau {
             // Afficher le numéro de tour
             System.out.println("Tour " + turn);
 
+
+         // Déterminer quel joueur doit jouer en fonction du numéro de tour
+            if (turn % 2 == 1) { // Tour impair : Joueur 1
+                currentPlayer = joueur1;
+                System.out.println("Tour du joueur 1 (CYAN)");
+                System.out.println("Nombre total de nuages capturés : " + scoreJoueur1);
+            } else { // Tour pair : Joueur 2
+                currentPlayer = joueur2;
+                System.out.println("Tour du joueur 2 (PURPLE)");
+                System.out.println("Nombre total de nuages capturés : " + scoreJoueur2);
+            }
+
             // Récupérer les coordonnées de la pièce à déplacer
-            System.out.print("Entrez les coordonnées de la pièce à déplacer: ");
+            System.out.print("Entrez les coordonnées de la pièce à déplacer: (ou q pour quitter) : ");
             String source = scanner.next();
             int sourceX = source.charAt(0) - 'A';
             int sourceY = Integer.parseInt(source.substring(1)) - 1;
 
-            //Vérification de la pièce, vérif que c'est bien : 1) pièce du joueur acutel, 2) pièce non nulle 3) pièce non nuage 4)type de pièce
-
+            // Vérifier si la pièce sélectionnée appartient au joueur actuel
+            Piece selectedPiece = board[sourceY][sourceX];
+            if (selectedPiece == null || !currentPlayer.contains(selectedPiece)) {
+                System.out.println("La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez.");
+                continue; // Revenir au début de la boucle pour redemander une pièce valide
+            }
 
             // Vérifier si le joueur veut quitter la partie
             if (source.equalsIgnoreCase("q")) {
@@ -213,11 +260,14 @@ public class Plateau {
             int destY = Integer.parseInt(destination.substring(1)) - 1;
 
             //1) vérifier si la case est vide ou contient un nuage 
-            //2) Permettre le mouvement (reprendre le type déterminé après le 1er input) : terrestre, 
-            // Vérifier si les coordonnées sont valides et que la pièce appartient au joueur actuel
+            //2) Permettre le mouvement (reprendre le type déterminé après le 1er input) : terrestre,
+            //Vérifier que la pièce appartient au joueur actuel: 
+            
+            // Vérifier si les coordonnées sont valides et 
             if (isValidMove(sourceX, sourceY, destX, destY)) {
                 // Effectuer le déplacement de la pièce
                 movePiece(sourceX, sourceY, destX, destY);
+                
 
                 // Sauvegarder le coup joué dans le fichier sérializable
                 saveMoveToFile(source, destination, turn);
@@ -235,6 +285,7 @@ public class Plateau {
             } else {
                 System.out.println("Déplacement invalide. Réessayez.");
             }
+            moveClouds();
         }
         scanner.close();
     }
@@ -300,70 +351,90 @@ public class Plateau {
         return false;
     }
     
-
-    public static boolean isValidMove(int sourceX, int sourceY, int destX, int destY) {
-        // Vérifier si les coordonnées de la destination sont valides
-        if (destX < 0 || destX >= board.length || destY < 0 || destY >= board[0].length) {
-            System.out.println("La destination est en dehors du plateau.");
-            return false; // La destination est en dehors du plateau
+        public static boolean isValidMove(int sourceX, int sourceY, int destX, int destY) {
+            if (!isValidDestination(destX, destY)) {
+                return false;
+            }
+            //On récupère les pièces aux coordonnées source et destination : 
+            Piece piece = board[sourceY][sourceX];
+            Piece destination = board[destY][destX];
+        
+            //Vérification qu'on a bien une pièce sur la case source:
+            if (piece == null) {
+                System.out.println("La case source est vide.");
+                return false;
+            }
+            
+            //Si la pièce est une glace (déplacement où elle veut sauf sur une autre glace)
+            if (piece instanceof Glace && !(destination instanceof Glace)) {
+                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+            
+            //Vérification lorsqu'on déplace un véhicule :
+            } else if (piece instanceof Vehicule) {
+                //Cas où la destination est occupée par une autre pièce :
+                if (destination != null) {
+                    if (destination instanceof Vehicule) { //si c'est un autre véhicule
+                        System.out.println("La destination est occupée par un autre véhicule.");
+                        return false;
+                    //cas où la case est un nuage ou de la glace : 
+                    } else if (destination instanceof Nuage && !((Vehicule) piece).getState() || destination instanceof Glace && !((Vehicule) piece).getState()) {
+                        System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
+                        
+                        //Collision avec un nuage (du même type) :
+                        if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
+                            ((Vehicule) piece).captureNuage();
+                            //mise à jour des scores:
+                            if (currentPlayer == joueur1) {
+                                scoreJoueur1++;
+                            } else {
+                                scoreJoueur2++;
+                            }
+                            System.out.println("Déplacement terrestre.");
+                            System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
+                            System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
+                            return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                        
+                        //Collision avec un nuage (de type différent) ou de la glace :
+                        } else { 
+                            System.out.println("Le véhicule a été détruit dans la collision !");
+                            // Supprimer le véhicule du plateau
+                            board[sourceY][sourceX] = null;
+                            return false;
+                        }
+                    }
+                }
+                if (destination == null) {
+                    if (!((Vehicule) piece).getState()) {
+                        System.out.println("Déplacement terrestre.");
+                        return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                    } if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
+                        System.out.println("Déplacement aérien.");
+                        return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+                    } else {
+                        System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
+                        return false;
+                    }
+                }
+            //à implémenter !!! comment bouger les nuages ?
+            } else if (piece instanceof Nuage) {
+                return false;
+            }
+        
+            return false;
         }
     
-        // Récupérer la pièce à déplacer
-        Piece piece = board[sourceY][sourceX];
-        System.out.println("Pièce à déplacer : " + piece.getIcon());
-
-        /*    
-        // Vérifier si la pièce appartient au joueur actuel (en fonction de sa couleur)
-        ArrayList<Piece> currentPlayerPieces = (turn % 2 == 1) ? joueur1 : joueur2;
-        if (!currentPlayerPieces.contains(piece)) {
-            System.out.println("Vous ne pouvez déplacer que vos propres pièces.");
-            return false; // La pièce n'appartient pas au joueur actuel
-        }
-        */
-
-    
-        // Vérifier si la destination est un nuage ou une case vide
-        if (board[destY][destX] instanceof Nuage || board[destY][destX] == null) {
-            // Si la destination est un nuage
-            if (board[destY][destX] instanceof Nuage) {
-                Nuage destinationNuage = (Nuage) board[destY][destX];
-                Vehicule vehicule = (Vehicule) piece;
-                vehicule.checkCollision(destinationNuage);
-                return true; // Le mouvement est valide après la collision
-            } else {
-                return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+        // Méthode pour vérifier si la destination est valide
+        private static boolean isValidDestination(int destX, int destY) {
+            if (destX < 0 || destX >= board.length || destY < 0 || destY >= board[0].length) {
+                System.out.println("La destination est en dehors du plateau."); //bon le problème c'est que le message s'affiche lors des mouvements des nuages
+                return false;
             }
-        } else {
-            // Vérifier si la destination est une case vide
-            if (board[destY][destX] != null) {
-                System.out.println("La destination est occupée par une autre pièce.");
-                return false; // La destination est occupée par une autre pièce
-            }
-        }
-
-        // Vérifier le type de déplacement en fonction de la pièce
-        if (piece instanceof Glace || (piece instanceof Vehicule && !((Vehicule) piece).getState())) {
-            // Déplacement terrestre
-            System.out.println("Déplacement terrestre.");
-            return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
-        } else if (piece instanceof Nuage || (piece instanceof Vehicule && ((Vehicule) piece).getState())) {
-            // Déplacement aérien
-            // Vérifier s'il y a une glace sur le chemin
-            if (isGlaceBetween(sourceX, sourceY, destX, destY)) {
-                System.out.println("Il y a une glace sur le chemin, le mouvement n'est pas permis.");
-                return false; // Il y a une glace sur le chemin, le mouvement n'est pas permis
-            }
-            System.out.println("Déplacement aérien.");
             return true;
         }
     
-        // Si aucun des cas ci-dessus n'est vérifié, le mouvement est invalide
-        System.out.println("Aucun mouvement valide n'a été trouvé.");
-        return false;
-    }
-    
-    //a appeler dans les fonctions de vérif 
-    
+
+
+    //mettre cette méthode plutot dans la classe Vehicule.java et nuage.java
     static boolean isGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
         // Vérifier s'il y a une glace entre la source et la destination
         int deltaX = destX - sourceX;
@@ -433,12 +504,3 @@ public class Plateau {
 		return board[y][x];
 	}
 }
-
-
-
-//pas de mouvement des glaces ; on ne peut uniquement bouger les véhicules du jOUEUR 1 même au 2ème tour 
-// 
-
-// Faire plusieurs fonctions de validation de mouvements pour chaque type de pièce à incorporer dans
-// "start game" et "play game" pour vérifier si le mouvement est valide
-//empêcher le mouvement des nuages 
