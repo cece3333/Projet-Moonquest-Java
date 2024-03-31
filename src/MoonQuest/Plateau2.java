@@ -218,9 +218,11 @@ public class Plateau2 {
             if (turn % 2 == 1) { // Tour impair : Joueur 1
                 currentPlayer = joueur1;
                 System.out.println("Tour du joueur 1 (CYAN)");
+                System.out.println("Nombre total de nuages capturés : " + scoreJoueur1);
             } else { // Tour pair : Joueur 2
                 currentPlayer = joueur2;
                 System.out.println("Tour du joueur 2 (PURPLE)");
+                System.out.println("Nombre total de nuages capturés : " + scoreJoueur2);
             }
 
             // Récupérer les coordonnées de la pièce à déplacer
@@ -377,6 +379,12 @@ public class Plateau2 {
                         //Collision avec un nuage (du même type) :
                         if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
                             ((Vehicule) piece).captureNuage();
+                            //mise à jour des scores:
+                            if (currentPlayer == joueur1) {
+                                scoreJoueur1++;
+                            } else {
+                                scoreJoueur2++;
+                            }
                             System.out.println("Déplacement terrestre.");
                             System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
                             System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
