@@ -131,8 +131,7 @@ public class Plateau2 {
         }
     }
     
-    
-
+    // methodes des nuages : 
     public static void addClouds() {
         Random random = new Random();
         int cloudsAdded = 0;
@@ -156,6 +155,51 @@ public class Plateau2 {
             }
         }
     }
+    
+    //mouvements des nuages :
+    static void moveClouds() {
+        Random random = new Random();
+    
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[y].length; x++) {
+                // Vérifier si la case contient un nuage
+                if (board[y][x] instanceof Nuage) {
+                    // Générer un nombre aléatoire entre 0 et 4 inclusivement
+                    int randomNumber = random.nextInt(5);
+                    // Vérifier si le nuage doit se déplacer (1 chance sur 5)
+                    if (randomNumber == 0) {
+                        // Choisir une direction de déplacement aléatoire (0: haut, 1: bas, 2: gauche, 3: droite)
+                        int direction = random.nextInt(4);
+                        int destX = x, destY = y;
+    
+                        // Déplacer le nuage dans la direction choisie si la case adjacente est libre et respecte les règles du déplacement aérien
+                        switch (direction) {
+                            case 0: // Haut
+                                destY -= 2;
+                                break;
+                            case 1: // Bas
+                                destY += 2;
+                                break;
+                            case 2: // Gauche
+                                destX -= 2;
+                                break;
+                            case 3: // Droite
+                                destX += 2;
+                                break;
+                        }
+    
+                        // Vérifier si la case adjacente est libre et respecte les règles du déplacement aérien
+                        if (isValidDestination(destX, destY) && board[y][x].deplacementAerien(x, y, destX, destY)) {
+                            // Effectuer le déplacement du nuage
+                            board[destY][destX] = board[y][x];
+                            board[y][x] = null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     
 
     static void playGame() {
@@ -235,6 +279,7 @@ public class Plateau2 {
             } else {
                 System.out.println("Déplacement invalide. Réessayez.");
             }
+            moveClouds();
         }
         scanner.close();
     }

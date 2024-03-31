@@ -5,7 +5,7 @@ Déplacement aérien quand véhicule activé ; OK
 
 
 À faire: (cf. manque dans les conditions)
-- 
+- un score qui s'update en fonction des nuages capturés
 
 
 
