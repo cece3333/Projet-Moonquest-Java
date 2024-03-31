@@ -1,0 +1,22 @@
+Notes : 
+
+Fonction isValidMove : fonctionne bien (pas encore créée pour les nuages)
+Déplacement aérien quand véhicule activé ; OK
+
+
+À faire: (cf. manque dans les conditions)
+- 
+
+
+
+Pour l'instant, je crois que captureNuages peut capturer plus de 3 nuages (mais normalement le véhicule peut bien être activé), donc à voir si je changerais pas ça 
+
+Peut-être rajouter une entrée permettant d'afficher le score du véhicule sélectionné (juste après l'entrée de la case source ex:) pour savoir combien de nuages le véhicule 
+--> permettre un changement d'entrée sûre ? genre "Conserver cette pièce source ?" mais pas pour la case destination 
+
+
+DONE : 
+- Fonction isValidMove : fonctionne bien (pas encore créée pour les nuages)
+- Déplacement aérien quand véhicule activé ; OK
+- Il faut pouvoir modifier la couleur du véhicule lorsqu'il est activé (normalement devient blanc) : DONE
+- Introduction des tours par joueurs 
