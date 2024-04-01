@@ -385,10 +385,11 @@ public class Plateau2 {
                     return false;
                 
                 //cas où la case est un nuage ou de la glace : 
-                } else if (!(destination instanceof Vehicule)) {
+                } else if ((!(destination instanceof Vehicule)) && (destination != null)) {
                     System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
                     //si le véhicule est activé, il peut supprimer n'importe quel nuage
                     if ((((Vehicule) piece).getState()) && !(destination instanceof Glace)) {
+                        System.out.println("Un nuage a été supprimé par le véhicule!");
                         return piece.deplacementAerien(sourceX, sourceY, destX, destY);
                     
                     //si la destination est un nuage de même type que le véhicule :
@@ -421,7 +422,7 @@ public class Plateau2 {
                         if (!((Vehicule) piece).getState()) {
                             System.out.println("Déplacement terrestre.");
                             return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
-                        } if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
+                        } else if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
                             System.out.println("Déplacement aérien.");
                             return piece.deplacementAerien(sourceX, sourceY, destX, destY);
                         } else {
