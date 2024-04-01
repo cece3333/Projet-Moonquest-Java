@@ -196,7 +196,7 @@ public class Plateau2 {
                         }
     
                         // Vérifier si la destination est valide et si la case est libre
-                        if (isValidDestination(destX, destY) && board[destY][destX] == null) {
+                        if (isValidDestination(destX, destY) && board[destY][destX] == null) { //à changer car les nuages peuvent écraser les véhicules
                             // Vérifier s'il n'y a pas de glace entre la position actuelle et la destination
                             if (!isGlaceBetween(x, y, destX, destY)) {
                                 // Effectuer le déplacement du nuage
@@ -265,12 +265,8 @@ public class Plateau2 {
             String destination = scanner.next();
             int destX = destination.charAt(0) - 'A';
             int destY = Integer.parseInt(destination.substring(1)) - 1;
-
-            //1) vérifier si la case est vide ou contient un nuage 
-            //2) Permettre le mouvement (reprendre le type déterminé après le 1er input) : terrestre,
-            //Vérifier que la pièce appartient au joueur actuel: 
             
-            // Vérifier si les coordonnées sont valides et 
+            
             if (isValidMove(sourceX, sourceY, destX, destY)) {
                 // Effectuer le déplacement de la pièce
                 movePiece(sourceX, sourceY, destX, destY);
@@ -284,7 +280,7 @@ public class Plateau2 {
 
                 // Vérifier s'il y a un gagnant ou un match nul
                 // (implémentez cette logique selon vos règles spécifiques)
-                if (isGameOver()) {
+                if (isGameOver(scoreJoueur1, scoreJoueur2)) {
                     // Afficher le résultat final
                     System.out.println("La partie est terminée. Résultat final : ...");
                     break;
@@ -292,45 +288,16 @@ public class Plateau2 {
             } else {
                 System.out.println("Déplacement invalide. Réessayez.");
             }
-            moveClouds();
+            moveClouds(); //à voir si je la laisse la où dans le main (on verra après avoir scindé Plateau.java)
         }
         scanner.close();
     }
 
 
     //méthodes à ajouter plus tard dans Game.java
-    private static boolean isGameOver() {
-        int countCyanClouds = 0;
-        int countPurpleClouds = 0;
-    
-        // Parcourir le plateau pour compter les nuages capturés par chaque joueur
-        // il faut que ce soit le count des véhicules et pas des pièces CYAN et PURPLE
-        for (Piece[] row : board) {
-            for (Piece piece : row) {
-                if (piece instanceof Nuage) {
-                    if (piece.getCouleur() == Couleurs.CYAN) {
-                        countCyanClouds++;
-                    } else if (piece.getCouleur() == Couleurs.PURPLE) {
-                        countPurpleClouds++;
-                    }
-                }
-            }
-        }
-    
-        // Vérifier s'il y a un gagnant
-        if (countCyanClouds >= 16 || countPurpleClouds >= 16) {
-            System.out.println("La partie est terminée.");
-            if (countCyanClouds > countPurpleClouds) {
-                System.out.println("Le joueur 1 (CYAN) a remporté la partie avec " + countCyanClouds + " nuages capturés.");
-            } else if (countCyanClouds < countPurpleClouds) {
-                System.out.println("Le joueur 2 (PURPLE) a remporté la partie avec " + countPurpleClouds + " nuages capturés.");
-            } else {
-                System.out.println("Match nul !");
-            }
-            return true;
-        }
-    
-        // Vérifier s'il n'y a plus de nuages à capturer
+    private static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
+
+        //Vérifier s'il n'y a plus de nuages à capturer
         boolean noMoreClouds = true;
         for (Piece[] row : board) {
             for (Piece piece : row) {
@@ -343,13 +310,14 @@ public class Plateau2 {
                 break;
             }
         }
-        if (noMoreClouds) {
+        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer)
+        if ((scoreJoueur1 >= 16 || scoreJoueur2 >= 16) || (noMoreClouds)) {
             System.out.println("La partie est terminée.");
-            if (countCyanClouds > countPurpleClouds) {
-                System.out.println("Le joueur 1 a remporté la partie avec " + countCyanClouds + " nuages capturés.");
-            } else if (countCyanClouds < countPurpleClouds) {
-                System.out.println("Le joueur 2 a remporté la partie avec " + countPurpleClouds + " nuages capturés.");
-            } else {
+            if (scoreJoueur1 > scoreJoueur2) {
+                System.out.println("Le joueur 1 (CYAN) a remporté la partie avec " + scoreJoueur1 + " nuages capturés.");
+            } else if (scoreJoueur1 < scoreJoueur2) {
+                System.out.println("Le joueur 2 (PURPLE) a remporté la partie avec " + scoreJoueur2 + " nuages capturés.");
+            } else if (((scoreJoueur1 == scoreJoueur2) && (scoreJoueur1 + scoreJoueur2 == 30)) || ((scoreJoueur1 == scoreJoueur2) && (noMoreClouds))){
                 System.out.println("Match nul !");
             }
             return true;
@@ -468,17 +436,8 @@ public class Plateau2 {
     
         return false; // Aucune glace sur le chemin
     }
-    
 
-    static void movePiece(int sourceX, int sourceY, int destX, int destY) {
-        // Récupérer la pièce à déplacer
-        Piece piece = board[sourceY][sourceX];
-        // Déplacer la pièce vers la destination
-        board[destY][destX] = piece;
-        // Vider la case source
-        board[sourceY][sourceX] = null;
-    }
-
+    //methodes de sauvegardes des mouvements :
     static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2) {
         try (FileWriter writer = new FileWriter("moves.ser", true)) {
             String symbole = ".";
@@ -486,7 +445,7 @@ public class Plateau2 {
             if (destinationPiece != null) {
                 symbole = "x";
             }
-            writer.write(turn + ". " + source + "-" + destination + symbole + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
+            writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -502,6 +461,16 @@ public class Plateau2 {
         }
     }
 
+    //methodes des pièces du plateau : 
+    static void movePiece(int sourceX, int sourceY, int destX, int destY) {
+        // Récupérer la pièce à déplacer
+        Piece piece = board[sourceY][sourceX];
+        // Déplacer la pièce vers la destination
+        board[destY][destX] = piece;
+        // Vider la case source
+        board[sourceY][sourceX] = null;
+    }
+
     	// set piece to provided coordinates
 	public static void setPiece(int x, int y, Piece piece) {
 		if (piece != null) {
@@ -509,13 +478,7 @@ public class Plateau2 {
 			piece.setY(y);
 		}
 		board[y][x] = piece;
-
-        // Association de la pièce au joueur correspondant
-        if (piece != null && (piece.getIcon().equals("G1") || piece.getIcon().equals("V1"))) {
-            joueur1.add(piece); // Ajouter la pièce à joueur1
-        } else {
-            joueur2.add(piece); // Ajouter la pièce à joueur2
-        }
+        //suppression de l'ajout de la pièce dans l'arraylist du joueur
     }
 
 	// check spot on board

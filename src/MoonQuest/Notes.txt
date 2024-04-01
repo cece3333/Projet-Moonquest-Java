@@ -5,7 +5,6 @@ Déplacement aérien quand véhicule activé ; OK
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
-- les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
 
 
 
@@ -37,3 +36,4 @@ Problèmes résolus :
 --> après une collision qui détruit le véhicule, le tour ne passe pas (alors qu'il devrait) = (false mal placé dans isValidMove)
 --> nuage quand même capturé alors que le mouvement n'était pas permis (vérification du mouvement avant la capture des nuages)
 --> is glaceinbetween ne fonctionne pas... (else if plutôt que if? + le mouvement était permis dans le cas où l'instance n'était pas un véhicule mais )
+- les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
