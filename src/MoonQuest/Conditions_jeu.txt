@@ -71,4 +71,18 @@ Manque :
 - soit quand un joueur a réussi à capturer les 16 Nuages possible à capturer par ses véhicules
 - soit parce que tous les Nuages sont capturés. 
 - Si plus aucun mouvement de Nuages n’est possible, on déplace aléatoirement tous les Nuages parmi les cases vides pour permettre au jeu de continuer (relancer la fonction addClouds)
+- A la fin d’ un partie, le programme affiche l’ensemble des coups joués et le score sous la forme : 
+1. A13-B11. 0-0 
+2. M2-M3. 0-0 
+3. B11-B9x1-0 
+4. M3-L3. 1-0 
+5. ...
+
+ou ‘.’ indique un mouvement vers une case vide et ‘x’ qu’une pièce a été mangée, score à gauche = joueur 1 ; score à droite = joueur 2
+------------------------------------------------------------------------------------------------------------------------------
+
+Votre programme doit implémenter l ’ensemble des règles ci-dessus avec une interface utilisateur permettant les 3 modes de jeu suivants :
+1. 1 contre 1, ou les 2 joueurs jouent tour a tour au clavier
+2. Joueur vs. IA, ou les coups (choix de la pièce, choix du déplacement) du 2nd joueur sont tirés au hasard 3. IA vs. IA ou les deux joueurs sont des IA dont les coups sont tirés au hasard
+
 

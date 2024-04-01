@@ -4,7 +4,8 @@ Fonction isValidMove : fonctionne bien (pas encore créée pour les nuages)
 Déplacement aérien quand véhicule activé ; OK
 
 Problèmes notés : 
-- lorsqu'un véhicule est détruit, ses nuages doivent être déduis du score du joueur !!
+- lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
+- les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
 
 
 
@@ -14,6 +15,7 @@ Problèmes notés :
 - Créer un menu avec les règles du jeu 
 - scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes
 - faire un count des nuages restants sur le plateau (condition de fin)
+- bien évidemment créer les packages
 
 
 

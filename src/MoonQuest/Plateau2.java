@@ -277,7 +277,7 @@ public class Plateau2 {
                 
 
                 // Sauvegarder le coup joué dans le fichier sérializable
-                saveMoveToFile(source, destination, turn);
+                saveMoveToFile(source, destination, turn, scoreJoueur1, scoreJoueur2);
 
                 // Incrémenter le numéro de tour
                 turn++;
@@ -479,9 +479,14 @@ public class Plateau2 {
         board[sourceY][sourceX] = null;
     }
 
-    static void saveMoveToFile(String source, String destination, int turn) {
+    static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2) {
         try (FileWriter writer = new FileWriter("moves.ser", true)) {
-            writer.write(turn + ". " + source + "-" + destination + ".\n");
+            String symbole = ".";
+            Piece destinationPiece = getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
+            if (destinationPiece != null) {
+                symbole = "x";
+            }
+            writer.write(turn + ". " + source + "-" + destination + symbole + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
