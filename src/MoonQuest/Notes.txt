@@ -3,9 +3,15 @@ Notes :
 Fonction isValidMove : fonctionne bien (pas encore créée pour les nuages)
 Déplacement aérien quand véhicule activé ; OK
 
+Problèmes notés : 
+
+
+
 
 À faire: (cf. manque dans les conditions)
-- un score qui s'update en fonction des nuages capturés
+- Créer un menu avec les règles du jeu 
+- scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes
+- faire un count des nuages restants sur le plateau (condition de fin)
 
 
 
@@ -14,9 +20,15 @@ Pour l'instant, je crois que captureNuages peut capturer plus de 3 nuages (mais 
 Peut-être rajouter une entrée permettant d'afficher le score du véhicule sélectionné (juste après l'entrée de la case source ex:) pour savoir combien de nuages le véhicule 
 --> permettre un changement d'entrée sûre ? genre "Conserver cette pièce source ?" mais pas pour la case destination 
 
+--> Est-ce que je dois empêcher les glaces d'écraser les véhicules de leur propre type ?
 
 DONE : 
-- Fonction isValidMove : fonctionne bien (pas encore créée pour les nuages)
+- Fonction isValidMove : fonctionne bien 
 - Déplacement aérien quand véhicule activé ; OK
 - Il faut pouvoir modifier la couleur du véhicule lorsqu'il est activé (normalement devient blanc) : DONE
 - Introduction des tours par joueurs 
+- un score qui s'update en fonction des nuages capturés
+
+Problèmes résolus : 
+--> après une collision qui détruit le véhicule, le tour ne passe pas (alors qu'il devrait) = (false mal placé dans isValidMove)
+--> nuage quand même capturé alors que le mouvement n'était pas permis (vérification du mouvement avant la capture des nuages)

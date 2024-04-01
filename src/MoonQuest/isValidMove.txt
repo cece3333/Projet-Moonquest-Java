@@ -1,0 +1,76 @@
+        public static boolean isValidMove(int sourceX, int sourceY, int destX, int destY) {
+            if (!isValidDestination(destX, destY)) {
+                return false;
+            }
+            //On récupère les pièces aux coordonnées source et destination : 
+            Piece piece = board[sourceY][sourceX];
+            Piece destination = board[destY][destX];
+        
+            //Vérification qu'on a bien une pièce sur la case source:
+            if (piece == null) {
+                System.out.println("La case source est vide.");
+                return false;
+            }
+            
+            //Si la pièce est une glace (déplacement où elle veut sauf sur une autre glace)
+            if (piece instanceof Glace && !(destination instanceof Glace)) {
+                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+            
+            //Vérification lorsqu'on déplace un véhicule :
+            } else if (piece instanceof Vehicule) {
+                //Cas où la destination est occupée par une autre pièce :
+                if (destination != null) {
+                    if (destination instanceof Vehicule) { //si c'est un autre véhicule
+                        System.out.println("La destination est occupée par un autre véhicule.");
+                        return false;
+                    //cas où la case est un nuage ou de la glace : 
+                    } else if (destination instanceof Nuage && !((Vehicule) piece).getState() || destination instanceof Glace && !((Vehicule) piece).getState()) {
+                        System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
+                        
+                        //Collision avec un nuage (du même type) :
+                        if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
+                            if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
+                                ((Vehicule) piece).captureNuage();
+                                //mise à jour des scores:
+                                if (currentPlayer == joueur1) {
+                                    scoreJoueur1++;
+                                } else {
+                                    scoreJoueur2++;
+                                }
+                                System.out.println("Déplacement terrestre.");
+                                System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
+                                System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
+                                //si le véhicule est activé, il peut supprimer n'importe
+                                } if (((Vehicule) piece).getState() && piece.deplacementAerien(sourceX, sourceY, destX, destY)) {
+                                    return true;
+                                }
+                                return true;
+                        
+                        //Collision avec un nuage (de type différent) ou de la glace :
+                        } else { 
+                            System.out.println("Le véhicule a été détruit dans la collision !");
+                            // Supprimer le véhicule du plateau
+                            board[sourceY][sourceX] = null;
+                            return true; //pour éviter que le joueur joue deux fois
+                        }
+                    }
+                }
+                if (destination == null) {
+                    if (!((Vehicule) piece).getState()) {
+                        System.out.println("Déplacement terrestre.");
+                        return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                    } if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
+                        System.out.println("Déplacement aérien.");
+                        return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+                    } else {
+                        System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
+                        return false;
+                    }
+                }
+            //à implémenter !!! comment bouger les nuages ?
+            } else if (piece instanceof Nuage) {
+                return false;
+            }
+        
+            return false;
+        }

@@ -20,8 +20,10 @@ Fait :
 • Un Véhicule peut capturer jusqu’à 3 nuages du même type.
 • Si le Véhicule ne peux plus capturer de Nuages, le Nuage est éliminé.
 • Si un Véhicule rentre en contact avec de la Glace ou un Nuage d’un autre type, il est détruit.
-• Un Nuage ou une Glace qui se déplace élimine toute les pièces situés sur la case où elle arrive.
+• Une Glace qui se déplace élimine toute les pièces situés sur la case où elle arrive.
 
+Manque : 
+- Un Nuage qui se déplace élimine toute les pièces situés sur la case où elle arrive
 ---------------------------------------------------------------------------------------------------------------------------------
 Déplacements : 
 
@@ -30,19 +32,20 @@ Fait :
 • Déplacement terrestre pour les Véhicules vides et la Glace : les pièces ne bougent que d’une seule case à la fois, haut, bas, droite a gauche. Le déplacement en diagonal est interdit.
 • Déplacement aériens pour les Nuages et les Véhicules activés : les pièces volent de deux cases à chaque fois dans n’importe quelle direction.
 • Lors des déplacements aériens, les pièces peuvent “survoler” toutes les autres pièces sauf les Glaces. Si un déplacement survole une Glace, il est interdit.
+• A chaque tour, chaque nuage a une chance sur 5 de se déplacer dans n’importe quelle direction. Il n’y a pas de direction privilégiée.
 
 Manque : 
---> • A chaque tour, chaque nuage a une chance sur 5 de se déplacer dans n’importe quelle direction. Il n’y a pas de direction privilégiée.
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 
 Objectif du jeu : 
 
 Fait : 
-
+Établir un score final : Vous devez augmenter votre score en capturant le maximum de Nuages. Chaque nuage capturé rapporte 1 point. Le score comtpe le nombre de Nuage que détient un Joueur : 
 
 Manque : 
-Établir un score final : Vous devez augmenter votre score en capturant le maximum de Nuages. Chaque nuage capturé rapporte 1 point. Le score comtpe le nombre de Nuage que détient un Joueur : si un Véhicule chargé de Nuages est détruit, les points sont décomptés du score.
+-Si un Véhicule chargé de Nuages est détruit, les points sont décomptés du score.
 
 ------------------------------------------------------------------------------------------------------------------------------
 

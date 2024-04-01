@@ -33,17 +33,23 @@ public class Plateau2 {
     }
 
     static void printBoard() {
+        System.out.println();
         System.out.println("      A    B    C    D    E    F    G    H    I    J    K    L    M    N    O    P");
-        System.out.println("  ---------------------------------------------------------------------------------");
+        System.out.println("   ----------------------------------------------------------------------------------");
         
         int count = 1;
         for (int i = 0; i < 16; i++) {
-            System.out.print(count + " ");
+            if (i < 9) {
+                System.out.print(" " + count + " ");
+            }
+            else {
+                System.out.print(count + " "); //rajouté des espaces 
+            }
             System.out.print("|  ");
             
             for (int j = 0; j < 16; j++) {
                 if (board[i][j] == null) {
-                    System.out.print("  |  ");
+                    System.out.print("   | "); //3 (2 gauche/1 droite)
                 } else {
                     String pieceIcon = board[i][j].getIcon();
                     Couleurs pieceColor = board[i][j].getCouleur();
@@ -52,16 +58,17 @@ public class Plateau2 {
                     String colorCode = pieceColor.getCode();
                     
                     // Afficher la pièce avec la couleur appropriée
-                    System.out.print(colorCode + pieceIcon + Couleurs.RESET.getCode() + " | ");
+                    System.out.print(colorCode + pieceIcon + Couleurs.RESET.getCode() + " | "); //1 de chaque
                 }
             }
             
             System.out.print(count);
             count++;
             System.out.println();
-            System.out.println("  ---------------------------------------------------------------------------------");
+            System.out.println("   ----------------------------------------------------------------------------------");
         }
         System.out.println("      A    B    C    D    E    F    G    H    I    J    K    L    M    N    O    P");
+        System.out.println(); 
     }
     
     
@@ -79,7 +86,7 @@ public class Plateau2 {
         }
         
         // Initialisation des pièces de véhicule sur la deuxième ligne
-        String[] vehicleTypes = {"Methane", "Water", "Methane", "Water", "Methane", "Water", "Methane"};
+        String[] vehicleTypes = {"Methane", "Eau", "Methane", "Eau", "Methane", "Eau", "Methane"};
         for (int i = 0; i < 7; i++) {
             Vehicule vehicule = new Vehicule(2 * i + 1, 1, "V1", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Couleurs.YELLOW : Couleurs.BLUE, false);
             setPiece(2 * i + 1, 1, vehicule);
@@ -147,9 +154,9 @@ public class Plateau2 {
             if (board[y][x] == null) {
                 // Ajouter un nuage de méthane si le nombre de nuages ajoutés est inférieur à 15
                 if (cloudsAdded < 15) {
-                    setPiece(x, y, new Nuage(x, y, "N", "Methane", Couleurs.YELLOW));
+                    setPiece(x, y, new Nuage(x, y, "NM", "Methane", Couleurs.YELLOW));
                 } else { // Sinon, ajouter un nuage d'eau
-                    setPiece(x, y, new Nuage(x, y, "N", "Eau", Couleurs.BLUE));
+                    setPiece(x, y, new Nuage(x, y, "NE", "Eau", Couleurs.BLUE));
                 }
                 cloudsAdded++;
             }
@@ -188,17 +195,21 @@ public class Plateau2 {
                                 break;
                         }
     
-                        // Vérifier si la case adjacente est libre et respecte les règles du déplacement aérien
-                        if (isValidDestination(destX, destY) && board[y][x].deplacementAerien(x, y, destX, destY)) {
-                            // Effectuer le déplacement du nuage
-                            board[destY][destX] = board[y][x];
-                            board[y][x] = null;
+                        // Vérifier si la destination est valide et si la case est libre
+                        if (isValidDestination(destX, destY) && board[destY][destX] == null) {
+                            // Vérifier s'il n'y a pas de glace entre la position actuelle et la destination
+                            if (!isGlaceBetween(x, y, destX, destY)) {
+                                // Effectuer le déplacement du nuage
+                                board[destY][destX] = board[y][x];
+                                board[y][x] = null;
+                            }
                         }
                     }
                 }
             }
         }
     }
+    
     
     
 
@@ -367,17 +378,22 @@ public class Plateau2 {
             
             //Vérification lorsqu'on déplace un véhicule :
             } else if (piece instanceof Vehicule) {
+                
                 //Cas où la destination est occupée par une autre pièce :
-                if (destination != null) {
-                    if (destination instanceof Vehicule) { //si c'est un autre véhicule
-                        System.out.println("La destination est occupée par un autre véhicule.");
-                        return false;
-                    //cas où la case est un nuage ou de la glace : 
-                    } else if (destination instanceof Nuage && !((Vehicule) piece).getState() || destination instanceof Glace && !((Vehicule) piece).getState()) {
-                        System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
-                        
-                        //Collision avec un nuage (du même type) :
-                        if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
+                if (destination instanceof Vehicule) { //si c'est un autre véhicule
+                    System.out.println("La destination est occupée par un autre véhicule.");
+                    return false;
+                
+                //cas où la case est un nuage ou de la glace : 
+                } else if (!(destination instanceof Vehicule)) {
+                    System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
+                    //si le véhicule est activé, il peut supprimer n'importe quel nuage
+                    if ((((Vehicule) piece).getState()) && !(destination instanceof Glace)) {
+                        return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+                    
+                    //si la destination est un nuage de même type que le véhicule :
+                    } else if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
+                        if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
                             ((Vehicule) piece).captureNuage();
                             //mise à jour des scores:
                             if (currentPlayer == joueur1) {
@@ -388,29 +404,31 @@ public class Plateau2 {
                             System.out.println("Déplacement terrestre.");
                             System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
                             System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
+                            
+                            return true;
+                    
+                    //Collision avec un nuage (de type différent) ou de la glace :
+                    } else { 
+                        System.out.println("Le véhicule a été détruit dans la collision !");
+                        // Supprimer le véhicule du plateau
+                        board[sourceY][sourceX] = null;
+                        return true; //pour éviter que le joueur joue deux fois
+                    }
+                }
+                
+                //Si la destination est vide, on peut déplacer le véhicule (en fonction de son état)
+                } if (destination == null) {
+                        if (!((Vehicule) piece).getState()) {
+                            System.out.println("Déplacement terrestre.");
                             return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
-                        
-                        //Collision avec un nuage (de type différent) ou de la glace :
-                        } else { 
-                            System.out.println("Le véhicule a été détruit dans la collision !");
-                            // Supprimer le véhicule du plateau
-                            board[sourceY][sourceX] = null;
+                        } if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
+                            System.out.println("Déplacement aérien.");
+                            return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+                        } else {
+                            System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
                             return false;
                         }
                     }
-                }
-                if (destination == null) {
-                    if (!((Vehicule) piece).getState()) {
-                        System.out.println("Déplacement terrestre.");
-                        return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
-                    } if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
-                        System.out.println("Déplacement aérien.");
-                        return piece.deplacementAerien(sourceX, sourceY, destX, destY);
-                    } else {
-                        System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
-                        return false;
-                    }
-                }
             //à implémenter !!! comment bouger les nuages ?
             } else if (piece instanceof Nuage) {
                 return false;
@@ -422,12 +440,11 @@ public class Plateau2 {
         // Méthode pour vérifier si la destination est valide
         private static boolean isValidDestination(int destX, int destY) {
             if (destX < 0 || destX >= board.length || destY < 0 || destY >= board[0].length) {
-                System.out.println("La destination est en dehors du plateau.");
+                System.out.println("La destination est en dehors du plateau."); //bon le problème c'est que le message s'affiche lors des mouvements des nuages
                 return false;
             }
             return true;
         }
-    
 
 
     //mettre cette méthode plutot dans la classe Vehicule.java et nuage.java

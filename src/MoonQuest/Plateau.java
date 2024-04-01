@@ -38,7 +38,12 @@ public class Plateau {
         
         int count = 1;
         for (int i = 0; i < 16; i++) {
-            System.out.print(count + " ");
+            if (i < 9) {
+                System.out.print(count + " ");
+            }
+            else {
+                System.out.print(count); //
+            }
             System.out.print("|  ");
             
             for (int j = 0; j < 16; j++) {
@@ -147,9 +152,9 @@ public class Plateau {
             if (board[y][x] == null) {
                 // Ajouter un nuage de méthane si le nombre de nuages ajoutés est inférieur à 15
                 if (cloudsAdded < 15) {
-                    setPiece(x, y, new Nuage(x, y, "N", "Methane", Couleurs.YELLOW));
+                    setPiece(x, y, new Nuage(x, y, "NM", "Methane", Couleurs.YELLOW));
                 } else { // Sinon, ajouter un nuage d'eau
-                    setPiece(x, y, new Nuage(x, y, "N", "Eau", Couleurs.BLUE));
+                    setPiece(x, y, new Nuage(x, y, "NE", "Eau", Couleurs.BLUE));
                 }
                 cloudsAdded++;
             }
