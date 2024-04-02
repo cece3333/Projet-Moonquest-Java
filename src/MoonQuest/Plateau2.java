@@ -473,11 +473,29 @@ public class Plateau2 {
         }
     }
 
-    static void saveGame() {
+    public static void saveGame() {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("game.ser"))) {
             outputStream.writeObject(board);
             outputStream.writeObject(joueur2);
             outputStream.writeObject(joueur1);
+            outputStream.writeInt(scoreJoueur1);
+            outputStream.writeInt(scoreJoueur2);
+            
+            //Sérialiser les scores des véhicules pour le joueur 1
+            for (Piece piece : joueur1) {
+                if (piece instanceof Vehicule) {
+                    int scoreVehicule = ((Vehicule) piece).getNuagesCaptures();
+                    outputStream.writeInt(scoreVehicule);
+                }
+            }
+            
+            //Sérialiser les scores des véhicules pour le joueur 2
+            for (Piece piece : joueur2) {
+                if (piece instanceof Vehicule) {
+                    int scoreVehicule = ((Vehicule) piece).getNuagesCaptures();
+                    outputStream.writeInt(scoreVehicule);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
