@@ -16,25 +16,35 @@ public class Plateau2 {
 
     public static Piece board[][] = new Piece[16][16];
 
-    static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner = new Scanner(System.in);
 
     //on déclare turn comme une variable de cette classe :
-    static int turn = 1;
-    static int scoreJoueur1 = 0;
-    static int scoreJoueur2 = 0;
+    public static int turn = 1;
+    public static int scoreJoueur1 = 0;
+    public static int scoreJoueur2 = 0;
 
     public static void main(String[] args) {
-        // Démarrer le jeu et initialiser le plateau
-        startGame();
-
+        // Demander au joueur s'il veut commencer une nouvelle partie ou reprendre la partie précédente
+        System.out.println("Voulez-vous commencer une nouvelle partie (N) ou reprendre la partie précédente (R) ?");
+        String startChoice = scanner.next();
+    
+        // Si le joueur choisit de reprendre la partie précédente
+        if (startChoice.equalsIgnoreCase("R")) {
+            // Charger la partie précédente depuis le fichier game.ser
+            loadGame();
+        } else {
+            // Si le joueur choisit de commencer une nouvelle partie, démarrer le jeu et initialiser le plateau
+            startGame();
+        }
+    
         // Ajouter des nuages aléatoirement sur le plateau
         addClouds();
-
+    
         // Commencer la partie
         playGame();
     }
-
-    static void printBoard() {
+    
+    public static void printBoard() {
         System.out.println();
         System.out.println("      A    B    C    D    E    F    G    H    I    J    K    L    M    N    O    P");
         System.out.println("   ----------------------------------------------------------------------------------");
@@ -75,7 +85,7 @@ public class Plateau2 {
     
     
     // glace (row 1)
-    static void startGame() {
+    public static void startGame() {
         System.out.println("Ajout des pièces sur le plateau :");
         
         // Initialisation des pièces du joueur 1
@@ -166,7 +176,7 @@ public class Plateau2 {
     }
     
     //mouvements des nuages :
-    static void moveClouds() {
+    public static void moveClouds() {
         Random random = new Random();
     
         for (int y = 0; y < board.length; y++) {
@@ -215,7 +225,7 @@ public class Plateau2 {
     
     
 
-    static void playGame() {
+    public static void playGame() {
         // Variable pour garder une trace du tour actuel
 
         // Boucle principale du jeu
@@ -225,15 +235,6 @@ public class Plateau2 {
 
             // Afficher le numéro de tour
             System.out.println("Tour " + turn);
-            
-            if (turn == 1) {
-                System.out.println("Voulez-vous commencer une nouvelle partie (N) ou reprendre la partie précédente (R) ?");
-                String startChoice = scanner.next();
-                if (startChoice.equalsIgnoreCase("R")) {
-                    // Charger la partie précédente depuis le fichier game.ser
-                    loadGame();
-                }
-            }
 
          // Déterminer quel joueur doit jouer en fonction du numéro de tour
             if (turn % 2 == 1) { // Tour impair : Joueur 1
@@ -248,7 +249,7 @@ public class Plateau2 {
 
             // Récupérer les coordonnées de la pièce à déplacer
             System.out.print("Entrez les coordonnées de la pièce à déplacer: (ou q pour quitter) : ");
-            String source = scanner.next();
+            String source = scanner.next().toUpperCase();
 
             // Vérifier si le joueur veut quitter la partie
             if (source.equalsIgnoreCase("q")) {
@@ -273,7 +274,7 @@ public class Plateau2 {
 
             // Récupérer les coordonnées de la destination
             System.out.print("Entrez les coordonnées de la destination (ex: B4): ");
-            String destination = scanner.next();
+            String destination = scanner.next().toUpperCase();
             int destX = destination.charAt(0) - 'A';
             int destY = Integer.parseInt(destination.substring(1)) - 1;
             
@@ -304,20 +305,39 @@ public class Plateau2 {
         scanner.close();
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") //supprime l'averstissement de type non vérifié
     public static void loadGame() {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("game.ser"))) {
             // Désérialiser les objets
             board = (Piece[][]) inputStream.readObject();
             joueur2 = (ArrayList<Piece>) inputStream.readObject();
             joueur1 = (ArrayList<Piece>) inputStream.readObject();
+            scoreJoueur1 = inputStream.readInt(); // Charger le score du joueur 1
+            scoreJoueur2 = inputStream.readInt(); // Charger le score du joueur 2
+    
+            // Charger les scores des véhicules pour le joueur 1
+            for (Piece piece : joueur1) {
+                if (piece instanceof Vehicule) {
+                    int scoreVehicule = inputStream.readInt();
+                    ((Vehicule) piece).setNuagesCaptures(scoreVehicule);
+                }
+            }
+    
+            // Charger les scores des véhicules pour le joueur 2
+            for (Piece piece : joueur2) {
+                if (piece instanceof Vehicule) {
+                    int scoreVehicule = inputStream.readInt();
+                    ((Vehicule) piece).setNuagesCaptures(scoreVehicule);
+                }
+            }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
+    
 
     //méthodes à ajouter plus tard dans Game.java
-    private static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
+    public static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
 
         //Vérifier s'il n'y a plus de nuages à capturer
         boolean noMoreClouds = true;
@@ -332,7 +352,7 @@ public class Plateau2 {
                 break;
             }
         }
-        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer)
+        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer) //mettre ça plus tard dans le main
         if ((scoreJoueur1 >= 16 || scoreJoueur2 >= 16) || (noMoreClouds)) {
             System.out.println("La partie est terminée.");
             if (scoreJoueur1 > scoreJoueur2) {
@@ -429,7 +449,7 @@ public class Plateau2 {
         }
     
         // Méthode pour vérifier si la destination est valide
-        private static boolean isValidDestination(int destX, int destY) {
+        public static boolean isValidDestination(int destX, int destY) {
             if (destX < 0 || destX >= board.length || destY < 0 || destY >= board[0].length) {
                 System.out.println("La destination est en dehors du plateau."); //bon le problème c'est que le message s'affiche lors des mouvements des nuages
                 return false;
@@ -439,7 +459,7 @@ public class Plateau2 {
 
 
     //mettre cette méthode plutot dans la classe Vehicule.java et nuage.java
-    static boolean isGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
+    public static boolean isGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
         // Vérifier s'il y a une glace entre la source et la destination
         int deltaX = destX - sourceX;
         int deltaY = destY - sourceY;
@@ -460,7 +480,7 @@ public class Plateau2 {
     }
 
     //methodes de sauvegardes des mouvements :
-    static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2) {
+    public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2) {
         try (FileWriter writer = new FileWriter("moves.txt", true)) {
             String symbole = "x";
             Piece destinationPiece = getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
@@ -481,7 +501,7 @@ public class Plateau2 {
             outputStream.writeInt(scoreJoueur1);
             outputStream.writeInt(scoreJoueur2);
             
-            //Sérialiser les scores des véhicules pour le joueur 1
+            // Sérialiser les scores des véhicules pour le joueur 1
             for (Piece piece : joueur1) {
                 if (piece instanceof Vehicule) {
                     int scoreVehicule = ((Vehicule) piece).getNuagesCaptures();
@@ -489,7 +509,7 @@ public class Plateau2 {
                 }
             }
             
-            //Sérialiser les scores des véhicules pour le joueur 2
+            // Sérialiser les scores des véhicules pour le joueur 2
             for (Piece piece : joueur2) {
                 if (piece instanceof Vehicule) {
                     int scoreVehicule = ((Vehicule) piece).getNuagesCaptures();
@@ -500,9 +520,10 @@ public class Plateau2 {
             e.printStackTrace();
         }
     }
+    
 
     //methodes des pièces du plateau : 
-    static void movePiece(int sourceX, int sourceY, int destX, int destY) {
+    public static void movePiece(int sourceX, int sourceY, int destX, int destY) {
         // Récupérer la pièce à déplacer
         Piece piece = board[sourceY][sourceX];
         // Déplacer la pièce vers la destination

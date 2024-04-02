@@ -1,18 +1,15 @@
 Notes : 
 
-Fonction isValidMove : fonctionne bien (pas encore créée pour les nuages)
-Déplacement aérien quand véhicule activé ; OK
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
-- permettre la sauvegarde à récupérer en début de partie
-- mouvements enregistrés dans un fichier.txt mais 
+- mouvements enregistrés dans un fichier.txt mais il faut pouvoir les afficher à la fin de la partie (gameOver, afficher les données de moves.txt)
+- vérifier que le tour est bien enregistré dans la sauvegarde de la partie (je crois pas mais facile à ajouter)
 
 
 
 
 À faire: (cf. manque dans les conditions)
-- permettre d'entrer minuscule ou majuscule pour éviter que le jeu quitte à cause d'une erreur
 - Créer un menu avec les règles du jeu 
 - scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes
 - faire un count des nuages restants sur le plateau (condition de fin)
@@ -27,15 +24,17 @@ Peut-être rajouter une entrée permettant d'afficher le score du véhicule sél
 
 --> Est-ce que je dois empêcher les glaces d'écraser les véhicules de leur propre type ?
 
-DONE : 
+
+
+Problèmes résolus : 
 - Fonction isValidMove : fonctionne bien 
 - Déplacement aérien quand véhicule activé ; OK
 - Il faut pouvoir modifier la couleur du véhicule lorsqu'il est activé (normalement devient blanc) : DONE
 - Introduction des tours par joueurs 
 - un score qui s'update en fonction des nuages capturés
-
-Problèmes résolus : 
 --> après une collision qui détruit le véhicule, le tour ne passe pas (alors qu'il devrait) = (false mal placé dans isValidMove)
 --> nuage quand même capturé alors que le mouvement n'était pas permis (vérification du mouvement avant la capture des nuages)
 --> is glaceinbetween ne fonctionne pas... (else if plutôt que if? + le mouvement était permis dans le cas où l'instance n'était pas un véhicule mais )
 - les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
+- permettre la sauvegarde à récupérer en début de partie (j'avais placé la sauvegarde de partie dans playgame au lieu de le mettre dans le main !!!!)
+- permettre d'entrer minuscule ou majuscule pour éviter que le jeu quitte à cause d'une erreur

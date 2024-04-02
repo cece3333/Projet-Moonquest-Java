@@ -37,6 +37,10 @@ public class Vehicule extends Piece {
     public int getNuagesCaptures() {
         return nuagesCaptures;
     }
+    
+    public void setNuagesCaptures(int nuagesCaptures) {
+        this.nuagesCaptures = nuagesCaptures;
+    }
 
     //si le score de nuages capturés est égal à 3, le véhicule est activé (estActif = true) :
         // Méthode pour capturer un nuage

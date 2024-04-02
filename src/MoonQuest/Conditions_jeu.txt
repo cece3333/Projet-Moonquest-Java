@@ -23,7 +23,7 @@ Fait :
 • Une Glace qui se déplace élimine toute les pièces situés sur la case où elle arrive.
 
 Manque : 
-- Un Nuage qui se déplace élimine toute les pièces situés sur la case où elle arrive
+- Un Nuage qui se déplace élimine toute les pièces situés sur la case où elle arrive (demander au prof, toutes les autres pièces ???)
 ---------------------------------------------------------------------------------------------------------------------------------
 Déplacements : 
 
@@ -45,7 +45,7 @@ Fait :
 Établir un score final : Vous devez augmenter votre score en capturant le maximum de Nuages. Chaque nuage capturé rapporte 1 point. Le score comtpe le nombre de Nuage que détient un Joueur : 
 
 Manque : 
--Si un Véhicule chargé de Nuages est détruit, les points sont décomptés du score.
+- Si un Véhicule chargé de Nuages est détruit, les points sont décomptés du score.
 
 ------------------------------------------------------------------------------------------------------------------------------
 
@@ -56,16 +56,18 @@ Fait :
 - Vous disposez de 8 Véhicules par joueur, 4 Véhicules de chaque type. Vous disposez de 24 Glaces par joueur, ils délimitent votre Camp.
 - Au début du jeu, les Glaces et les Véhicules de chaque joueur sont placés comme sur la figure ci-dessous,
 - ensuite les Nuages sont placés aléatoirement entre les lignes E et L de la grille
-
-Manque : 
 - Ils ont un chance sur 5 de bouger aléatoirement à chaque tour du jeu.
 - A chaque tour, après que les Nuages aient bougé, les joueurs peuvent à tour de rôle déplacer une pièce qui leur appartient.
+
+Manque : 
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 
 Fin de partie : 
 
 Fait :
+pas encore testé
 
 
 Manque :
