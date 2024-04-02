@@ -1,4 +1,6 @@
-public abstract class Piece {
+import java.io.Serializable;
+
+public abstract class Piece implements Serializable{
     protected int x; // Position x sur le Plateau
     protected int y; // Position y sur le Plateau
     protected String icon; // Icône de la pièce

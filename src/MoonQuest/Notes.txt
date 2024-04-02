@@ -5,6 +5,8 @@ Déplacement aérien quand véhicule activé ; OK
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
+- permettre la sauvegarde à récupérer en début de partie
+- mouvements enregistrés dans un fichier.txt mais 
 
 
 

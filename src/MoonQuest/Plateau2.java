@@ -2,9 +2,11 @@
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class Plateau2 {
@@ -223,7 +225,15 @@ public class Plateau2 {
 
             // Afficher le numéro de tour
             System.out.println("Tour " + turn);
-
+            
+            if (turn == 1) {
+                System.out.println("Voulez-vous commencer une nouvelle partie (N) ou reprendre la partie précédente (R) ?");
+                String startChoice = scanner.next();
+                if (startChoice.equalsIgnoreCase("R")) {
+                    // Charger la partie précédente depuis le fichier game.ser
+                    loadGame();
+                }
+            }
 
          // Déterminer quel joueur doit jouer en fonction du numéro de tour
             if (turn % 2 == 1) { // Tour impair : Joueur 1
@@ -239,15 +249,6 @@ public class Plateau2 {
             // Récupérer les coordonnées de la pièce à déplacer
             System.out.print("Entrez les coordonnées de la pièce à déplacer: (ou q pour quitter) : ");
             String source = scanner.next();
-            int sourceX = source.charAt(0) - 'A';
-            int sourceY = Integer.parseInt(source.substring(1)) - 1;
-
-            // Vérifier si la pièce sélectionnée appartient au joueur actuel
-            Piece selectedPiece = board[sourceY][sourceX];
-            if (selectedPiece == null || !currentPlayer.contains(selectedPiece)) {
-                System.out.println("La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez.");
-                continue; // Revenir au début de la boucle pour redemander une pièce valide
-            }
 
             // Vérifier si le joueur veut quitter la partie
             if (source.equalsIgnoreCase("q")) {
@@ -258,6 +259,16 @@ public class Plateau2 {
                     saveGame();
                 }
                 break; // Quitter le jeu
+            }
+
+            int sourceX = source.charAt(0) - 'A';
+            int sourceY = Integer.parseInt(source.substring(1)) - 1;
+
+            // Vérifier si la pièce sélectionnée appartient au joueur actuel
+            Piece selectedPiece = board[sourceY][sourceX];
+            if (selectedPiece == null || !currentPlayer.contains(selectedPiece)) {
+                System.out.println("La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez.");
+                continue; // Revenir au début de la boucle pour redemander une pièce valide
             }
 
             // Récupérer les coordonnées de la destination
@@ -293,6 +304,17 @@ public class Plateau2 {
         scanner.close();
     }
 
+    @SuppressWarnings("unchecked")
+    public static void loadGame() {
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("game.ser"))) {
+            // Désérialiser les objets
+            board = (Piece[][]) inputStream.readObject();
+            joueur2 = (ArrayList<Piece>) inputStream.readObject();
+            joueur1 = (ArrayList<Piece>) inputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     //méthodes à ajouter plus tard dans Game.java
     private static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
@@ -439,11 +461,11 @@ public class Plateau2 {
 
     //methodes de sauvegardes des mouvements :
     static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2) {
-        try (FileWriter writer = new FileWriter("moves.ser", true)) {
-            String symbole = ".";
+        try (FileWriter writer = new FileWriter("moves.txt", true)) {
+            String symbole = "x";
             Piece destinationPiece = getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
             if (destinationPiece != null) {
-                symbole = "x";
+                symbole = ".";
             }
             writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
         } catch (IOException e) {
