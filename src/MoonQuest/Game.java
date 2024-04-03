@@ -1,17 +1,8 @@
 import java.util.Scanner;
 
-public class Jeu {
+
+public class Game {
     private static final Scanner scanner = new Scanner(System.in);
-
-    public static void main(String[] args) {
-        Plateau2.startGame(); // Initialiser le jeu
-
-        // Ajouter des nuages aléatoirement sur le Plateau2
-        Plateau2.addClouds();
-
-        // Commencer la partie
-        playGame();
-    }
 
     public static void playGame() {
         // Boucle principale du jeu
@@ -43,7 +34,7 @@ public class Jeu {
                 System.out.println("Voulez-vous sauvegarder avant de quitter ? (O/N)");
                 String saveInput = scanner.next();
                 if (saveInput.equalsIgnoreCase("O")) {
-                    Plateau2.saveGame();
+                    Save.saveGame(Plateau2.board, Plateau2.joueur2, Plateau2.joueur1, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2, Plateau2.turn);
                 }
                 break; // Quitter le jeu
             }
@@ -64,12 +55,12 @@ public class Jeu {
             int destX = destination.charAt(0) - 'A';
             int destY = Integer.parseInt(destination.substring(1)) - 1;
 
-            if (Plateau2.isValidMove(sourceX, sourceY, destX, destY)) {
+            if (Plateau2.isValidMove(sourceX, sourceY, destX, destY, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2)) {
                 // Effectuer le déplacement de la pièce
                 Plateau2.movePiece(sourceX, sourceY, destX, destY);
 
                 // Sauvegarder le coup joué dans le fichier sérialisable
-                Plateau2.saveMoveToFile(source, destination, Plateau2.turn, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2);
+                Save.saveMoveToFile(source, destination, Plateau2.turn, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2);
 
                 // Incrémenter le numéro de tour
                 Plateau2.turn++;
@@ -88,3 +79,7 @@ public class Jeu {
         scanner.close(); // Fermer le scanner après utilisation
     }
 }
+
+
+    //méthodes à ajouter plus tard dans Game.java
+    //les 3 modes des jeux à ajouter ici 

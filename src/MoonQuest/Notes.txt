@@ -4,16 +4,18 @@ Notes :
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
 - mouvements enregistrés dans un fichier.txt mais il faut pouvoir les afficher à la fin de la partie (gameOver, afficher les données de moves.txt)
-- vérifier que le tour est bien enregistré dans la sauvegarde de la partie (je crois pas mais facile à ajouter)
+- vérifier que le tour n'est pas enregistré dans la sauvegarde de la partie (je crois pas mais facile à ajouter)
+- scinder isGameOver (vérif des nuages plateau, et le reste dans Game plutot)
+
 
 
 
 
 À faire: (cf. manque dans les conditions)
 - Créer un menu avec les règles du jeu 
-- scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes
-- faire un count des nuages restants sur le plateau (condition de fin)
+- faire un count des nuages restants sur le plateau (condition de fin) ; quasiment fait 
 - bien évidemment créer les packages
+- demander par rapport aux noms de fonctions/classes s'il faut français ou anglais exclusif
 
 
 
@@ -26,7 +28,7 @@ Peut-être rajouter une entrée permettant d'afficher le score du véhicule sél
 
 
 
-Problèmes résolus : 
+Problèmes résolus / Job done : 
 - Fonction isValidMove : fonctionne bien 
 - Déplacement aérien quand véhicule activé ; OK
 - Il faut pouvoir modifier la couleur du véhicule lorsqu'il est activé (normalement devient blanc) : DONE
@@ -38,3 +40,5 @@ Problèmes résolus :
 - les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
 - permettre la sauvegarde à récupérer en début de partie (j'avais placé la sauvegarde de partie dans playgame au lieu de le mettre dans le main !!!!)
 - permettre d'entrer minuscule ou majuscule pour éviter que le jeu quitte à cause d'une erreur
+- 30 autres nuages sont ajoutés même après la reprise de la partie (enlevé addClouds après avoir load une partie)
+- scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes

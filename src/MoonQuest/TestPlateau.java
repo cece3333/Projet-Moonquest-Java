@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-public class Plateau {
+public class TestPlateau {
     public static ArrayList<Piece> joueur2 = new ArrayList<Piece>();
     public static ArrayList<Piece> joueur1 = new ArrayList<Piece>();
     public static ArrayList<Piece> currentPlayer;
@@ -23,7 +23,7 @@ public class Plateau {
 
     public static void main(String[] args) {
         // Démarrer le jeu et initialiser le plateau
-        startGame();
+        initializeBoard();
 
         // Ajouter des nuages aléatoirement sur le plateau
         addClouds();
@@ -71,7 +71,7 @@ public class Plateau {
     
     
     // glace (row 1)
-    static void startGame() {
+    static void initializeBoard() {
         System.out.println("Ajout des pièces sur le plateau :");
         
         // Initialisation des pièces du joueur 1
@@ -136,6 +136,7 @@ public class Plateau {
         }
     }
     
+    /* 
     // methodes des nuages : 
     public static void addClouds() {
         Random random = new Random();
@@ -207,7 +208,7 @@ public class Plateau {
             }
         }
     }
-    
+*/
     
     
 
