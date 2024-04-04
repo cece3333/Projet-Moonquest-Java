@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
@@ -8,8 +9,6 @@ public class Game {
     private static int destY;
 
     public static void playGame(boolean isSavedGame) {
-
-
         // Boucle principale du jeu
         while (true) {
             // Afficher le Plateau2
@@ -31,7 +30,7 @@ public class Game {
             }
 
             // Récupérer les coordonnées de la pièce à déplacer
-            System.out.print("Entrez les coordonnées de la pièce à déplacer: (ou q pour quitter) : ");
+            System.out.print("Entrez les coordonnées de la pièce à déplacer (ou q pour quitter) : \n");
             String source = scanner.next().toUpperCase();
 
             // Vérifier si le joueur veut quitter la partie
@@ -94,5 +93,39 @@ public class Game {
             Plateau2.moveClouds(); // Déplacer les nuages 
         }
         scanner.close(); // Fermer le scanner après utilisation
+    }
+
+    public static int selectGameMode() {
+        System.out.println("Veuillez sélectionner le mode de jeu :");
+        System.out.println("1. Joueur contre Joueur");
+        System.out.println("2. Joueur contre IA");
+        System.out.println("3. IA contre IA");
+
+        int mode = scanner.nextInt();
+        scanner.nextLine(); // Pour consommer la nouvelle ligne
+
+        return mode;
+    }
+
+    public static void generateAIMove() {
+        Random random = new Random();
+        int sourceX, sourceY, destX, destY;
+
+        // Générer des coordonnées de pièce source et de destination aléatoires
+        sourceX = random.nextInt(Plateau2.BOARD_SIZE);
+        sourceY = random.nextInt(Plateau2.BOARD_SIZE);
+        destX = random.nextInt(Plateau2.BOARD_SIZE);
+        destY = random.nextInt(Plateau2.BOARD_SIZE);
+
+        // Vérifier si le mouvement généré est valide
+        while (!Plateau2.isValidMove(sourceX, sourceY, destX, destY, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2)) {
+            sourceX = random.nextInt(Plateau2.BOARD_SIZE);
+            sourceY = random.nextInt(Plateau2.BOARD_SIZE);
+            destX = random.nextInt(Plateau2.BOARD_SIZE);
+            destY = random.nextInt(Plateau2.BOARD_SIZE);
+        }
+
+        // Effectuer le mouvement sur le plateau
+        Plateau2.movePiece(sourceX, sourceY, destX, destY);
     }
 }

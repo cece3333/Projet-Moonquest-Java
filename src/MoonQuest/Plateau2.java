@@ -8,6 +8,7 @@ public class Plateau2 {
     public static ArrayList<Piece> currentPlayer;
 
     public static Piece board[][] = new Piece[16][16];
+    public static int BOARD_SIZE = Plateau2.board.length;
 
     public static Scanner scanner = new Scanner(System.in);
 
@@ -206,14 +207,17 @@ public class Plateau2 {
             return false;
         }
         
-        //Si la pièce est une glace (déplacement où elle veut sauf sur une autre glace)
-        if (piece instanceof Glace) {
-            if (destination != null) {
-                System.out.println("La glace a écrasé la pièce" + destination.getIcon());
+        //Si la pièce est une glace (déplacement où elle veut sauf sur les propres pièces du joueur) :
+        if ((piece instanceof Glace)) {
+            if ((destination != null) && (!(currentPlayer.contains(destination)))) {
+                System.out.println("La glace a écrasé la pièce " + destination.getIcon());
                 Plateau2.board[destY][destX] = null;
+            } if (currentPlayer.contains(destination)) { 
+                System.out.println("La glace ne peut pas écraser ses propres pièces.");
+                return false;
+            } else {
+                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
             }
-            
-            return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
         
         //Vérification lorsqu'on déplace un véhicule :
         } else if (piece instanceof Vehicule) {
@@ -313,6 +317,7 @@ public class Plateau2 {
             for (Piece piece : row) {
                 if (piece instanceof Nuage) {
                     noMoreClouds = false;
+                    System.out.println("TEST isGameOver : Il reste des nuages à capturer.");
                     break;
                 }
             }
@@ -331,7 +336,7 @@ public class Plateau2 {
                 System.out.println("Match nul !");
             }
             return true;
-        }
+        } System.out.println("TEST isGameOver : La partie continue.");
     
         return false;
     }
