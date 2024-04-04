@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 //petite classe, voir si je la fusionne pas avec Game.java
 
@@ -40,16 +42,16 @@ public class Save {
         }
     }
     
-    @SuppressWarnings("unchecked") //supprime l'averstissement de type non vérifié
-    public static void loadGame(int turn, int scoreJoueur1, int scoreJoueur2, ArrayList<Piece> joueur1, ArrayList<Piece> joueur2) {
+    @SuppressWarnings("unchecked")
+    public static void loadGame(ArrayList<Piece> joueur1, ArrayList<Piece> joueur2) {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("game.ser"))) {
             // Désérialiser les objets
             Plateau2.board = (Piece[][]) inputStream.readObject();
             Plateau2.joueur2 = (ArrayList<Piece>) inputStream.readObject();
             Plateau2.joueur1 = (ArrayList<Piece>) inputStream.readObject();
-            scoreJoueur1 = inputStream.readInt(); // Charger le score du joueur 1
-            scoreJoueur2 = inputStream.readInt(); // Charger le score du joueur 2
-            turn = inputStream.readInt(); // Charger le tour actuel
+            Plateau2.scoreJoueur1 = inputStream.readInt(); // Charger le score du joueur 1
+            Plateau2.scoreJoueur2 = inputStream.readInt(); // Charger le score du joueur 2
+            Plateau2.turn = inputStream.readInt(); // Charger le tour actuel
     
             // Charger les scores des véhicules pour le joueur 1
             for (Piece piece : joueur1) {
@@ -70,16 +72,29 @@ public class Save {
             e.printStackTrace();
         }
     }
+    
 
     //methodes de sauvegardes des mouvements :
-    public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2) {
-        try (FileWriter writer = new FileWriter("moves.txt", true)) {
-            String symbole = "x";
+    public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2, String fichier_txt) {
+        try (FileWriter writer = new FileWriter(fichier_txt, true)) {
             Piece destinationPiece = Plateau2.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
+            String symbole = "x";
             if (destinationPiece != null) {
                 symbole = ".";
             }
             writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void readMovesFile(String fichier_txt) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(fichier_txt))) {
+            String line;
+            System.out.println("Mouvements effectués lors de la partie :");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

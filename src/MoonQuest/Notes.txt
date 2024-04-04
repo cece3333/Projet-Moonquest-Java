@@ -3,9 +3,8 @@ Notes :
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
-- mouvements enregistrés dans un fichier.txt mais il faut pouvoir les afficher à la fin de la partie (gameOver, afficher les données de moves.txt)
-- vérifier que le tour n'est pas enregistré dans la sauvegarde de la partie (je crois pas mais facile à ajouter)
 - scinder isGameOver (vérif des nuages plateau, et le reste dans Game plutot)
+- réécrire (overwrite) sur le fichier new_moves.txt à chaque nouvelle partie (pas pour saved_moves.txt) (peut -etre pas faire de fichier txt dcp)
 
 
 
@@ -34,11 +33,17 @@ Problèmes résolus / Job done :
 - Il faut pouvoir modifier la couleur du véhicule lorsqu'il est activé (normalement devient blanc) : DONE
 - Introduction des tours par joueurs 
 - un score qui s'update en fonction des nuages capturés
---> après une collision qui détruit le véhicule, le tour ne passe pas (alors qu'il devrait) = (false mal placé dans isValidMove)
---> nuage quand même capturé alors que le mouvement n'était pas permis (vérification du mouvement avant la capture des nuages)
---> is glaceinbetween ne fonctionne pas... (else if plutôt que if? + le mouvement était permis dans le cas où l'instance n'était pas un véhicule mais )
+- après une collision qui détruit le véhicule, le tour ne passe pas (alors qu'il devrait) = (false mal placé dans isValidMove)
+- nuage quand même capturé alors que le mouvement n'était pas permis (vérification du mouvement avant la capture des nuages)
+- is glaceinbetween ne fonctionne pas... (else if plutôt que if? + le mouvement était permis dans le cas où l'instance n'était pas un véhicule mais )
 - les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
 - permettre la sauvegarde à récupérer en début de partie (j'avais placé la sauvegarde de partie dans playgame au lieu de le mettre dans le main !!!!)
 - permettre d'entrer minuscule ou majuscule pour éviter que le jeu quitte à cause d'une erreur
 - 30 autres nuages sont ajoutés même après la reprise de la partie (enlevé addClouds après avoir load une partie)
 - scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes
+- vérifier que le tour n'est pas enregistré dans la sauvegarde de la partie (je crois pas mais facile à ajouter)
+- mouvements enregistrés dans un fichier.txt mais il faut pouvoir les afficher à la fin de la partie (gameOver ou sauvegarder : afficher les données de moves.txt)
+- création de deux fichiers pour enregistrer les mouvements en fonction de s'il s'agit d'une partie sauvegardée ou pas 
+- problème lors de l'affichage des mouvements (pas de "x") ; en fait la fonciton prend "destination" après que la pièce ait bougé donc la case n'est forcément pas vide !! (il fallait juste le déplacer avant que le mouvement ait lieu)
+- prblème collision nuage diff / véhicule --> réglé mais supprime également la cible (ne devrait pas, donc le mouvement devrait être interdit d'abord ==> à cause de return false).
+- les glaces ne s'écrasent pas entre elles (j'avais empêché que ça arrive)

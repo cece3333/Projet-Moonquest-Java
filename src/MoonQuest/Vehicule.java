@@ -55,7 +55,6 @@ public class Vehicule extends Piece {
             }
         }
         
-    
     @Override
     public boolean deplacementTerrestre(int sourceX, int sourceY, int destX, int destY) {
         // Vérifier si la destination est adjacente à la source (verticalement ou horizontalement) ; return true si oui

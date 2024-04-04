@@ -207,7 +207,12 @@ public class Plateau2 {
         }
         
         //Si la pièce est une glace (déplacement où elle veut sauf sur une autre glace)
-        if (piece instanceof Glace && !(destination instanceof Glace)) {
+        if (piece instanceof Glace) {
+            if (destination != null) {
+                System.out.println("La glace a écrasé la pièce" + destination.getIcon());
+                Plateau2.board[destY][destX] = null;
+            }
+            
             return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
         
         //Vérification lorsqu'on déplace un véhicule :
@@ -231,26 +236,21 @@ public class Plateau2 {
                     if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
                         ((Vehicule) piece).captureNuage();
                         // Mise à jour des scores:
-                        if (Plateau2.currentPlayer == Plateau2.joueur1) {
-                            scoreJoueur1++;
+                        if (currentPlayer == joueur1) {
+                            Plateau2.scoreJoueur1++; //important de laisser pour bien actualiser les scores de Plateau2
                         } else {
-                            scoreJoueur2++;
+                            Plateau2.scoreJoueur2++;
                         }
-                        System.out.println("Déplacement terrestre.");
-                        System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
-                        System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
-                        
-                        return true;
-                
-                //Collision avec un nuage (de type différent) ou de la glace :
-                } else { 
-                    System.out.println("Le véhicule a été détruit dans la collision !");
-                    // Supprimer le véhicule du plateau
-                    Plateau2.board[sourceY][sourceX] = null;
-                    return true; //pour éviter que le joueur joue deux fois
+                        System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType() +"\n" + "Nuages capturés : " + ((Vehicule) piece).getNuagesCaptures());       
+                        return true;           
                 }
+            } else { //Collision avec un nuage (de type différent) ou de la glace :
+                System.out.println("Le véhicule a été détruit dans la collision !");
+                // Supprimer le véhicule du plateau
+                board[sourceY][sourceX] = null;
+                turn++;
+                return false; //pour éviter que le joueur joue deux fois
             }
-            
             //Si la destination est vide, on peut déplacer le véhicule (en fonction de son état)
             } if (destination == null) {
                     if (!((Vehicule) piece).getState()) {
@@ -268,9 +268,9 @@ public class Plateau2 {
         } else if (piece instanceof Nuage) {
             return false;
         }
-
         return false;
     }
+
 
 
     // Méthode pour vérifier si la destination est valide

@@ -23,7 +23,7 @@ Fait :
 • Une Glace qui se déplace élimine toute les pièces situés sur la case où elle arrive.
 
 Manque : 
-- Un Nuage qui se déplace élimine toute les pièces situés sur la case où elle arrive (demander au prof, toutes les autres pièces ???)
+- Un Nuage qui se déplace élimine toute les pièces situés sur la case où elle arrive
 ---------------------------------------------------------------------------------------------------------------------------------
 Déplacements : 
 
