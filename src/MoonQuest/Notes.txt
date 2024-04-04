@@ -3,18 +3,9 @@ Notes :
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
-- scinder isGameOver (vérif des nuages plateau, et le reste dans Game plutot)
 - réécrire (overwrite) sur le fichier new_moves.txt à chaque nouvelle partie (pas pour saved_moves.txt) (peut -etre pas faire de fichier txt dcp)
 
 
-Mode AI : 
-Faire en sorte de demander les coordonnées en dehors de playgame (dans main) pour pouvoir les utiliser dans AI (et donc ne pas avoir à les demander à chaque fois)
---> le mode AI générera des coordonnées qui seront traduites en A1, B3 etc. pour le bon affichage des scores.
-
-Comment l'AI se déplace :
-1) GeneraterandomMoves
-2) tant que le mouvement n'est pas valide (isValidMove), on génère un autre mouvement
-3) On permet le mouvement 
 
 
 À faire: (cf. manque dans les conditions)
@@ -54,4 +45,7 @@ Problèmes résolus / Job done :
 - problème lors de l'affichage des mouvements (pas de "x") ; en fait la fonciton prend "destination" après que la pièce ait bougé donc la case n'est forcément pas vide !! (il fallait juste le déplacer avant que le mouvement ait lieu)
 - prblème collision nuage diff / véhicule --> réglé mais supprime également la cible (ne devrait pas, donc le mouvement devrait être interdit d'abord ==> à cause de return false).
 - les glaces ne s'écrasent pas entre elles (j'avais empêché que ça arrive)
-- empêcher la glace d'écraser ses propres pièces 
+- empêcher la glace d'écraser ses propres pièces
+-Mode AI : DONE ==> Faire en sorte de demander les coordonnées en dehors de playgame (dans main) pour pouvoir les utiliser dans AI (et donc ne pas avoir à les demander à chaque fois)
+    --> le mode AI générera des coordonnées qui seront traduites en A1, B3 etc. pour le bon affichage des scores.
+- - gameOver = il reste un nuage sur le plateau (et non pas 0) / ou c'est le dernier mouvement qui ne se fait pas ==> car le plateau n'est pas réaffiché après le dernier mouvement

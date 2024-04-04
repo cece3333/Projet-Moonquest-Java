@@ -179,7 +179,7 @@ public class Plateau2 {
                         }
 
                         // Vérifier si la destination est valide et si la case est libre
-                        if (isValidDestination(destX, destY) && Plateau2.board[destY][destX] == null) { //à changer car les nuages peuvent écraser les véhicules
+                        if (isValidDestination(destX, destY)) { //à changer car les nuages peuvent écraser les véhicules
                             // Vérifier s'il n'y a pas de glace entre la position actuelle et la destination
                             if (!isGlaceBetween(x, y, destX, destY)) {
                                 // Effectuer le déplacement du nuage
@@ -307,39 +307,43 @@ public class Plateau2 {
         return false; // Aucune glace sur le chemin
     }
 
-
-    //changer cette méthode (fragmenter)
     static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
 
-        //Vérifier s'il n'y a plus de nuages à capturer
-        boolean noMoreClouds = true;
+        // Initialiser le compteur de nuages restants
+        int countClouds = 0;
+    
+        // Vérifier s'il n'y a plus de nuages à capturer
         for (Piece[] row : Plateau2.board) {
             for (Piece piece : row) {
                 if (piece instanceof Nuage) {
-                    noMoreClouds = false;
-                    System.out.println("TEST isGameOver : Il reste des nuages à capturer.");
-                    break;
+                    countClouds++;
                 }
             }
-            if (!noMoreClouds) {
-                break;
-            }
         }
-        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer) //mettre ça plus tard dans le main
-        if ((scoreJoueur1 >= 16 || scoreJoueur2 >= 16) || (noMoreClouds)) {
+        System.out.println("Nombre de nuages restants : " + countClouds);
+        if (countClouds < 0) {
+            System.out.println("Il n'y a plus de nuages à capturer.");
+            return true;
+        }
+    
+        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer)
+        if (scoreJoueur1 >= 16 || scoreJoueur2 >= 16 || countClouds == 0) {
             System.out.println("La partie est terminée.");
             if (scoreJoueur1 > scoreJoueur2) {
                 System.out.println("Le joueur 1 (CYAN) a remporté la partie avec " + scoreJoueur1 + " nuages capturés.");
             } else if (scoreJoueur1 < scoreJoueur2) {
                 System.out.println("Le joueur 2 (PURPLE) a remporté la partie avec " + scoreJoueur2 + " nuages capturés.");
-            } else if (((scoreJoueur1 == scoreJoueur2) && (scoreJoueur1 + scoreJoueur2 == 30)) || ((scoreJoueur1 == scoreJoueur2) && (noMoreClouds))){
+            } else if (((scoreJoueur1 == scoreJoueur2) && (scoreJoueur1 + scoreJoueur2 == 30)) || countClouds == 0) {
                 System.out.println("Match nul !");
             }
             return true;
-        } System.out.println("TEST isGameOver : La partie continue.");
+        }
+        System.out.println("La partie continue.");
     
         return false;
     }
+    
+    
 
     //methodes des pièces du plateau : 
     public static void movePiece(int sourceX, int sourceY, int destX, int destY) {

@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
+    public static int sourceX, sourceY, destX, destY;
     //créer ici le menu d'affichage du jeu
 
     public static void main(String[] args) {
@@ -17,15 +18,20 @@ public class Main {
         if (isSavedGame) {
             // Charger la partie précédente depuis le fichier game.ser
             Save.loadGame(Plateau2.joueur1, Plateau2.joueur2);
+            Game.playGame(isSavedGame, 1, sourceX, sourceY, destX, destY);
         } else {
             // Si le joueur choisit de commencer une nouvelle partie, démarrer le jeu et initialiser le plateau
             Plateau2.initializeBoard();
             Plateau2.addClouds(); // Ajouter des nuages aléatoirement sur le plateau
             clearFile("new_moves.txt"); // Vider le fichier new_moves.txt
+            int mode = selectGameMode();
+            Game.playGame(isSavedGame, mode, sourceX, sourceY, destX, destY);
         }
-    
+
+        //int mode = selectGameMode();
+        
         // Commencer la partie
-        Game.playGame(isSavedGame);
+        //Game.playGame(isSavedGame, mode, sourceX, sourceY, destX, destY);
         //ajouter dans isGameOver l'affichage des score du fichier txt (même logique que dans playGame)
     }
 
@@ -36,6 +42,17 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static int selectGameMode() {
+        System.out.println("Veuillez sélectionner le mode de jeu :");
+        System.out.println("1. Joueur contre Joueur");
+        System.out.println("2. Joueur contre IA");
+        System.out.println("3. IA contre IA");
+
+        int mode = scanner.nextInt();
+        scanner.nextLine(); // Pour consommer la nouvelle ligne
+
+        return mode;
     }
     
 }

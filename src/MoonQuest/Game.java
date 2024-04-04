@@ -3,12 +3,8 @@ import java.util.Scanner;
 
 public class Game {
     private static final Scanner scanner = new Scanner(System.in);
-    private static int sourceX;
-    private static int sourceY;
-    private static int destX;
-    private static int destY;
 
-    public static void playGame(boolean isSavedGame) {
+    public static void playGame(boolean isSavedGame, int mode, int sourceX, int sourceY, int destX, int destY) {
         // Boucle principale du jeu
         while (true) {
             // Afficher le Plateau2
@@ -30,39 +26,50 @@ public class Game {
             }
 
             // Récupérer les coordonnées de la pièce à déplacer
-            System.out.print("Entrez les coordonnées de la pièce à déplacer (ou q pour quitter) : \n");
-            String source = scanner.next().toUpperCase();
-
-            // Vérifier si le joueur veut quitter la partie
-            if (source.equalsIgnoreCase("q")) {
-                if (isSavedGame) {
-                    Save.readMovesFile("saved_moves.txt");
-                } else { // Sinon, c'est une nouvelle partie
-                    Save.readMovesFile("new_moves.txt");
-                }
-                // Demander au joueur s'il souhaite sauvegarder avant de quitter
-                System.out.println("Voulez-vous sauvegarder avant de quitter ? (O/N)");
-                String saveInput = scanner.next();
-                if (saveInput.equalsIgnoreCase("O")) {
-                    Save.saveGame(Plateau2.board, Plateau2.joueur2, Plateau2.joueur1, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2, Plateau2.turn);
-                }
-                break; // Quitter le jeu
+            String source = "";
+            if (mode == 1 || (mode == 2 && Plateau2.turn % 2 == 1)) {
+                System.out.print("Entrez les coordonnées de la pièce à déplacer (ou q pour quitter) : ");
+                source = scanner.next().toUpperCase();
+                if (source.equalsIgnoreCase("q")) {
+                    if (isSavedGame) {
+                        Save.readMovesFile("saved_moves.txt");
+                    } else { // Sinon, c'est une nouvelle partie
+                        Save.readMovesFile("new_moves.txt");
+                    }
+                    // Demander au joueur s'il souhaite sauvegarder avant de quitter
+                    System.out.println("Voulez-vous sauvegarder avant de quitter ? (O/N)");
+                    String saveInput = scanner.next();
+                    if (saveInput.equalsIgnoreCase("O")) {
+                        Save.saveGame(Plateau2.board, Plateau2.joueur2, Plateau2.joueur1, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2, Plateau2.turn);
+                    }
+                    break; // Quitter le jeu
+                } 
+                sourceX = source.charAt(0) - 'A';
+                sourceY = Integer.parseInt(source.substring(1)) - 1;
+            } else if (mode == 2 || mode == 3) {
+                source = generateAISource();
+                System.out.println("L'IA a choisi la source : " + source);
+                sourceX = source.charAt(0) - 'A';
+                sourceY = Integer.parseInt(source.substring(1)) - 1;
             }
-            //**
 
-            sourceX = source.charAt(0) - 'A';
-            sourceY = Integer.parseInt(source.substring(1)) - 1;
-
-            // Vérifier si la pièce sélectionnée appartient au joueur actuel
-            Piece selectedPiece = Plateau2.board[sourceY][sourceX];
-            if (selectedPiece == null || !Plateau2.currentPlayer.contains(selectedPiece)) {
-                System.out.println("La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez.");
-                continue; // Revenir au début de la boucle pour redemander une pièce valide
-            }
+                //redondance avec le mouvement source AI (à régler)
+                // Vérifier si la pièce sélectionnée appartient au joueur actuel
+                Piece selectedPiece = Plateau2.board[sourceY][sourceX];
+                if (selectedPiece == null || !Plateau2.currentPlayer.contains(selectedPiece)) {
+                    System.out.println("La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez.");
+                    continue; // Revenir au début de la boucle pour redemander une pièce valide
+                }
 
             // Récupérer les coordonnées de la destination
-            System.out.print("Entrez les coordonnées de la destination (ex: B4): ");
-            String destination = scanner.next().toUpperCase();
+            String destination = "";
+            if (mode == 1 || (mode == 2 && Plateau2.turn % 2 == 1)) {
+                System.out.print("Entrez les coordonnées de la destination (ex: B4): ");
+                destination = scanner.next().toUpperCase();
+            } else if (mode == 2 || mode == 3) {
+                destination = generateAIDest(sourceX, sourceY);
+                System.out.println("L'IA a choisi la destination : " + destination);
+            }
             destX = destination.charAt(0) - 'A';
             destY = Integer.parseInt(destination.substring(1)) - 1;
 
@@ -80,52 +87,67 @@ public class Game {
             // Incrémenter le numéro de tour (déplacé dans Main.java)
             Plateau2.turn++;
 
-            // Vérifier s'il y a un gagnant ou un match nul
-            if (Plateau2.isGameOver(Plateau2.scoreJoueur1, Plateau2.scoreJoueur2)) {
-                // Afficher le résultat final
-                System.out.println("La partie est terminée. Résultat final : ...");
-                break;
-            } 
-            
         } else {
                 System.out.println("Déplacement invalide. Réessayez.");
             }
+        
+        // Vérifier s'il y a un gagnant ou un match nul
+        if (Plateau2.isGameOver(Plateau2.scoreJoueur1, Plateau2.scoreJoueur2)) {
+            // Afficher le résultat final
+            Plateau2.printBoard();
+            System.out.println("La partie est terminée. Résultats finaux : \n");
+            System.out.println("Score du joueur 1 : " + Plateau2.scoreJoueur1 + "\nScore du joueur 2 : " + Plateau2.scoreJoueur2 + "\n");
+            if (isSavedGame) {
+                Save.readMovesFile("saved_moves.txt");
+            } else { // Sinon, c'est une nouvelle partie
+                Save.readMovesFile("new_moves.txt");
+            }
+            break;
+        } 
+    
             Plateau2.moveClouds(); // Déplacer les nuages 
         }
         scanner.close(); // Fermer le scanner après utilisation
     }
 
-    public static int selectGameMode() {
-        System.out.println("Veuillez sélectionner le mode de jeu :");
-        System.out.println("1. Joueur contre Joueur");
-        System.out.println("2. Joueur contre IA");
-        System.out.println("3. IA contre IA");
-
-        int mode = scanner.nextInt();
-        scanner.nextLine(); // Pour consommer la nouvelle ligne
-
-        return mode;
-    }
-
-    public static void generateAIMove() {
+    public static String generateAISource() {
         Random random = new Random();
-        int sourceX, sourceY, destX, destY;
-
-        // Générer des coordonnées de pièce source et de destination aléatoires
+        int sourceX, sourceY;
+    
+        // Générer des coordonnées de pièce source aléatoires
         sourceX = random.nextInt(Plateau2.BOARD_SIZE);
         sourceY = random.nextInt(Plateau2.BOARD_SIZE);
-        destX = random.nextInt(Plateau2.BOARD_SIZE);
-        destY = random.nextInt(Plateau2.BOARD_SIZE);
-
-        // Vérifier si le mouvement généré est valide
-        while (!Plateau2.isValidMove(sourceX, sourceY, destX, destY, Plateau2.scoreJoueur1, Plateau2.scoreJoueur2)) {
+    
+        Piece selectedPiece = Plateau2.board[sourceY][sourceX];
+    
+        // Vérifier que la pièce appartient bien au joueur
+        while (!(selectedPiece != null && Plateau2.currentPlayer.contains(selectedPiece))) {
             sourceX = random.nextInt(Plateau2.BOARD_SIZE);
             sourceY = random.nextInt(Plateau2.BOARD_SIZE);
+            selectedPiece = Plateau2.board[sourceY][sourceX];
+        }
+    
+        // Transformation au format de coordonnées (ex: A1)
+        return String.format("%c%d", sourceX + 'A', sourceY + 1);
+    }
+    
+    public static String generateAIDest(int sourceX, int sourceY) {
+        Random random = new Random();
+        int destX, destY;
+    
+        // Générer des coordonnées de destination aléatoires
+        destX = random.nextInt(Plateau2.BOARD_SIZE);
+        destY = random.nextInt(Plateau2.BOARD_SIZE);
+    
+        Piece selectedPiece = Plateau2.board[sourceY][sourceX];
+        while (!(selectedPiece.deplacementTerrestre(sourceX, sourceY, destX, destY) || 
+                 (selectedPiece instanceof Vehicule && ((Vehicule) selectedPiece).getState() && 
+                 selectedPiece.deplacementAerien(sourceX, sourceY, destX, destY)))) {
             destX = random.nextInt(Plateau2.BOARD_SIZE);
             destY = random.nextInt(Plateau2.BOARD_SIZE);
         }
-
-        // Effectuer le mouvement sur le plateau
-        Plateau2.movePiece(sourceX, sourceY, destX, destY);
+    
+        // Transformation au format de coordonnées (ex: A1)
+        return String.format("%c%d", destX + 'A', destY + 1);
     }
 }
