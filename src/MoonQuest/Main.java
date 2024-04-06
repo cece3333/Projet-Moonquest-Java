@@ -8,6 +8,9 @@ import java.util.Scanner;
 import display.Board;
 import game.Game;
 import pieces.Piece;
+import pieces.Vehicule;
+import pieces.Glace;
+import pieces.Nuage;
 import utils.Save;
 
 public class Main {

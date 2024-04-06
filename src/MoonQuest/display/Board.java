@@ -184,7 +184,7 @@ public class Board {
                         destX = (destX + Board.board[0].length) % Board.board[0].length;
                         destY = (destY + Board.board.length) % Board.board.length;
     
-                        if (!isGlaceBetween(x, y, destX, destY)) {
+                        if ((!isGlaceBetween(x, y, destX, destY) && Board.board[destY][destX] == null)) {
                             Board.board[destY][destX] = Board.board[y][x];
                             Board.board[y][x] = null;
                         }
@@ -291,28 +291,37 @@ public class Board {
         return false; //vite changer en false
     }
 
-    public static boolean isXBorder(int x) {
-        boolean res = x == 0 || x == Board.board[0].length - 1;
+    /* 
+         public static boolean isXBorder(int destX, int sourceX) {
+        boolean res = ((destX == 0) && (sourceX == Board.board.length - 1)) ||
+                    ((sourceX == 0) && (destX == Board.board.length - 1));
         if (res) {
-            System.out.println("La destination est en bordure horizontale.");
+            System.out.println("Les source et destination sont en bordure horizontale.");
             return true;
         } else {
-            System.out.println("La destination n'est pas en bordure horizontale.");
+            System.out.println("Les source et destination ne sont pas en bordure horizontale.");
             return false;
         }
     }
 
-    public static boolean isYBorder(int y) {
-        boolean res = y == 0 || y == Board.board.length - 1;
-        if (res) {
-            System.out.println("La destination est en bordure verticale.");
+    public static boolean isYBorder(int destY, int sourceY) {
+        boolean isYBorder = ((destY == 0) && (sourceY == Board.board.length - 1)) || 
+                    ((sourceY == 0) && (destY == Board.board.length - 1));
+        boolean res2 = ((sourceY == 0) || (sourceY == Board.board.length - 1));
+        if ((res1) &&  {
+            System.out.println("Les source et destination sont en bordure verticale.");
             return true;
         } else {
-            System.out.println("La destination n'est pas en bordure verticale.");
+            System.out.println("Les source et destination ne sont pas en bordure verticale.");
             return false;
         }
     }
 
+    //pour adapter les border move pour deplacement terrien et aérien: 
+    public static boolean isInfiniteGridMove(int sourceX, int sourceY, int destX, int destY) {
+
+    }
+    */
 
     public static boolean isValidDestination(int destX, int destY) {
         // Vérifier si la destination est en dehors du plateau
@@ -362,7 +371,7 @@ public class Board {
         return false; // Aucune glace sur le chemin
     }
 
-    //methodes des pièces du plateau : 
+    //--> mettre dans game ? methodes des pièces du plateau : 
     public static void movePiece(int sourceX, int sourceY, int destX, int destY) {
         // Récupérer la pièce à déplacer
         Piece piece = board[sourceY][sourceX];

@@ -95,9 +95,10 @@ Manque :
 
 Fait : 
 3. Sauvegarde et chargement d’une partie en cours
+2. Grille infinie : arrivé a un bord, les composant peuvent réapparaître de l’autre coté (par exemple de
+ligne A vers ligne P et colonne 1 vers colonne 16).
+
 
 
 Manque:
-2. Grille infinie : arrivé a un bord, les composant peuvent réapparaître de l’autre coté (par exemple de
-ligne A vers ligne P et colonne 1 vers colonne 16).
 

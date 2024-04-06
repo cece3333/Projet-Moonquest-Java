@@ -3,7 +3,6 @@ Notes :
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
-- pb de grille infinie (probablement liée aux fonctions de déplacement)
 
 
 
@@ -61,3 +60,7 @@ Problèmes résolus / Job done :
 - "La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez." lorsque je sélectionne une case vide !! (remplacé par "selection invalide. Réessayez)
 - permettre la sauvegarde d'une nouvelle partie (en écrasant les anciennes sauvegardes)
 - réécrire (overwrite) sur le fichier new_moves.txt à chaque nouvelle partie (pas pour saved_moves.txt) (peut -etre pas faire de fichier txt dcp)
+- pb de grille infinie (probablement liée aux fonctions de déplacement)
+- déplacement aerien en grille infinie ==> changer les fonction isXborder et isYborder pour qu'elles prennent en compte le fait que pour le mouvement aérien, la destination n'est pas en bordure
+- plus de mouvement en verticale pour les véhicules aériens (&& au lieu de ||)
+- pour les soucis de mise à jour des modifs dans une classe ; importer la classe dans Main.
