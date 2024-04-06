@@ -98,7 +98,6 @@ Fait :
 
 
 Manque:
-1. Surcharge de ressource : une case peut contenir plusieurs Nuages.
 2. Grille infinie : arrivé a un bord, les composant peuvent réapparaître de l’autre coté (par exemple de
 ligne A vers ligne P et colonne 1 vers colonne 16).
 

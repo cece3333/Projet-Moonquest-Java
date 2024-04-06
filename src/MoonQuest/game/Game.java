@@ -46,6 +46,17 @@ public class Game {
     }
     }
 */
+    public static int selectGameMode() {
+        System.out.println("Veuillez sélectionner le mode de jeu :");
+        System.out.println("1. Joueur contre Joueur");
+        System.out.println("2. Joueur contre IA");
+        System.out.println("3. IA contre IA");
+
+        int mode = scanner.nextInt();
+        scanner.nextLine(); // Pour consommer la nouvelle ligne
+
+        return mode;
+    }
 
     public static String generateAISource() {
         Random random = new Random();

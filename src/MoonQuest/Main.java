@@ -20,7 +20,7 @@ public class Main {
         String startChoice = scanner.next();
         boolean isSavedGame = startChoice.equalsIgnoreCase("R");
 
-        int mode = selectGameMode();
+        int mode = Game.selectGameMode();
 
         if (isSavedGame) {
             // Charger la partie précédente depuis le fichier game.ser
@@ -90,7 +90,7 @@ public class Main {
                 // Vérifier si la pièce sélectionnée appartient au joueur actuel
                 Piece selectedPiece = Board.board[sourceY][sourceX];
                 if (selectedPiece == null || !Board.currentPlayer.contains(selectedPiece)) {
-                    System.out.println("La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez.");
+                    System.out.println("Sélection invalide. Réessayez.");
                     continue; // Revenir au début de la boucle pour redemander une pièce valide
                 }
             
@@ -138,30 +138,5 @@ public class Main {
             Board.moveClouds(); // Déplacer les nuages 
         }
         scanner.close(); // Fermer le scanner après utilisation
-    }
-
-    public static int selectGameMode() {
-        System.out.println("Veuillez sélectionner le mode de jeu :");
-        System.out.println("1. Joueur contre Joueur");
-        System.out.println("2. Joueur contre IA");
-        System.out.println("3. IA contre IA");
-
-        int mode = scanner.nextInt();
-        scanner.nextLine(); // Pour consommer la nouvelle ligne
-
-        return mode;
-    }
-        //methodes de sauvegardes des mouvements :
-    public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2, String fichier_txt) {
-        try (FileWriter writer = new FileWriter(fichier_txt, true)) {
-            Piece destinationPiece = Board.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
-            String symbole = "x";
-            if (destinationPiece != null) {
-                symbole = ".";
-            }
-            writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

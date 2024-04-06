@@ -3,9 +3,8 @@ Notes :
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
-- réécrire (overwrite) sur le fichier new_moves.txt à chaque nouvelle partie (pas pour saved_moves.txt) (peut -etre pas faire de fichier txt dcp)
-- permettre la sauvegarde d'une nouvelle partie
-- pb, si on sauvegarde une partie, on ne peut pas sauvegarder les nouveaux mouvements dans le fichier saved_moves.txt (ça réécrit le contenu de new_moves.txt)
+
+
 
 Petits détails : 
 - régler "La destination est en dehors du plateau." lorsque les nuages bougent (grille infinie)
@@ -56,3 +55,7 @@ Problèmes résolus / Job done :
 - bien évidemment créer les packages
 - faire un count des nuages restants sur le plateau (condition de fin) ; quasiment fait
 - duplicata des scores de l'IA dans saved_moves.txt (sol : permettre l'écriture seulement si le mouvement est valide)
+- pb, si on sauvegarde une partie, on ne peut pas sauvegarder les nouveaux mouvements dans le fichier saved_moves.txt (ça réécrit le contenu de new_moves.txt)
+- "La pièce sélectionnée n'appartient pas au joueur actuel. Réessayez." lorsque je sélectionne une case vide !! (remplacé par "selection invalide. Réessayez)
+- permettre la sauvegarde d'une nouvelle partie (en écrasant les anciennes sauvegardes)
+- réécrire (overwrite) sur le fichier new_moves.txt à chaque nouvelle partie (pas pour saved_moves.txt) (peut -etre pas faire de fichier txt dcp)
