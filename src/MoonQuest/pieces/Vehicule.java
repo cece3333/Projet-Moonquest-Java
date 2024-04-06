@@ -1,3 +1,6 @@
+package pieces;
+import utils.Couleurs;
+
 public class Vehicule extends Piece {
     private boolean estActif;
     private int nuagesCaptures;

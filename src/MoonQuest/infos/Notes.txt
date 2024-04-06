@@ -4,15 +4,20 @@ Notes :
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
 - réécrire (overwrite) sur le fichier new_moves.txt à chaque nouvelle partie (pas pour saved_moves.txt) (peut -etre pas faire de fichier txt dcp)
+- permettre la sauvegarde d'une nouvelle partie
+- duplicata des scores de l'IA dans saved_moves.txt
+- créer une demande d'input à chaque moment dans Main, lorsque le joueur/l'IA entre q ; il peut sauvegarder 
 
+Petits détails : 
+- régler "La destination est en dehors du plateau." lorsque les nuages bougent (grille infinie)
+- tester en empêchant les nuages de se détruire entre eux 
 
 
 
 À faire: (cf. manque dans les conditions)
-- Créer un menu avec les règles du jeu (dans regles.txt comme ça je sature pas le code) <--- à voir car pb si je fais un .jar car il faut que je puisse accéder à regles.txt
-- faire un count des nuages restants sur le plateau (condition de fin) ; quasiment fait 
-- bien évidemment créer les packages
+- Créer un menu avec les règles du jeu (dans regles.txt comme ça je sature pas le code) <--- à voir car pb si je fais un .jar car il faut que je puisse accéder à regles.txt 
 - demander par rapport aux noms de fonctions/classes s'il faut français ou anglais exclusif
+
 
 
 
@@ -48,4 +53,6 @@ Problèmes résolus / Job done :
 - empêcher la glace d'écraser ses propres pièces
 -Mode AI : DONE ==> Faire en sorte de demander les coordonnées en dehors de playgame (dans main) pour pouvoir les utiliser dans AI (et donc ne pas avoir à les demander à chaque fois)
     --> le mode AI générera des coordonnées qui seront traduites en A1, B3 etc. pour le bon affichage des scores.
-- - gameOver = il reste un nuage sur le plateau (et non pas 0) / ou c'est le dernier mouvement qui ne se fait pas ==> car le plateau n'est pas réaffiché après le dernier mouvement
+- gameOver = il reste un nuage sur le plateau (et non pas 0) / ou c'est le dernier mouvement qui ne se fait pas ==> car le plateau n'est pas réaffiché après le dernier mouvement
+- bien évidemment créer les packages
+- faire un count des nuages restants sur le plateau (condition de fin) ; quasiment fait

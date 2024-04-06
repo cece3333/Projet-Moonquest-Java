@@ -1,3 +1,4 @@
+package utils;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -5,6 +6,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import display.Board;
+import pieces.Piece;
+import pieces.Vehicule;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -46,12 +52,12 @@ public class Save {
     public static void loadGame(ArrayList<Piece> joueur1, ArrayList<Piece> joueur2) {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("game.ser"))) {
             // Désérialiser les objets
-            Plateau2.board = (Piece[][]) inputStream.readObject();
-            Plateau2.joueur2 = (ArrayList<Piece>) inputStream.readObject();
-            Plateau2.joueur1 = (ArrayList<Piece>) inputStream.readObject();
-            Plateau2.scoreJoueur1 = inputStream.readInt(); // Charger le score du joueur 1
-            Plateau2.scoreJoueur2 = inputStream.readInt(); // Charger le score du joueur 2
-            Plateau2.turn = inputStream.readInt(); // Charger le tour actuel
+            Board.board = (Piece[][]) inputStream.readObject();
+            Board.joueur2 = (ArrayList<Piece>) inputStream.readObject();
+            Board.joueur1 = (ArrayList<Piece>) inputStream.readObject();
+            Board.scoreJoueur1 = inputStream.readInt(); // Charger le score du joueur 1
+            Board.scoreJoueur2 = inputStream.readInt(); // Charger le score du joueur 2
+            Board.turn = inputStream.readInt(); // Charger le tour actuel
     
             // Charger les scores des véhicules pour le joueur 1
             for (Piece piece : joueur1) {
@@ -77,7 +83,7 @@ public class Save {
     //methodes de sauvegardes des mouvements :
     public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2, String fichier_txt) {
         try (FileWriter writer = new FileWriter(fichier_txt, true)) {
-            Piece destinationPiece = Plateau2.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
+            Piece destinationPiece = Board.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
             String symbole = "x";
             if (destinationPiece != null) {
                 symbole = ".";
@@ -95,6 +101,14 @@ public class Save {
             while ((line = reader.readLine()) != null) {
                 System.out.println(line);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // Méthode pour vider le contenu d'un fichier
+    public static void clearFile(String fileName) {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write(""); // Écrire une chaîne vide pour vider le fichier
         } catch (IOException e) {
             e.printStackTrace();
         }

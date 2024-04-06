@@ -1,3 +1,6 @@
+package pieces;
+import utils.Couleurs;
+
 public class Glace extends Piece {
     public Glace(int x, int y, String icon, String type, Couleurs couleur) {
         super(x, y, icon, "None", couleur); // 'G' pour l'icône de la glace

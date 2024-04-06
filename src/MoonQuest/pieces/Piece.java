@@ -1,4 +1,7 @@
+package pieces;
 import java.io.Serializable;
+
+import utils.Couleurs;
 
 public abstract class Piece implements Serializable{
     protected int x; // Position x sur le Plateau

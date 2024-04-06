@@ -1,3 +1,6 @@
+package pieces;
+import utils.Couleurs;
+
 public class Nuage extends Piece {
 
     public Nuage(int x, int y, String icon, String type, Couleurs couleur) {
