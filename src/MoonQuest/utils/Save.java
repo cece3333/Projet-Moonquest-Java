@@ -79,21 +79,6 @@ public class Save {
         }
     }
     
-
-    //methodes de sauvegardes des mouvements :
-    public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2, String fichier_txt) {
-        try (FileWriter writer = new FileWriter(fichier_txt, true)) {
-            Piece destinationPiece = Board.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
-            String symbole = "x";
-            if (destinationPiece != null) {
-                symbole = ".";
-            }
-            writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
     public static void readMovesFile(String fichier_txt) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fichier_txt))) {
             String line;
@@ -109,6 +94,19 @@ public class Save {
     public static void clearFile(String fileName) {
         try (FileWriter writer = new FileWriter(fileName)) {
             writer.write(""); // Écrire une chaîne vide pour vider le fichier
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+            //methodes de sauvegardes des mouvements :
+    public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2, String fichier_txt) {
+        try (FileWriter writer = new FileWriter(fichier_txt, true)) {
+            Piece destinationPiece = Board.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
+            String symbole = "x";
+            if (destinationPiece != null) {
+                symbole = ".";
+            }
+            writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
