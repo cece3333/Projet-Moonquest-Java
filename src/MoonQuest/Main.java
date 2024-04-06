@@ -36,6 +36,7 @@ public class Main {
         while (true) {
                 // Afficher le Board
                 Board.printBoard();
+                //System.out.println("TEST : taille du board : " + Board.board.length);
 
                 // Afficher le numéro de tour
                 System.out.println("Tour " + Board.turn);
@@ -123,7 +124,7 @@ public class Main {
                 }
             
             // Vérifier s'il y a un gagnant ou un match nul
-            if (Board.isGameOver(Board.scoreJoueur1, Board.scoreJoueur2)) {
+            if (Game.isGameOver(Board.scoreJoueur1, Board.scoreJoueur2)) {
                 // Afficher le résultat final
                 Board.printBoard();
                 System.out.println("La partie est terminée. Résultats finaux : \n");

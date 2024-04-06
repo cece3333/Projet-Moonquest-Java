@@ -3,12 +3,14 @@ Notes :
 
 Problèmes notés : 
 - lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
+- pb de grille infinie (probablement liée aux fonctions de déplacement)
 
 
 
 Petits détails : 
 - régler "La destination est en dehors du plateau." lorsque les nuages bougent (grille infinie)
 - tester en empêchant les nuages de se détruire entre eux 
+- voir si je fais quand même la surchage de ressources (introduire un mode compliqué ?)
 
 
 

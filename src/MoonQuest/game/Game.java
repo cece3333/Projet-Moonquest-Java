@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import display.Board;
+import pieces.Nuage;
 import pieces.Piece;
 import pieces.Vehicule;
 import utils.Save;
@@ -56,6 +57,42 @@ public class Game {
         scanner.nextLine(); // Pour consommer la nouvelle ligne
 
         return mode;
+    }
+    
+    public static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
+
+        // Initialiser le compteur de nuages restants
+        int countClouds = 0;
+    
+        // Vérifier s'il n'y a plus de nuages à capturer
+        for (Piece[] row : Board.board) {
+            for (Piece piece : row) {
+                if (piece instanceof Nuage) {
+                    countClouds++;
+                }
+            }
+        }
+        System.out.println("Nombre de nuages restants : " + countClouds);
+        if (countClouds < 0) {
+            System.out.println("Il n'y a plus de nuages à capturer.");
+            return true;
+        }
+    
+        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer)
+        if (scoreJoueur1 >= 16 || scoreJoueur2 >= 16 || countClouds == 0) {
+            System.out.println("La partie est terminée.");
+            if (scoreJoueur1 > scoreJoueur2) {
+                System.out.println("Le joueur 1 (CYAN) a remporté la partie avec " + scoreJoueur1 + " nuages capturés.");
+            } else if (scoreJoueur1 < scoreJoueur2) {
+                System.out.println("Le joueur 2 (PURPLE) a remporté la partie avec " + scoreJoueur2 + " nuages capturés.");
+            } else if (((scoreJoueur1 == scoreJoueur2) && (scoreJoueur1 + scoreJoueur2 == 30)) || countClouds == 0) {
+                System.out.println("Match nul !");
+            }
+            return true;
+        }
+        System.out.println("La partie continue.");
+    
+        return false;
     }
 
     public static String generateAISource() {

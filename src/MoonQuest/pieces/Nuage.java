@@ -1,4 +1,5 @@
 package pieces;
+import display.Board;
 import utils.Couleurs;
 
 public class Nuage extends Piece {
@@ -45,11 +46,26 @@ public class Nuage extends Piece {
     @Override
     public boolean deplacementTerrestre(int sourceX, int sourceY, int destX, int destY) {
         // Vérifier si la destination est adjacente à la source (verticalement ou horizontalement) ; return true si oui
-        return (Math.abs(destX - sourceX) == 1 && destY == sourceY) ||   // Mouvement horizontal
-               (Math.abs(destY - sourceY) == 1 && destX == sourceX) &&   // Mouvement vertical
-               (destX == sourceX || destY == sourceY);                   // Empêcher les mouvements diagonaux    
-    
+        
+        // Ajuster les coordonnées de destination pour les mouvements de grille infinie
+        int adjustedX;
+        int adjustedY;
+        
+        if (Board.isXBorder(sourceX)) {
+            adjustedX = Math.abs(16 % (destX - sourceX));
+            System.out.println("TEST (deplacementTerrestre) adjustedX : " + adjustedX);
+            return (adjustedX == 1 && destY == sourceY);
+        } else if (Board.isYBorder(sourceY)) {
+            adjustedY = Math.abs(16 % (destY - sourceY));
+            System.out.println("TEST (deplacementTerrestre) adjustedY: " + adjustedY);
+            return (adjustedY == 1 && destX == sourceX);
+        } else {
+            return (Math.abs(destX - sourceX) == 1 && destY == sourceY) ||   // Mouvement horizontal
+                   (Math.abs(destY - sourceY) == 1 && destX == sourceX) &&   // Mouvement vertical
+                   (destX == sourceX || destY == sourceY);                   // Empêcher les mouvements diagonaux
+        }
     }
+       
 }
 
 

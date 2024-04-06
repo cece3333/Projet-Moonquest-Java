@@ -156,20 +156,15 @@ public class Board {
     
     public static void moveClouds() {
         Random random = new Random();
-
+    
         for (int y = 0; y < Board.board.length; y++) {
             for (int x = 0; x < Board.board[y].length; x++) {
-                // Vérifier si la case contient un nuage
                 if (Board.board[y][x] instanceof Nuage) {
-                    // Générer un nombre aléatoire entre 0 et 4 inclusivement
                     int randomNumber = random.nextInt(5);
-                    // Vérifier si le nuage doit se déplacer (1 chance sur 5)
                     if (randomNumber == 0) {
-                        // Choisir une direction de déplacement aléatoire (0: haut, 1: bas, 2: gauche, 3: droite)
                         int direction = random.nextInt(4);
                         int destX = x, destY = y;
-
-                        // Déplacer le nuage dans la direction choisie si la case adjacente est libre et respecte les règles du déplacement aérien
+    
                         switch (direction) {
                             case 0: // Haut
                                 destY -= 2;
@@ -184,15 +179,14 @@ public class Board {
                                 destX += 2;
                                 break;
                         }
-
-                        // Vérifier si la destination est valide et si la case est libre
-                        if (isValidDestination(destX, destY)) { //à changer car les nuages peuvent écraser les véhicules
-                            // Vérifier s'il n'y a pas de glace entre la position actuelle et la destination
-                            if (!isGlaceBetween(x, y, destX, destY)) {
-                                // Effectuer le déplacement du nuage
-                                Board.board[destY][destX] = Board.board[y][x];
-                                Board.board[y][x] = null;
-                            }
+    
+                        // Ajuster les coordonnées de destination pour qu'elles restent dans les limites de la grille
+                        destX = (destX + Board.board[0].length) % Board.board[0].length;
+                        destY = (destY + Board.board.length) % Board.board.length;
+    
+                        if (!isGlaceBetween(x, y, destX, destY)) {
+                            Board.board[destY][destX] = Board.board[y][x];
+                            Board.board[y][x] = null;
                         }
                     }
                 }
@@ -202,8 +196,15 @@ public class Board {
 
     public static boolean isValidMove(int sourceX, int sourceY, int destX, int destY, int scoreJoueur1, int scoreJoueur2) {
         if (!isValidDestination(destX, destY)) {
+            System.out.println("TEST : La destination est invalide.");
             return false;
         }
+        // Mettre à jour les coordonnées de destination avec les ajustements de la grille infinie
+        //destY = (destY + Board.board[0].length) % Board.board[0].length;
+        //destX = (destX + Board.board.length) % Board.board.length;
+        System.out.println("TEST : Source : " + sourceX + ", " + sourceY);
+        System.out.println("TEST : Destination : " + destX + ", " + destY);
+        
         //On récupère les pièces aux coordonnées source et destination : 
         Piece piece = board[sourceY][sourceX];
         Piece destination = board[destY][destX];
@@ -223,7 +224,14 @@ public class Board {
                 System.out.println("La glace ne peut pas écraser ses propres pièces.");
                 return false;
             } else {
-                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                boolean result = piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                if (result) {
+                    System.out.println("Déplacement de la glace effectué.");
+                    return true;
+                } else {
+                    System.out.println("Déplacement de la glace impossible.");
+                    return false;
+                }
             }
         
         //Vérification lorsqu'on déplace un véhicule :
@@ -262,6 +270,7 @@ public class Board {
                 turn++;
                 return false; //pour éviter que le joueur joue deux fois
             }
+            
             //Si la destination est vide, on peut déplacer le véhicule (en fonction de son état)
             } if (destination == null) {
                     if (!((Vehicule) piece).getState()) {
@@ -275,35 +284,74 @@ public class Board {
                         return false;
                     }
                 }
-        //à implémenter !!! comment bouger les nuages ?
-        } else if (piece instanceof Nuage) {
+        } else {
+            System.out.println("Mouvement invalide.");
             return false;
         }
-        return false;
+        return false; //vite changer en false
+    }
+
+    public static boolean isXBorder(int x) {
+        boolean res = x == 0 || x == Board.board[0].length - 1;
+        if (res) {
+            System.out.println("La destination est en bordure horizontale.");
+            return true;
+        } else {
+            System.out.println("La destination n'est pas en bordure horizontale.");
+            return false;
+        }
+    }
+
+    public static boolean isYBorder(int y) {
+        boolean res = y == 0 || y == Board.board.length - 1;
+        if (res) {
+            System.out.println("La destination est en bordure verticale.");
+            return true;
+        } else {
+            System.out.println("La destination n'est pas en bordure verticale.");
+            return false;
+        }
     }
 
 
-
-    // Méthode pour vérifier si la destination est valide
     public static boolean isValidDestination(int destX, int destY) {
-        if (destX < 0 || destX >= Board.board.length || destY < 0 || destY >= Board.board[0].length) {
-            System.out.println("La destination est en dehors du plateau."); //bon le problème c'est que le message s'affiche lors des mouvements des nuages
+        // Vérifier si la destination est en dehors du plateau
+        if (destX < 0 || destY < 0 || destY >= Board.board[0].length) {
+            System.out.println("La destination est en dehors du plateau.");
             return false;
         }
+    
+        // Si la destination est en dehors de la grille horizontalement, ajuster la coordonnée X
+        if (destX >= Board.board.length) {
+            destX = destX % Board.board.length;
+        } else if (destX < 0) {
+            destX = Board.board.length - 1 - (-destX - 1) % Board.board.length;
+        }
+    
+        // Si la destination est en dehors de la grille verticalement, ajuster la coordonnée Y
+        if (destY >= Board.board[0].length) {
+            destY = destY % Board.board[0].length;
+        } else if (destY < 0) {
+            destY = Board.board[0].length - 1 - (-destY - 1) % Board.board[0].length;
+        }
+    
         return true;
     }
+    
 
-    //mettre cette méthode plutot dans la classe Vehicule.java et nuage.java
     public static boolean isGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
+        int adjustedDestX = destX % Board.board[0].length;
+        int adjustedDestY = destY % Board.board.length;
+    
         // Vérifier s'il y a une glace entre la source et la destination
-        int deltaX = destX - sourceX;
-        int deltaY = destY - sourceY;
+        int deltaX = adjustedDestX - sourceX;
+        int deltaY = adjustedDestY - sourceY;
         int stepX = (deltaX == 0) ? 0 : deltaX / Math.abs(deltaX); // Direction horizontale (+1 pour droite, -1 pour gauche)
         int stepY = (deltaY == 0) ? 0 : deltaY / Math.abs(deltaY); // Direction verticale (+1 pour bas, -1 pour haut)
         int currentX = sourceX + stepX;
         int currentY = sourceY + stepY;
     
-        while (currentX != destX || currentY != destY) {
+        while (currentX != adjustedDestX || currentY != adjustedDestY) {
             if (Board.board[currentY][currentX] instanceof Glace) {
                 return true; // Il y a une glace entre la source et la destination
             }
@@ -313,44 +361,6 @@ public class Board {
     
         return false; // Aucune glace sur le chemin
     }
-
-    public static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
-
-        // Initialiser le compteur de nuages restants
-        int countClouds = 0;
-    
-        // Vérifier s'il n'y a plus de nuages à capturer
-        for (Piece[] row : Board.board) {
-            for (Piece piece : row) {
-                if (piece instanceof Nuage) {
-                    countClouds++;
-                }
-            }
-        }
-        System.out.println("Nombre de nuages restants : " + countClouds);
-        if (countClouds < 0) {
-            System.out.println("Il n'y a plus de nuages à capturer.");
-            return true;
-        }
-    
-        // Vérifier s'il y a un gagnant (soit par score > 15, soit car plus de nuages à capturer)
-        if (scoreJoueur1 >= 16 || scoreJoueur2 >= 16 || countClouds == 0) {
-            System.out.println("La partie est terminée.");
-            if (scoreJoueur1 > scoreJoueur2) {
-                System.out.println("Le joueur 1 (CYAN) a remporté la partie avec " + scoreJoueur1 + " nuages capturés.");
-            } else if (scoreJoueur1 < scoreJoueur2) {
-                System.out.println("Le joueur 2 (PURPLE) a remporté la partie avec " + scoreJoueur2 + " nuages capturés.");
-            } else if (((scoreJoueur1 == scoreJoueur2) && (scoreJoueur1 + scoreJoueur2 == 30)) || countClouds == 0) {
-                System.out.println("Match nul !");
-            }
-            return true;
-        }
-        System.out.println("La partie continue.");
-    
-        return false;
-    }
-    
-    
 
     //methodes des pièces du plateau : 
     public static void movePiece(int sourceX, int sourceY, int destX, int destY) {
