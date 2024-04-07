@@ -15,38 +15,45 @@ import utils.Save;
 public class Game {
     private static final Scanner scanner = new Scanner(System.in);
 
-    /* 
-    public static void playGame(boolean isSavedGame, int mode, int sourceX, int sourceY, int destX, int destY) {
-        // Sauvegarder le coup joué dans le fichier .txt (a mettre avant le mouvement de la pièce)
-        if (Board.isValidMove(sourceX, sourceY, destX, destY, destX, destY)) {
-            if (isSavedGame) {
-                Save.saveMoveToFile(source, destination, Board.turn, Board.scoreJoueur1, Board.scoreJoueur2, "saved_moves.txt");
-            } else { // Sinon, c'est une nouvelle partie
-                Save.saveMoveToFile(source, destination, Board.turn, Board.scoreJoueur1, Board.scoreJoueur2, "new_moves.txt");
-            }
-            //bouger la pièce si isValidMove: 
-            Board.movePiece(sourceX, sourceY, destX, destY);
-        // Incrémenter le numéro de tour (déplacé dans Main.java)
-        Board.turn++;
-
-    } else {
-            System.out.println("Déplacement invalide. Réessayez.");
-        }
+    public static void moveClouds() {
+        Random random = new Random();
     
-    // Vérifier s'il y a un gagnant ou un match nul
-    if (Board.isGameOver(Board.scoreJoueur1, Board.scoreJoueur2)) {
-        // Afficher le résultat final
-        Board.printBoard();
-        System.out.println("La partie est terminée. Résultats finaux : \n");
-        System.out.println("Score du joueur 1 : " + Board.scoreJoueur1 + "\nScore du joueur 2 : " + Board.scoreJoueur2 + "\n");
-        if (isSavedGame) {
-            Save.readMovesFile("saved_moves.txt");
-        } else { // Sinon, c'est une nouvelle partie
-            Save.readMovesFile("new_moves.txt");
+        for (int y = 0; y < Board.board.length; y++) {
+            for (int x = 0; x < Board.board[y].length; x++) {
+                if (Board.board[y][x] instanceof Nuage) {
+                    int randomNumber = random.nextInt(5);
+                    if (randomNumber == 0) {
+                        int direction = random.nextInt(4);
+                        int destX = x, destY = y;
+    
+                        switch (direction) {
+                            case 0: // Haut
+                                destY -= 2;
+                                break;
+                            case 1: // Bas
+                                destY += 2;
+                                break;
+                            case 2: // Gauche
+                                destX -= 2;
+                                break;
+                            case 3: // Droite
+                                destX += 2;
+                                break;
+                        }
+    
+                        // Ajuster les coordonnées de destination pour qu'elles restent dans les limites de la grille
+                        destX = (destX + Board.board[0].length) % Board.board[0].length;
+                        destY = (destY + Board.board.length) % Board.board.length;
+    
+                        if ((!Board.isGlaceBetween(x, y, destX, destY) && Board.board[destY][destX] == null)) {
+                            Board.board[destY][destX] = Board.board[y][x];
+                            Board.board[y][x] = null;
+                        }
+                    }
+                }
+            }
         }
     }
-    }
-*/
     public static int selectGameMode() {
         System.out.println("Veuillez sélectionner le mode de jeu :");
         System.out.println("1. Joueur contre Joueur");

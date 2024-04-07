@@ -139,7 +139,7 @@ public class Main {
                 }
                 break;
             }   
-            Board.moveClouds(); // Déplacer les nuages 
+            Game.moveClouds(); // Déplacer les nuages 
         }
         scanner.close(); // Fermer le scanner après utilisation
     }

@@ -153,46 +153,6 @@ public class Board {
             }
         }
     }
-    
-    public static void moveClouds() {
-        Random random = new Random();
-    
-        for (int y = 0; y < Board.board.length; y++) {
-            for (int x = 0; x < Board.board[y].length; x++) {
-                if (Board.board[y][x] instanceof Nuage) {
-                    int randomNumber = random.nextInt(5);
-                    if (randomNumber == 0) {
-                        int direction = random.nextInt(4);
-                        int destX = x, destY = y;
-    
-                        switch (direction) {
-                            case 0: // Haut
-                                destY -= 2;
-                                break;
-                            case 1: // Bas
-                                destY += 2;
-                                break;
-                            case 2: // Gauche
-                                destX -= 2;
-                                break;
-                            case 3: // Droite
-                                destX += 2;
-                                break;
-                        }
-    
-                        // Ajuster les coordonnées de destination pour qu'elles restent dans les limites de la grille
-                        destX = (destX + Board.board[0].length) % Board.board[0].length;
-                        destY = (destY + Board.board.length) % Board.board.length;
-    
-                        if ((!isGlaceBetween(x, y, destX, destY) && Board.board[destY][destX] == null)) {
-                            Board.board[destY][destX] = Board.board[y][x];
-                            Board.board[y][x] = null;
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     public static boolean isValidMove(int sourceX, int sourceY, int destX, int destY, int scoreJoueur1, int scoreJoueur2) {
         if (!isValidDestination(destX, destY)) {
@@ -217,6 +177,10 @@ public class Board {
         
         //Si la pièce est une glace (déplacement où elle veut sauf sur les propres pièces du joueur) :
         if ((piece instanceof Glace)) {
+            if (isIceMove(piece, destination, sourceX, sourceY, destX, destY)) {
+                return true;
+            }
+            /* 
             if ((destination != null) && (!(currentPlayer.contains(destination)))) {
                 System.out.println("La glace a écrasé la pièce " + destination.getIcon());
                 Board.board[destY][destX] = null;
@@ -232,11 +196,14 @@ public class Board {
                     System.out.println("Déplacement de la glace impossible.");
                     return false;
                 }
-            }
+            }*/
         
         //Vérification lorsqu'on déplace un véhicule :
         } else if (piece instanceof Vehicule) {
-            
+            if (isVehiculeMove(piece, destination, sourceX, sourceY, destX, destY)) {
+                return true;
+            }
+            /*
             //Cas où la destination est occupée par une autre pièce :
             if (destination instanceof Vehicule) { //si c'est un autre véhicule
                 System.out.println("La destination est occupée par un autre véhicule.");
@@ -283,45 +250,83 @@ public class Board {
                         System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
                         return false;
                     }
-                }
+                } */
         } else {
             System.out.println("Mouvement invalide.");
             return false;
         }
         return false; //vite changer en false
     }
-
-    /* 
-         public static boolean isXBorder(int destX, int sourceX) {
-        boolean res = ((destX == 0) && (sourceX == Board.board.length - 1)) ||
-                    ((sourceX == 0) && (destX == Board.board.length - 1));
-        if (res) {
-            System.out.println("Les source et destination sont en bordure horizontale.");
-            return true;
-        } else {
-            System.out.println("Les source et destination ne sont pas en bordure horizontale.");
+    public static boolean isIceMove(Piece piece, Piece destination, int sourceX, int sourceY, int destX, int destY) {
+        if ((destination != null) && (!(currentPlayer.contains(destination)))) {
+            System.out.println("La glace a écrasé la pièce " + destination.getIcon());
+            Board.board[destY][destX] = null;
+        } if (currentPlayer.contains(destination)) { 
+            System.out.println("La glace ne peut pas écraser ses propres pièces.");
             return false;
+        } else {
+            boolean result = piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+            if (result) {
+                System.out.println("Déplacement de la glace effectué.");
+                return true;
+            } else {
+                System.out.println("Déplacement de la glace impossible.");
+                return false;
+            }
         }
     }
 
-    public static boolean isYBorder(int destY, int sourceY) {
-        boolean isYBorder = ((destY == 0) && (sourceY == Board.board.length - 1)) || 
-                    ((sourceY == 0) && (destY == Board.board.length - 1));
-        boolean res2 = ((sourceY == 0) || (sourceY == Board.board.length - 1));
-        if ((res1) &&  {
-            System.out.println("Les source et destination sont en bordure verticale.");
-            return true;
-        } else {
-            System.out.println("Les source et destination ne sont pas en bordure verticale.");
-            return false;
+    public static boolean isVehiculeMove(Piece piece, Piece destination, int sourceX, int sourceY, int destX, int destY) {
+
+        //1. Cas où la destination est occupée par une autre pièce :
+        if (destination instanceof Vehicule) { //si c'est un autre véhicule
+        System.out.println("La destination est occupée par un autre véhicule.");
+        return false;
+    
+    //cas où la case est un nuage ou de la glace : 
+        } else if ((!(destination instanceof Vehicule)) && (destination != null)) {
+            System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
+            //si le véhicule est activé, il peut supprimer n'importe quel nuage
+            if ((((Vehicule) piece).getState()) && !(destination instanceof Glace)) {
+                System.out.println("Un nuage a été supprimé par le véhicule!");
+                return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+        
+        //si la destination est un nuage de même type que le véhicule :
+            } else if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
+                if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
+                    ((Vehicule) piece).captureNuage();
+                    // Mise à jour des scores:
+                    if (currentPlayer == joueur1) {
+                        Board.scoreJoueur1++; //important de laisser pour bien actualiser les scores de Board
+                    } else {
+                        Board.scoreJoueur2++;
+                    }
+                    System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType() +"\n" + "Nuages capturés : " + ((Vehicule) piece).getNuagesCaptures());       
+                    return true;           
         }
+        } else { //Collision avec un nuage (de type différent) ou de la glace :
+            System.out.println("Le véhicule a été détruit dans la collision !");
+            // Supprimer le véhicule du plateau
+            board[sourceY][sourceX] = null;
+            turn++;
+            return false; //pour éviter que le joueur joue deux fois
     }
-
-    //pour adapter les border move pour deplacement terrien et aérien: 
-    public static boolean isInfiniteGridMove(int sourceX, int sourceY, int destX, int destY) {
-
+    
+    //Si la destination est vide, on peut déplacer le véhicule (en fonction de son état)
+    } if (destination == null) {
+            if (!((Vehicule) piece).getState()) {
+                System.out.println("Déplacement terrestre.");
+                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+            } else if ((((Vehicule) piece).getState()) && !(Board.isGlaceBetween(sourceX, sourceY, destX, destY))) {
+                System.out.println("Déplacement aérien.");
+                return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+            } else {
+                System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
+                return false;
+            }
+        }
+        return false; 
     }
-    */
 
     public static boolean isValidDestination(int destX, int destY) {
         // Vérifier si la destination est en dehors du plateau
@@ -344,7 +349,7 @@ public class Board {
             destY = Board.board[0].length - 1 - (-destY - 1) % Board.board[0].length;
         }
     
-        return true;
+        return true; 
     }
     
 
