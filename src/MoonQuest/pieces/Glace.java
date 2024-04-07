@@ -16,34 +16,7 @@ public class Glace extends Piece {
     public String getIcon() {
         return this.icon;
     }
-
-
-    @Override
-    public boolean deplacementAerien(int sourceX, int sourceY, int destX, int destY) {
-        // Ajuster les coordonnées de destination pour les mouvements de grille infinie
-        int adjustedX;
-        int adjustedY;
-        boolean isYBorder = (((sourceY == 1) && (destY == 15)) || ((sourceY == 1) && (destY == 15)) || ((sourceY == 14) && (destY == 0)) || ((sourceY == 0) && (destY == 14)));
-        boolean isXBorder = (((sourceX == 1) && (destX == 15)) || ((sourceX == 15) && (destX == 1)) || ((sourceX == 14) && (destX == 0)) || ((sourceX == 0) && (destX == 14)));
-
-        System.out.println("TEST (deplacementAerien) : activé x2");
-        if (isXBorder) {
-            adjustedX = Math.abs(16 % (destX - sourceX));
-            System.out.println("TEST (deplacementAerien) adjustedX : " + adjustedX);
-            return (adjustedX == 2 && destY == sourceY);
-        } else if (isYBorder) {
-            adjustedY = Math.abs(16 % (destY - sourceY));
-            System.out.println("TEST (deplacementAerien) adjustedY: " + adjustedY);
-            return (adjustedY == 2 && (destX == sourceX));
-        } else {
-            return ((Math.abs(destX - sourceX) == 2) && (destY == sourceY)) ||   // Mouvement horizontal
-                   ((Math.abs(destY - sourceY)) == 2 && (destX == sourceX)) ||   // Mouvement vertical
-                   (((destX - sourceX) == 2) && ((destY - sourceY) == 2));      // Mouvement diagonal
-        }
-    }
     
-    
-
     @Override
     public boolean deplacementTerrestre(int sourceX, int sourceY, int destX, int destY) {
         // Vérifier si la destination est adjacente à la source (verticalement ou horizontalement) ; return true si oui
@@ -58,19 +31,43 @@ public class Glace extends Piece {
         
         if (isXBorder) {
             adjustedX = Math.abs(16 % (destX - sourceX));
-            System.out.println("TEST (deplacementTerrestre) adjustedX : " + adjustedX);
-            System.out.println("bordure horizontale");
             return ((adjustedX == 1) && (destY == sourceY));
         } else if (isYBorder) {
             adjustedY = Math.abs(16 % (destY - sourceY));
-            System.out.println("TEST (deplacementTerrestre) adjustedY: " + adjustedY);
-            System.out.println("bordure verticale");
             return ((adjustedY == 1) && (destX == sourceX));
         } else {
             return ((Math.abs(destX - sourceX) == 1) && (destY == sourceY)) ||   // Mouvement horizontal
                    ((Math.abs(destY - sourceY) == 1) && (destX == sourceX)) &&   // Mouvement vertical
                    ((destX == sourceX) || (destY == sourceY));                   // Empêcher les mouvements diagonaux
         }
+    }
+
+    @Override
+    public boolean deplacementAerien(int sourceX, int sourceY, int destX, int destY) {
+        // Ne rien faire dans cette méthode, car les glaces ne se déplacent pas en l'air
+        return false; // Ou true, selon votre logique
+    }
+
+    public static boolean isIceMove(Piece piece, Piece destination, int sourceX, int sourceY, int destX, int destY) {
+        if ((destination != null) && (!(Board.currentPlayer.contains(destination)))) {
+            if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
+                System.out.println("La glace a écrasé la pièce " + destination.getIcon());
+                Board.board[destY][destX] = null;
+            }
+        } if (Board.currentPlayer.contains(destination)) { 
+            System.out.println("La glace ne peut pas écraser ses propres pièces.");
+            return false;
+        } if (destination instanceof Vehicule) {
+            System.out.println("Véhicule détruit ; les nuages capturés sont perdus.");
+            if (Board.currentPlayer == Board.joueur1) {
+                Board.scoreJoueur2 -= ((Vehicule)destination).getNuagesCaptures();
+            } else {
+                Board.scoreJoueur1 -= ((Vehicule)destination).getNuagesCaptures();
+            }
+        } else {
+            return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+        }
+        return false;
     }
  
 }

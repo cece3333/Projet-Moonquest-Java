@@ -7,11 +7,12 @@ import java.util.Scanner;
 
 import display.Board;
 import game.Game;
-import pieces.Piece;
-import pieces.Vehicule;
 import pieces.Glace;
 import pieces.Nuage;
+import pieces.Piece;
+import pieces.Vehicule;
 import utils.Save;
+import utils.Couleurs;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
@@ -28,18 +29,24 @@ public class Main {
         if (isSavedGame) {
             // Charger la partie précédente depuis le fichier game.ser
             Save.loadGame(Board.joueur1, Board.joueur2);
+            Save.clearFile("new_game_moves.txt");
+            //modif:
+            try {
+                Files.copy(Paths.get("test_moves.txt"), Paths.get("new_moves.txt"), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             //Game.playGame(isSavedGame, mode, sourceX, sourceY, destX, destY);
         } else if (startChoice.equalsIgnoreCase("N")) {
             // Si le joueur choisit de commencer une nouvelle partie, démarrer le jeu et initialiser le plateau
             Board.initializeBoard();
             Board.addClouds(); // Ajouter des nuages aléatoirement sur le plateau
-            Save.clearFile("new_moves.txt"); // Vider le fichier new_moves.txt
+            Save.clearFile("new_game_moves.txt"); // Vider le fichier new_game_moves.txt
         }
 
         while (true) {
                 // Afficher le Board
                 Board.printBoard();
-                //System.out.println("TEST : taille du board : " + Board.board.length);
 
                 // Afficher le numéro de tour
                 System.out.println("Tour " + Board.turn);
@@ -62,23 +69,29 @@ public class Main {
                     source = scanner.next().toUpperCase();
                     if (source.equalsIgnoreCase("q")) {
                         if (isSavedGame) {
-                            Save.readMovesFile("saved_moves.txt");
-                        } else { // Sinon, c'est une nouvelle partie
                             Save.readMovesFile("new_moves.txt");
+                        } else { // Sinon, c'est une nouvelle partie
+                            Save.readMovesFile("new_game_moves.txt"); //idem, effacer si les modifs fonctionnent
                         }
+        
                         // Demander au joueur s'il souhaite sauvegarder avant de quitter
                         System.out.println("Voulez-vous sauvegarder avant de quitter ? (O/N)");
                         String saveInput = scanner.next();
-                        if (saveInput.equalsIgnoreCase("O") && !isSavedGame) {
+                        if (saveInput.equalsIgnoreCase("O")&& (!isSavedGame)) {
                             Save.saveGame(Board.board, Board.joueur2, Board.joueur1, Board.scoreJoueur1, Board.scoreJoueur2, Board.turn);
                             //Si partie sauvegardée, copier le contenu de new_moves.txt dans saved_moves.txt
                             try {
-                                Files.copy(Paths.get("new_moves.txt"), Paths.get("saved_moves.txt"), StandardCopyOption.REPLACE_EXISTING);
+                                Files.copy(Paths.get("new_game_moves.txt"), Paths.get("test_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                        } else if (saveInput.equalsIgnoreCase("O") && isSavedGame) {
+                        } else if ((saveInput.equalsIgnoreCase("O")) && (isSavedGame)) {
                             Save.saveGame(Board.board, Board.joueur2, Board.joueur1, Board.scoreJoueur1, Board.scoreJoueur2, Board.turn);
+                            try {
+                                Files.copy(Paths.get("new_moves.txt"), Paths.get("test_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break; // Quitter le jeu
                     }
@@ -91,8 +104,11 @@ public class Main {
                     sourceY = Integer.parseInt(source.substring(1)) - 1;
                 }
 
-                // Vérifier si la pièce sélectionnée appartient au joueur actuel
+                
                 Piece selectedPiece = Board.board[sourceY][sourceX];
+                Piece destinationPiece = Board.board[destY][destX];
+                
+                // Vérifier si la pièce sélectionnée appartient au joueur actuel
                 if (selectedPiece == null || !Board.currentPlayer.contains(selectedPiece)) {
                     System.out.println("Sélection invalide. Réessayez.");
                     continue; // Revenir au début de la boucle pour redemander une pièce valide
@@ -111,11 +127,11 @@ public class Main {
                 destY = Integer.parseInt(destination.substring(1)) - 1;
 
                 // Déplacer la pièce
-                if (Board.isValidMove(sourceX, sourceY, destX, destY, Board.scoreJoueur1, Board.scoreJoueur2)) {
+                if (Game.isValidMove(sourceX, sourceY, destX, destY, Board.scoreJoueur1, Board.scoreJoueur2)) {
                     if (isSavedGame) {
-                        Save.saveMoveToFile(source, destination, Board.turn, Board.scoreJoueur1, Board.scoreJoueur2, "saved_moves.txt");
+                        Save.saveMoveToFile(source, destination, Board.turn, Board.scoreJoueur1, Board.scoreJoueur2, "new_moves.txt"); //saved_moves.txt
                     } else { // Sinon, c'est une nouvelle partie
-                        Save.saveMoveToFile(source, destination, Board.turn, Board.scoreJoueur1, Board.scoreJoueur2, "new_moves.txt");
+                        Save.saveMoveToFile(source, destination, Board.turn, Board.scoreJoueur1, Board.scoreJoueur2, "new_game_moves.txt");
                     }
                     //bouger la pièce si isValidMove: 
                     Board.movePiece(sourceX, sourceY, destX, destY);
@@ -133,9 +149,9 @@ public class Main {
                 System.out.println("La partie est terminée. Résultats finaux : \n");
                 System.out.println("Score du joueur 1 : " + Board.scoreJoueur1 + "\nScore du joueur 2 : " + Board.scoreJoueur2 + "\n");
                 if (isSavedGame) {
-                    Save.readMovesFile("saved_moves.txt");
+                    Save.readMovesFile("new_moves.txt"); //used to be saved_moves.txt
                 } else { // Sinon, c'est une nouvelle partie
-                    Save.readMovesFile("new_moves.txt");
+                    Save.readMovesFile("new_game_moves.txt"); 
                 }
                 break;
             }   

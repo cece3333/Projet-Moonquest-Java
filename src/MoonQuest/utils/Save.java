@@ -20,7 +20,7 @@ import java.io.FileReader;
 public class Save {
 
     public static void saveGame(Piece[][] board, ArrayList<Piece> joueur2, ArrayList<Piece> joueur1, int scoreJoueur1, int scoreJoueur2, int turn) {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("game.ser"))) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("game.ser"))) { //game.ser
             outputStream.writeObject(board);
             outputStream.writeObject(joueur2);
             outputStream.writeObject(joueur1);

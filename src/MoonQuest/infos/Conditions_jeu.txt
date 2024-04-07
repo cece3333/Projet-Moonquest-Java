@@ -23,7 +23,8 @@ Fait :
 • Une Glace qui se déplace élimine toute les pièces situés sur la case où elle arrive.
 - Un Nuage qui se déplace élimine toute les pièces situés sur la case où elle arrive
 
-Manque : 
+Manque :
+ 
 ---------------------------------------------------------------------------------------------------------------------------------
 Déplacements : OK
 
@@ -42,10 +43,10 @@ Manque :
 Objectif du jeu : 
 
 Fait : 
-Établir un score final : Vous devez augmenter votre score en capturant le maximum de Nuages. Chaque nuage capturé rapporte 1 point. Le score comtpe le nombre de Nuage que détient un Joueur : 
-
-Manque : 
+- Établir un score final : Vous devez augmenter votre score en capturant le maximum de Nuages. Chaque nuage capturé rapporte 1 point. Le score comtpe le nombre de Nuage que détient un Joueur : 
 - Si un Véhicule chargé de Nuages est détruit, les points sont décomptés du score.
+Manque : 
+
 
 ------------------------------------------------------------------------------------------------------------------------------
 

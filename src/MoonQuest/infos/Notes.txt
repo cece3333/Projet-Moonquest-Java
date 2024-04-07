@@ -2,30 +2,26 @@ Notes :
 
 
 Problèmes notés : 
-- lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
+- tester si un joueur capture 16 nuages
+- si un joueur n'a plus de glace/véhicule, partie terminée et le joueur deux gagne par défaut
+- glace capture nuage alors que le mouvement n'est pas permis
+
 
 
 
 Petits détails : 
 - régler "La destination est en dehors du plateau." lorsque les nuages bougent (grille infinie)
-- tester en empêchant les nuages de se détruire entre eux 
+- tester en empêchant les nuages de se détruire entre eux (fait)
 - voir si je fais quand même la surchage de ressources (introduire un mode compliqué ?)
 
 
 
 À faire: (cf. manque dans les conditions)
 - Créer un menu avec les règles du jeu (dans regles.txt comme ça je sature pas le code) <--- à voir car pb si je fais un .jar car il faut que je puisse accéder à regles.txt 
-- demander par rapport aux noms de fonctions/classes s'il faut français ou anglais exclusif
 
 
 
 
-Pour l'instant, je crois que captureNuages peut capturer plus de 3 nuages (mais normalement le véhicule peut bien être activé), donc à voir si je changerais pas ça 
-
-Peut-être rajouter une entrée permettant d'afficher le score du véhicule sélectionné (juste après l'entrée de la case source ex:) pour savoir combien de nuages le véhicule 
---> permettre un changement d'entrée sûre ? genre "Conserver cette pièce source ?" mais pas pour la case destination 
-
---> Est-ce que je dois empêcher les glaces d'écraser les véhicules de leur propre type ?
 
 
 
@@ -48,6 +44,7 @@ Problèmes résolus / Job done :
 - création de deux fichiers pour enregistrer les mouvements en fonction de s'il s'agit d'une partie sauvegardée ou pas 
 - problème lors de l'affichage des mouvements (pas de "x") ; en fait la fonciton prend "destination" après que la pièce ait bougé donc la case n'est forcément pas vide !! (il fallait juste le déplacer avant que le mouvement ait lieu)
 - prblème collision nuage diff / véhicule --> réglé mais supprime également la cible (ne devrait pas, donc le mouvement devrait être interdit d'abord ==> à cause de return false).
+- demander par rapport aux noms de fonctions/classes s'il faut français ou anglais exclusif
 - les glaces ne s'écrasent pas entre elles (j'avais empêché que ça arrive)
 - empêcher la glace d'écraser ses propres pièces
 -Mode AI : DONE ==> Faire en sorte de demander les coordonnées en dehors de playgame (dans main) pour pouvoir les utiliser dans AI (et donc ne pas avoir à les demander à chaque fois)
@@ -64,3 +61,8 @@ Problèmes résolus / Job done :
 - déplacement aerien en grille infinie ==> changer les fonction isXborder et isYborder pour qu'elles prennent en compte le fait que pour le mouvement aérien, la destination n'est pas en bordure
 - plus de mouvement en verticale pour les véhicules aériens (&& au lieu de ||)
 - pour les soucis de mise à jour des modifs dans une classe ; importer la classe dans Main.
+- lorsqu'un véhicule est détruit, ses nuages doivent être déduits du score du joueur !!
+- affichage des scores incorrects (les scores sont bien mis à jour mais pas affichés correctement)
+    - enregistre les moves mêmes quand 'N' ... ; donc réécriture des tours par dessus (duplicatas)
+    - il faudrait pouvoir effacer les derniers mouvements enregistrés lorsque 'N' est entré, sans pour autant effacer ceux qui ont été sauvegardés
+- problème déplacement diagonale des véhicules activés (devrait être possible) = problème de Math.abs() dans isValidMove
