@@ -1,8 +1,5 @@
 package utils;
 
-
-
-
 public enum Couleurs {
     // Constantes pour les couleurs du texte
     RESET("\u001B[0m"),

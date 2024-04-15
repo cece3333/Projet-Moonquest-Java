@@ -6,6 +6,7 @@ import java.util.Scanner;
 import pieces.*;
 import utils.Couleurs;
 
+//créer un constructeur pour la classe Board ?
 public class Board {
     public static ArrayList<Piece> joueur2 = new ArrayList<Piece>();
     public static ArrayList<Piece> joueur1 = new ArrayList<Piece>();
@@ -69,15 +70,6 @@ public class Board {
 	public static Piece getPiece(int x, int y) {
 		return board[y][x];
 	}
-
-    public static void movePiece(int sourceX, int sourceY, int destX, int destY) {
-        // Récupérer la pièce à déplacer
-        Piece piece = Board.board[sourceY][sourceX];
-        // Déplacer la pièce vers la destination
-        Board.board[destY][destX] = piece;
-        // Vider la case source
-        Board.board[sourceY][sourceX] = null;
-    }
     
     public static void initializeBoard() {
         System.out.println("Ajout des pièces sur le plateau :");
@@ -142,16 +134,12 @@ public class Board {
         int cloudsAdded = 0;
     
         while (cloudsAdded < 30) {
-            // Générer une coordonnée x aléatoire entre 0 et 15
-            int x = random.nextInt(16);
-            
-            // Générer une coordonnée y aléatoire entre 5 et 12 inclusivement (correspond rééllement aux lignes 4 à 11 sur le tableau)
-            int y = random.nextInt(8) + 4;
+            int x = random.nextInt(16); // Générer une coordonnée x aléatoire entre 0 et 15
+            int y = random.nextInt(8) + 4; // Générer une coordonnée y aléatoire entre 5 et 12 inclusivement (correspond rééllement aux lignes 4 à 11 sur le tableau)
     
             // Vérifier si les coordonnées générées correspondent à une case vide sur le plateau et dans la plage spécifiée
             if (board[y][x] == null) {
-                // Ajouter un nuage de méthane si le nombre de nuages ajoutés est inférieur à 15
-                if (cloudsAdded < 15) {
+                if (cloudsAdded < 15) { // Ajouter un nuage de méthane si le nombre de nuages ajoutés est inférieur à 15
                     setPiece(x, y, new Nuage(x, y, "NM", "Methane", Couleurs.YELLOW));
                 } else { // Sinon, ajouter un nuage d'eau
                     setPiece(x, y, new Nuage(x, y, "NE", "Eau", Couleurs.BLUE));
@@ -160,9 +148,40 @@ public class Board {
             }
         }
     }
+
+    public static void movePiece(int sourceX, int sourceY, int destX, int destY) {
+        // Récupérer la pièce à déplacer
+        Piece piece = board[sourceY][sourceX];
+        // Déplacer la pièce vers la destination
+        board[destY][destX] = piece;
+        // Vider la case source
+        board[sourceY][sourceX] = null;
+    }
+
+    
+    public static void moveCloudsRandomly() {
+        Random random = new Random();
+    
+        for (int y = 0; y < Board.board.length; y++)
+            for (int x = 0; x < Board.board[y].length; x++)
+                if (Board.board[y][x] instanceof Nuage && random.nextInt(5) == 0) {
+                    int direction = random.nextInt(4);
+                    int destX = x + (direction == 2 ? -2 : (direction == 3 ? 2 : 0));
+                    int destY = y + (direction == 0 ? -2 : (direction == 1 ? 2 : 0));
+    
+                    destX = (destX + Board.board[0].length) % Board.board[0].length;
+                    destY = (destY + Board.board.length) % Board.board.length;
+    
+                    if (!Board.IsGlaceBetween(x, y, destX, destY) && Board.board[destY][destX] == null) {
+                        Board.board[destY][destX] = Board.board[y][x];
+                        Board.board[y][x] = null;
+                    }
+                }
+        
+        }
     
 
-    public static boolean isGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
+    public static boolean IsGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
         int adjustedDestX = destX % Board.board[0].length;
         int adjustedDestY = destY % Board.board.length;
     
@@ -184,5 +203,4 @@ public class Board {
     
         return false; // Aucune glace sur le chemin
     }
-
 }

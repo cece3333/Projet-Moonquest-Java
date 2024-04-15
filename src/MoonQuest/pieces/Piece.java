@@ -1,6 +1,7 @@
 package pieces;
 import java.io.Serializable;
 
+import display.Board;
 import utils.Couleurs;
 
 public abstract class Piece implements Serializable{
@@ -59,7 +60,7 @@ public abstract class Piece implements Serializable{
             this.couleur = couleur;
         }
 
-            public String getPlayer() {
+        public String getPlayer() {
         // Extrait le numéro du joueur à partir de l'icône de la pièce
         // Les icônes des pièces des joueurs 1 commencent par "G1" ou "V1"
         // Les icônes des pièces des joueurs 2 commencent par "G2" ou "V2"
@@ -70,8 +71,54 @@ public abstract class Piece implements Serializable{
         return Character.toString(playerChar);
     }
 
-        public abstract boolean deplacementTerrestre(int sourceX, int sourceY, int destX, int destY);
+        public boolean deplacementAerien(int sourceX, int sourceY, int destX, int destY) {
+            //Mouvements de grille infinie
+            int adjustedX;
+            int adjustedY;
+            boolean isYBorder = (((sourceY == 1) && (destY == Board.BOARD_SIZE - 1)) || //BOARDSIZE
+                                ((sourceY == 1) && (destY == Board.BOARD_SIZE - 1)) || 
+                                ((sourceY == Board.BOARD_SIZE - 2) && (destY == 0)) || 
+                                ((sourceY == 0) && (destY == Board.BOARD_SIZE - 2)));
+            boolean isXBorder = (((sourceX == 1) && (destX == Board.BOARD_SIZE - 1)) || 
+                                ((sourceX == Board.BOARD_SIZE - 1) && (destX == 1)) || 
+                                ((sourceX == Board.BOARD_SIZE - 2) && (destX == 0)) || 
+                                ((sourceX == 0) && (destX == Board.BOARD_SIZE - 2)));
 
-        public abstract boolean deplacementAerien(int sourceX, int sourceY, int destX, int destY);
+            if (isXBorder) {
+                adjustedX = Math.abs(Board.BOARD_SIZE % (destX - sourceX));
+                return (adjustedX == 2 && destY == sourceY);
+            } else if (isYBorder) {
+                adjustedY = Math.abs(Board.BOARD_SIZE % (destY - sourceY));
+                return (adjustedY == 2 && (destX == sourceX));
+            } else {
+                return ((Math.abs(destX - sourceX) == 2) && (destY == sourceY)) ||   // Mouvement horizontal
+                    ((Math.abs(destY - sourceY)) == 2 && (destX == sourceX)) ||   // Mouvement vertical
+                    (((Math.abs(destX - sourceX)) == 2) && ((Math.abs(destY - sourceY) == 2)));      // Mouvement diagonal
+            }
+        }  
+
+        public boolean deplacementTerrestre(int sourceX, int sourceY, int destX, int destY) {
+            // Vérifier si la destination est adjacente à la source (verticalement ou horizontalement) ; return true si oui
+            
+            //Mouvements de grille infinie
+            int adjustedX;
+            int adjustedY;
+            boolean isYBorder = ((destY == 0) && (sourceY == Board.BOARD_SIZE - 1)) || 
+                                ((sourceY == 0) && (destY == Board.BOARD_SIZE - 1));
+            boolean isXBorder = ((destX == 0) && (sourceX == Board.BOARD_SIZE - 1)) || 
+                                ((sourceX == 0) && (destX == Board.BOARD_SIZE - 1));
+            
+            if (isXBorder) {
+                adjustedX = Math.abs(16 % (destX - sourceX));
+                return ((adjustedX == 1) && (destY == sourceY));
+            } else if (isYBorder) {
+                adjustedY = Math.abs(16 % (destY - sourceY));
+                return ((adjustedY == 1) && (destX == sourceX));
+            } else {
+                return ((Math.abs(destX - sourceX) == 1) && (destY == sourceY)) ||   // Mouvement horizontal
+                    ((Math.abs(destY - sourceY) == 1) && (destX == sourceX)) &&   // Mouvement vertical
+                    ((destX == sourceX) || (destY == sourceY));                   // Empêcher les mouvements diagonaux
+            }
+        }
     }
     

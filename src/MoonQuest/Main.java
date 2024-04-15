@@ -6,6 +6,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 
 import display.Board;
+import game.AIgenerator;
 import game.Game;
 import pieces.Glace;
 import pieces.Nuage;
@@ -19,12 +20,21 @@ public class Main {
     private static int sourceX, sourceY, destX, destY;
 
     public static void main(String[] args) {
+
+        Save.readFiles("Regles.txt");
         // Demander au joueur s'il veut commencer une nouvelle partie ou reprendre la partie précédente
+        System.out.println();
         System.out.println("Voulez-vous commencer une nouvelle partie (N) ou reprendre la partie précédente (R) ?");
         String startChoice = scanner.next();
         boolean isSavedGame = startChoice.equalsIgnoreCase("R");
 
-        int mode = Game.selectGameMode();
+        System.out.println("Veuillez sélectionner le mode de jeu :");
+        System.out.println("1. Joueur contre Joueur");
+        System.out.println("2. Joueur contre IA");
+        System.out.println("3. IA contre IA");
+
+        int mode = scanner.nextInt();
+        scanner.nextLine(); // Pour consommer la nouvelle ligne
 
         if (isSavedGame) {
             // Charger la partie précédente depuis le fichier game.ser
@@ -32,7 +42,7 @@ public class Main {
             Save.clearFile("new_game_moves.txt");
             //modif:
             try {
-                Files.copy(Paths.get("test_moves.txt"), Paths.get("new_moves.txt"), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(Paths.get("saved_moves.txt"), Paths.get("new_moves.txt"), StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -69,9 +79,9 @@ public class Main {
                     source = scanner.next().toUpperCase();
                     if (source.equalsIgnoreCase("q")) {
                         if (isSavedGame) {
-                            Save.readMovesFile("new_moves.txt");
+                            Save.readFiles("new_moves.txt");
                         } else { // Sinon, c'est une nouvelle partie
-                            Save.readMovesFile("new_game_moves.txt"); //idem, effacer si les modifs fonctionnent
+                            Save.readFiles("new_game_moves.txt"); //idem, effacer si les modifs fonctionnent
                         }
         
                         // Demander au joueur s'il souhaite sauvegarder avant de quitter
@@ -81,14 +91,14 @@ public class Main {
                             Save.saveGame(Board.board, Board.joueur2, Board.joueur1, Board.scoreJoueur1, Board.scoreJoueur2, Board.turn);
                             //Si partie sauvegardée, copier le contenu de new_moves.txt dans saved_moves.txt
                             try {
-                                Files.copy(Paths.get("new_game_moves.txt"), Paths.get("test_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
+                                Files.copy(Paths.get("new_game_moves.txt"), Paths.get("saved_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         } else if ((saveInput.equalsIgnoreCase("O")) && (isSavedGame)) {
                             Save.saveGame(Board.board, Board.joueur2, Board.joueur1, Board.scoreJoueur1, Board.scoreJoueur2, Board.turn);
                             try {
-                                Files.copy(Paths.get("new_moves.txt"), Paths.get("test_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
+                                Files.copy(Paths.get("new_moves.txt"), Paths.get("saved_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -98,7 +108,7 @@ public class Main {
                     sourceX = source.charAt(0) - 'A';
                     sourceY = Integer.parseInt(source.substring(1)) - 1;
                 } else if (mode == 2 || mode == 3) {
-                    source = Game.generateAISource();
+                    source = AIgenerator.generateAISource();
                     System.out.println("L'IA a choisi la source : " + source);
                     sourceX = source.charAt(0) - 'A';
                     sourceY = Integer.parseInt(source.substring(1)) - 1;
@@ -120,12 +130,19 @@ public class Main {
                     System.out.print("Entrez les coordonnées de la destination (ex: B4): ");
                     destination = scanner.next().toUpperCase();
                 } else if (mode == 2 || mode == 3) {
-                    destination = Game.generateAIDest(sourceX, sourceY);
+                    destination = AIgenerator.generateLogicAIDest(sourceX, sourceY);
                     System.out.println("L'IA a choisi la destination : " + destination);
                 }
                 destX = destination.charAt(0) - 'A';
                 destY = Integer.parseInt(destination.substring(1)) - 1;
 
+                if (mode == 3) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 // Déplacer la pièce
                 if (Game.isValidMove(sourceX, sourceY, destX, destY, Board.scoreJoueur1, Board.scoreJoueur2)) {
                     if (isSavedGame) {
@@ -149,14 +166,14 @@ public class Main {
                 System.out.println("La partie est terminée. Résultats finaux : \n");
                 System.out.println("Score du joueur 1 : " + Board.scoreJoueur1 + "\nScore du joueur 2 : " + Board.scoreJoueur2 + "\n");
                 if (isSavedGame) {
-                    Save.readMovesFile("new_moves.txt"); //used to be saved_moves.txt
+                    Save.readFiles("new_moves.txt"); //used to be saved_moves.txt
                 } else { // Sinon, c'est une nouvelle partie
-                    Save.readMovesFile("new_game_moves.txt"); 
+                    Save.readFiles("new_game_moves.txt"); 
                 }
                 break;
             }   
-            Game.moveClouds(); // Déplacer les nuages 
+            Board.moveCloudsRandomly(); // Déplacer les nuages 
         }
         scanner.close(); // Fermer le scanner après utilisation
     }
-}
+} 

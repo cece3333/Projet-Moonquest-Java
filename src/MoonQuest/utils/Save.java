@@ -14,9 +14,6 @@ import pieces.Vehicule;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-//petite classe, voir si je la fusionne pas avec Game.java
-
-
 public class Save {
 
     public static void saveGame(Piece[][] board, ArrayList<Piece> joueur2, ArrayList<Piece> joueur1, int scoreJoueur1, int scoreJoueur2, int turn) {
@@ -55,19 +52,16 @@ public class Save {
             Board.board = (Piece[][]) inputStream.readObject();
             Board.joueur2 = (ArrayList<Piece>) inputStream.readObject();
             Board.joueur1 = (ArrayList<Piece>) inputStream.readObject();
-            Board.scoreJoueur1 = inputStream.readInt(); // Charger le score du joueur 1
-            Board.scoreJoueur2 = inputStream.readInt(); // Charger le score du joueur 2
-            Board.turn = inputStream.readInt(); // Charger le tour actuel
+            Board.scoreJoueur1 = inputStream.readInt(); 
+            Board.scoreJoueur2 = inputStream.readInt(); 
+            Board.turn = inputStream.readInt(); 
     
-            // Charger les scores des véhicules pour le joueur 1
             for (Piece piece : joueur1) {
                 if (piece instanceof Vehicule) {
                     int scoreVehicule = inputStream.readInt();
                     ((Vehicule) piece).setNuagesCaptures(scoreVehicule);
                 }
             }
-    
-            // Charger les scores des véhicules pour le joueur 2
             for (Piece piece : joueur2) {
                 if (piece instanceof Vehicule) {
                     int scoreVehicule = inputStream.readInt();
@@ -79,7 +73,7 @@ public class Save {
         }
     }
     
-    public static void readMovesFile(String fichier_txt) {
+    public static void readFiles(String fichier_txt) {
         try (BufferedReader reader = new BufferedReader(new FileReader(fichier_txt))) {
             String line;
             System.out.println("Mouvements effectués lors de la partie :");
@@ -90,15 +84,7 @@ public class Save {
             e.printStackTrace();
         }
     }
-    // Méthode pour vider le contenu d'un fichier
-    public static void clearFile(String fileName) {
-        try (FileWriter writer = new FileWriter(fileName)) {
-            writer.write(""); // Écrire une chaîne vide pour vider le fichier
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-            //methodes de sauvegardes des mouvements :
+    //methodes de sauvegardes des mouvements :
     public static void saveMoveToFile(String source, String destination, int turn, int scoreJoueur1, int scoreJoueur2, String fichier_txt) {
         try (FileWriter writer = new FileWriter(fichier_txt, true)) {
             Piece destinationPiece = Board.getPiece(destination.charAt(0) - 'A', Integer.parseInt(destination.substring(1)) - 1);
@@ -107,6 +93,14 @@ public class Save {
                 symbole = ".";
             }
             writer.write(turn + ". " + source + "-" + destination + " " + symbole + " " + scoreJoueur1 + "-" + scoreJoueur2 + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    // Méthode pour vider le contenu d'un fichier
+    public static void clearFile(String fileName) {
+        try (FileWriter writer = new FileWriter(fileName)) {
+            writer.write(""); // Écrire une chaîne vide pour vider le fichier
         } catch (IOException e) {
             e.printStackTrace();
         }

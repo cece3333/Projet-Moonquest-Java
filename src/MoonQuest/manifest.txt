@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Main-Class: Main
+Created-By: 1.8.0_201 (Oracle Corporation)
+Implementation-Version: 1.0
+Author: Céline Hosteins
+Built-By: BuildServer

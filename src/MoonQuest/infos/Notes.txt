@@ -4,15 +4,19 @@ Notes :
 Problèmes notés : 
 - tester si un joueur capture 16 nuages
 - si un joueur n'a plus de glace/véhicule, partie terminée et le joueur deux gagne par défaut
-- glace capture nuage alors que le mouvement n'est pas permis
+- tester si moveCloud fonctionne bien
+- 
+
+
+
 
 
 
 
 Petits détails : 
-- régler "La destination est en dehors du plateau." lorsque les nuages bougent (grille infinie)
 - tester en empêchant les nuages de se détruire entre eux (fait)
 - voir si je fais quand même la surchage de ressources (introduire un mode compliqué ?)
+
 
 
 
@@ -66,3 +70,5 @@ Problèmes résolus / Job done :
     - enregistre les moves mêmes quand 'N' ... ; donc réécriture des tours par dessus (duplicatas)
     - il faudrait pouvoir effacer les derniers mouvements enregistrés lorsque 'N' est entré, sans pour autant effacer ceux qui ont été sauvegardés
 - problème déplacement diagonale des véhicules activés (devrait être possible) = problème de Math.abs() dans isValidMove
+- glace capture nuage alors que le mouvement n'est pas permis
+- régler "La destination est en dehors du plateau." lorsque les nuages bougent (grille infinie)

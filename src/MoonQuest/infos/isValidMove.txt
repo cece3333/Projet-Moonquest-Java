@@ -24,7 +24,7 @@
                         System.out.println("La destination est occupée par un autre véhicule.");
                         return false;
                     //cas où la case est un nuage ou de la glace : 
-                    } else if (destination instanceof Nuage && !((Vehicule) piece).getState() || destination instanceof Glace && !((Vehicule) piece).getState()) {
+                    } else if (destination instanceof Nuage && !((Vehicule) piece).isActive() || destination instanceof Glace && !((Vehicule) piece).isActive()) {
                         System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
                         
                         //Collision avec un nuage (du même type) :
@@ -41,7 +41,7 @@
                                 System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
                                 System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
                                 //si le véhicule est activé, il peut supprimer n'importe
-                                } if (((Vehicule) piece).getState() && piece.deplacementAerien(sourceX, sourceY, destX, destY)) {
+                                } if (((Vehicule) piece).isActive() && piece.deplacementAerien(sourceX, sourceY, destX, destY)) {
                                     return true;
                                 }
                                 return true;
@@ -56,10 +56,10 @@
                     }
                 }
                 if (destination == null) {
-                    if (!((Vehicule) piece).getState()) {
+                    if (!((Vehicule) piece).isActive()) {
                         System.out.println("Déplacement terrestre.");
                         return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
-                    } if ((((Vehicule) piece).getState()) && !(isGlaceBetween(sourceX, sourceY, destX, destY))) {
+                    } if ((((Vehicule) piece).isActive()) && !(IsGlaceBetween(sourceX, sourceY, destX, destY))) {
                         System.out.println("Déplacement aérien.");
                         return piece.deplacementAerien(sourceX, sourceY, destX, destY);
                     } else {
