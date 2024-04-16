@@ -1,6 +1,10 @@
 # MoonQuest
+
+### Informations sur le projet
 Auteur : Céline Hosteins
-Master 1 de Bioinformatique à l'Université de Bordeaux
+Enseignant : Slim Karkar
+
+Ce projet a été réalisé dans le cadre du Master 1 de Bioinformatique à l'Université de Bordeaux.
 
 ## Bienvenue dans MoonQuest !
 ### Une aventure spatiale épique où vous devrez conquérir les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
