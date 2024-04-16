@@ -1,7 +1,9 @@
 # MoonQuest
-Author : Céline Hosteins
+Auteur : Céline Hosteins
+Master 1 de Bioinformatique à l'Université de Bordeaux
 
-## Bienvenue dans MoonQuest, une aventure spatiale épique où vous devrez conquérir les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
+## Bienvenue dans MoonQuest !
+### Une aventure spatiale épique où vous devrez conquérir les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
 
 Vous aurez pour mission de capturer un maximum de nuages avec vos véhicules afin de conquérir le territoire. Mais gare à l'adversaire et aux obstacles qui menaceront votre conquête !
 
@@ -21,20 +23,20 @@ Vous aurez pour mission de capturer un maximum de nuages avec vos véhicules afi
 
 ## Éléments du jeu :
 - Chaque joueur possède 8 Véhicules (V), 4 de chaque type ("Méthane" ou "Eau") ainsi que 24 blocs de glace (G)
-- Le score d'un joueur correspond au nombre total de Nuages capturés par ses véhicules
+- Le score d'un joueur correspond au nombre total de Nuages (N) capturés par ses véhicules
 
-### Véhicules (attaque) :
+### Véhicules (V) :
 - Un Véhicule peut être déplacé d'une seule case selon un déplacement terrestre, soit verticalement ou horizontalement (hors diagonale)
 - Les Véhicules ne peuvent capturer que les nuages de leur type (même couleur) ; lorsqu'il entre en contact avec un nuage de type différent, il est détruit et ses nuages
 - Lorsqu'un véhicule capture 3 nuages, il est activé (devient blanc), et peut alors se déplacer de deux cases à la fois (dans n'importe quelle direction) selon le déplacement aérien
 - Un véhicule activé peut détruire n'importe quel nuage. Il peut survoler les nuages et les autres véhicules, mais ne peut pas survoler les blocs de glace.
 
-### Blocs de glace (défense) :
+### Blocs de glace (G) :
 - Les blocs de glaces peuvent être déplacés d'une seule case selon un déplacement terrestre
 - Ils détruisent toutes les pièces adverses ainsi que tous les nuages sur leur passage
 - Ils ne peuvent être détruits que par les nuages ou les blocs de glace adverses
 
-### Nuages (ressources) :
+### Nuages (NM, NE) :
 - Les Nuages sont de deux types différents : Méthane (vert, "NM") et Eau (bleu, "NE")
 - Les Nuages ne sont pas contrôlés par les joueurs ; ils ont 1 chance sur 5 de se déplacer aléatoirement sur le plateau selon un déplacement aérien.
 - Comme les blocs de Glace, un Nuage détruit toutes les pièces situées sur sa case d'arrivée
