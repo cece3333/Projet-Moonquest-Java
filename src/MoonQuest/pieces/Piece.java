@@ -3,21 +3,22 @@ package pieces;
 import java.io.Serializable;
 
 import display.Board;
-import utils.Couleurs;
+import utils.Colors;
+
 
 public abstract class Piece implements Serializable{
     protected int x; // Position x sur le Plateau
     protected int y; // Position y sur le Plateau
     protected String icon; // Icône de la pièce
     protected String type; // Type de l'objet (Méthane, Eau, None pour la glace et cases vides)
-    protected Couleurs couleur; // Couleur de la pièce
+    protected Colors color; // color de la pièce
 
-    public Piece(int x, int y, String icon, String type, Couleurs couleur) {
+    public Piece(int x, int y, String icon, String type, Colors color) {
         this.x = x;
         this.y = y;
         this.icon = icon;
         this.type = type;
-        this.couleur = couleur;
+        this.color = color;
     }
  
         // Méthodes getters et setters pour les variables privées
@@ -53,12 +54,12 @@ public abstract class Piece implements Serializable{
             this.icon = icon;
         }
 
-        public Couleurs getCouleur() {
-            return couleur;
+        public Colors getColor() {
+            return color;
         }
 
-        public void setCouleur(Couleurs couleur) {
-            this.couleur = couleur;
+        public void setColor(Colors color) {
+            this.color = color;
         }
 
         public String getPlayer() {

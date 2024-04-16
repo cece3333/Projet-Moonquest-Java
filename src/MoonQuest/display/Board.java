@@ -2,25 +2,17 @@ package display;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 import pieces.*;
-import utils.Couleurs;
+import utils.Colors;
 
-//créer un constructeur pour la classe Board ?
 public class Board {
     public static ArrayList<Piece> joueur2 = new ArrayList<Piece>();
     public static ArrayList<Piece> joueur1 = new ArrayList<Piece>();
     public static ArrayList<Piece> currentPlayer;
 
-    public static Piece board[][] = new Piece[16][16];
-    public static int BOARD_SIZE = Board.board.length;
-
-    public static Scanner scanner = new Scanner(System.in);
-
-    public static int turn = 1;
-    public static int scoreJoueur1 = 0;
-    public static int scoreJoueur2 = 0;
+    public static Piece board[][] = new Piece[16][16]; 
+    public static int BOARD_SIZE = board.length;
 
     public static void printBoard() {
         System.out.println();
@@ -42,11 +34,11 @@ public class Board {
                     System.out.print("   | "); //3 (2 gauche/1 droite)
                 } else {
                     String pieceIcon = board[i][j].getIcon();
-                    Couleurs pieceColor = board[i][j].getCouleur();
+                    Colors pieceColor = board[i][j].getColor();
                     
                     String colorCode = pieceColor.getCode();
                     
-                    System.out.print(colorCode + pieceIcon + Couleurs.RESET.getCode() + " | "); //1 de chaque
+                    System.out.print(colorCode + pieceIcon + Colors.RESET.getCode() + " | "); //1 de chaque
                 }
             }
             System.out.print(count);
@@ -79,26 +71,26 @@ public class Board {
         
         
         for (int i = 0; i < 8; i++) {
-            Glace glace = new Glace(2 * i, 0, "G1", "None", Couleurs.CYAN);
+            Glace glace = new Glace(2 * i, 0, "G1", "None", Colors.CYAN);
             setPiece(2 * i, 0, glace);
             joueur1.add(glace); 
         }
         
         String[] vehicleTypes = {"Methane", "Eau", "Methane", "Eau", "Methane", "Eau", "Methane"};
         for (int i = 0; i < 7; i++) {
-            Vehicule vehicule = new Vehicule(2 * i + 1, 1, "V1", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Couleurs.YELLOW : Couleurs.BLUE, false);
+            Vehicule vehicule = new Vehicule(2 * i + 1, 1, "V1", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Colors.YELLOW : Colors.BLUE, false);
             setPiece(2 * i + 1, 1, vehicule);
             joueur1.add(vehicule); 
         }
     
         for (int i = 0; i < 8; i++) {
-            Glace glace = new Glace(2 * i, 2, "G1", "None", Couleurs.CYAN);
+            Glace glace = new Glace(2 * i, 2, "G1", "None", Colors.CYAN);
             setPiece(2 * i, 2, glace);
             joueur1.add(glace); 
         }
     
         for (int i = 0; i < 8; i++) {
-            Glace glace = new Glace(2 * i + 1, 3, "G1", "None", Couleurs.CYAN);
+            Glace glace = new Glace(2 * i + 1, 3, "G1", "None", Colors.CYAN);
             setPiece(2 * i + 1, 3, glace);
             joueur1.add(glace); 
         }
@@ -106,25 +98,25 @@ public class Board {
         // Initialisation des pièces du joueur 2
         
         for (int i = 0; i < 8; i++) {
-            Glace glace = new Glace(2 * i, 13, "G2", "None", Couleurs.PURPLE);
+            Glace glace = new Glace(2 * i, 13, "G2", "None", Colors.PURPLE);
             setPiece(2 * i, 13, glace);
             joueur2.add(glace); 
         }
     
         for (int i = 0; i < 7; i++) {
-            Vehicule vehicule = new Vehicule(2 * i + 1, 14, "V2", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Couleurs.YELLOW : Couleurs.BLUE, false);
+            Vehicule vehicule = new Vehicule(2 * i + 1, 14, "V2", vehicleTypes[i], (vehicleTypes[i].equals("Methane")) ? Colors.YELLOW : Colors.BLUE, false);
             setPiece(2 * i + 1, 14, vehicule);
             joueur2.add(vehicule); 
         }
     
         for (int i = 0; i < 8; i++) {
-            Glace glace = new Glace(2 * i, 15, "G2", "None", Couleurs.PURPLE);
+            Glace glace = new Glace(2 * i, 15, "G2", "None", Colors.PURPLE);
             setPiece(2 * i, 15, glace);
             joueur2.add(glace); 
         }
     
         for (int i = 0; i < 8; i++) {
-            Glace glace = new Glace(2 * i + 1, 12, "G2", "None", Couleurs.PURPLE);
+            Glace glace = new Glace(2 * i + 1, 12, "G2", "None", Colors.PURPLE);
             setPiece(2 * i + 1, 12, glace);
             joueur2.add(glace); 
         }
@@ -141,9 +133,9 @@ public class Board {
             // Vérifier si les coordonnées générées correspondent à une case vide sur le plateau et dans la plage spécifiée
             if (board[y][x] == null) {
                 if (cloudsAdded < 15) { // Ajouter un nuage de méthane si le nombre de nuages ajoutés est inférieur à 15
-                    setPiece(x, y, new Nuage(x, y, "NM", "Methane", Couleurs.YELLOW));
+                    setPiece(x, y, new Nuage(x, y, "NM", "Methane", Colors.YELLOW));
                 } else { // Sinon, ajouter un nuage d'eau
-                    setPiece(x, y, new Nuage(x, y, "NE", "Eau", Couleurs.BLUE));
+                    setPiece(x, y, new Nuage(x, y, "NE", "Eau", Colors.BLUE));
                 }
                 cloudsAdded++;
             }
@@ -163,7 +155,7 @@ public class Board {
     public static void moveCloudsRandomly() {
         Random random = new Random();
     
-        for (int y = 0; y < Board.board.length; y++)
+        for (int y = 0; y < BOARD_SIZE; y++)
             for (int x = 0; x < Board.board[y].length; x++)
                 if (Board.board[y][x] instanceof Nuage && random.nextInt(5) == 0) {
                     int direction = random.nextInt(4);
@@ -171,7 +163,7 @@ public class Board {
                     int destY = y + (direction == 0 ? -2 : (direction == 1 ? 2 : 0));
     
                     destX = (destX + Board.board[0].length) % Board.board[0].length;
-                    destY = (destY + Board.board.length) % Board.board.length;
+                    destY = (destY + BOARD_SIZE) % BOARD_SIZE;
     
                     if (!Board.IsGlaceBetween(x, y, destX, destY) /*&& Board.board[destY][destX] == null*/) {
                         Board.board[destY][destX] = Board.board[y][x];
@@ -184,7 +176,7 @@ public class Board {
 
     public static boolean IsGlaceBetween(int sourceX, int sourceY, int destX, int destY) {
         int adjustedDestX = destX % Board.board[0].length;
-        int adjustedDestY = destY % Board.board.length;
+        int adjustedDestY = destY % BOARD_SIZE;
     
         // Vérifier s'il y a une glace entre la source et la destination
         int deltaX = adjustedDestX - sourceX;

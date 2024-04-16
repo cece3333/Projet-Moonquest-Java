@@ -1,27 +1,28 @@
 package pieces;
 
 import display.Board;
-import utils.Couleurs;
+import utils.Colors;
+import game.Game;
 
 public class Vehicule extends Piece {
     private boolean isActivated;
     private int nuagesCaptures;
 
-    public Vehicule(int x, int y, String icon, String type, Couleurs couleur, boolean isActivated) {
-        super(x, y, icon, type, couleur);
+    public Vehicule(int x, int y, String icon, String type, Colors color, boolean isActivated) {
+        super(x, y, icon, type, color);
         this.isActivated = isActivated;
         isActivated = false;
         this.nuagesCaptures = 0;
 
-        // Assignation de la couleur en fonction du type de nuage
+        // Assignation de la color en fonction du type de nuage
         if (type.equals("Methane")) {
-            setCouleur(Couleurs.YELLOW); // Utilisation de la constante Couleurs.YELLOW
+            setColor(Colors.YELLOW); // Utilisation de la constante Colors.YELLOW
         } else if (type.equals("Eau")) {
-            setCouleur(Couleurs.BLUE);; // Utilisation de la constante Couleurs.BLUE
+            setColor(Colors.BLUE);; // Utilisation de la constante Colors.BLUE
         }
 
         if (isActivated) {
-            setCouleur(Couleurs.WHITE);
+            setColor(Colors.WHITE);
         }
     }
 
@@ -54,7 +55,7 @@ public class Vehicule extends Piece {
             if (nuagesCaptures == 3) { // Activer le véhicule si le nombre de nuages capturés atteint 3
                 isActivated = true;
                 System.out.println("Véhicule activé");
-                setCouleur(Couleurs.WHITE); // Mettre à jour la couleur du véhicule
+                setColor(Colors.WHITE); // Mettre à jour la color du véhicule
             }
         }
     }
@@ -80,9 +81,9 @@ public class Vehicule extends Piece {
                     ((Vehicule) piece).captureNuage();
                     // Mise à jour des scores:
                     if (Board.currentPlayer == Board.joueur1) {
-                        Board.scoreJoueur1++; //important de laisser pour bien actualiser les scores de Board
+                        Game.scoreJoueur1++; //important de laisser pour bien actualiser les scores de Board
                     } else {
-                        Board.scoreJoueur2++;
+                        Game.scoreJoueur2++;
                     }
                     System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType() +"\n" + "Nuages capturés : " + ((Vehicule) piece).getNuagesCaptures());       
                     return true;           
@@ -90,13 +91,13 @@ public class Vehicule extends Piece {
         } else { //Collision avec un nuage (de type différent) ou de la glace :
             System.out.println("Le véhicule a été détruit dans la collision ! Les nuages capturés sont perdus.");
             if (Board.currentPlayer == Board.joueur1) {
-                Board.scoreJoueur1 -= ((Vehicule)piece).getNuagesCaptures();
+                Game.scoreJoueur1 -= ((Vehicule)piece).getNuagesCaptures();
             } else {
-                Board.scoreJoueur2 -= ((Vehicule)piece).getNuagesCaptures();
+                Game.scoreJoueur2 -= ((Vehicule)piece).getNuagesCaptures();
             }
             // Supprimer le véhicule du plateau
             Board.board[sourceY][sourceX] = null;
-            Board.turn++;
+            Game.turn++;
             return false; //pour éviter que le joueur joue deux fois
     }
     

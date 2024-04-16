@@ -1,11 +1,12 @@
 package pieces;
 
 import display.Board;
-import utils.Couleurs;
+import utils.Colors;
+import game.Game;
 
 public class Glace extends Piece {
-    public Glace(int x, int y, String icon, String type, Couleurs couleur) {
-        super(x, y, icon, "None", couleur); // 'G' pour l'icône de la glace
+    public Glace(int x, int y, String icon, String type, Colors Color) {
+        super(x, y, icon, "None", Color); // 'G' pour l'icône de la glace
     }
 
     public static boolean isGlaceMove(Piece piece, Piece destination, int sourceX, int sourceY, int destX, int destY) {
@@ -16,9 +17,9 @@ public class Glace extends Piece {
                 } if (destination instanceof Vehicule) {
                     System.out.println("Véhicule détruit ; les nuages capturés sont perdus.");
                     if (Board.currentPlayer == Board.joueur1) {
-                        Board.scoreJoueur2 -= ((Vehicule)destination).getNuagesCaptures();
+                        Game.scoreJoueur2 -= ((Vehicule)destination).getNuagesCaptures();
                     } else {
-                        Board.scoreJoueur1 -= ((Vehicule)destination).getNuagesCaptures();
+                        Game.scoreJoueur1 -= ((Vehicule)destination).getNuagesCaptures();
                     }
                 return true;
             }

@@ -5,14 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Random;
-import java.util.Scanner;
 
 import display.Board;
 import pieces.*;
 import utils.Save;
 
 public class Game {
-    private static final Scanner scanner = new Scanner(System.in);
+    
+    public static int turn = 1;
+    public static int scoreJoueur1 = 0;
+    public static int scoreJoueur2 = 0;
 
     public static boolean isGameOver(int scoreJoueur1, int scoreJoueur2) {
 
@@ -102,9 +104,9 @@ public class Game {
             if (((Vehicule) destination).getType().equals(((Nuage) piece).getType())) {
                 System.out.println("Véhicule détruit ; les nuages capturés sont perdus.");
                 if (Board.currentPlayer == Board.joueur1) {
-                    Board.scoreJoueur2 -= ((Vehicule) destination).getNuagesCaptures();
+                    Game.scoreJoueur2 -= ((Vehicule) destination).getNuagesCaptures();
                 } else {
-                    Board.scoreJoueur1 -= ((Vehicule) destination).getNuagesCaptures();
+                    Game.scoreJoueur1 -= ((Vehicule) destination).getNuagesCaptures();
                 }
             }
             return false;

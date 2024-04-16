@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import display.Board;
 import pieces.Piece;
 import pieces.Vehicule;
+import game.Game;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -17,7 +18,7 @@ import java.io.FileReader;
 public class Save {
 
     public static void saveGame(Piece[][] board, ArrayList<Piece> joueur2, ArrayList<Piece> joueur1, int scoreJoueur1, int scoreJoueur2, int turn) {
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("game.ser"))) { //game.ser
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("utils/game.ser"))) {
             outputStream.writeObject(board);
             outputStream.writeObject(joueur2);
             outputStream.writeObject(joueur1);
@@ -47,14 +48,14 @@ public class Save {
     
     @SuppressWarnings("unchecked")
     public static void loadGame(ArrayList<Piece> joueur1, ArrayList<Piece> joueur2) {
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("game.ser"))) {
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("utils/game.ser"))) {
             // Désérialiser les objets
             Board.board = (Piece[][]) inputStream.readObject();
             Board.joueur2 = (ArrayList<Piece>) inputStream.readObject();
             Board.joueur1 = (ArrayList<Piece>) inputStream.readObject();
-            Board.scoreJoueur1 = inputStream.readInt(); 
-            Board.scoreJoueur2 = inputStream.readInt(); 
-            Board.turn = inputStream.readInt(); 
+            Game.scoreJoueur1 = inputStream.readInt(); 
+            Game.scoreJoueur2 = inputStream.readInt(); 
+            Game.turn = inputStream.readInt(); 
     
             for (Piece piece : joueur1) {
                 if (piece instanceof Vehicule) {

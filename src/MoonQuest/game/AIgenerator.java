@@ -95,7 +95,7 @@ public class AIgenerator {
                 Piece obstacle = Board.board[nextY][nextX];
     
                 // Vérifier si la case est vide ou si le mouvement est valide
-                if (selectedPiece.deplacementTerrestre(sourceX, sourceY, nextX, nextY) || Game.isValidMove(sourceX, sourceY, nextX, nextY, Board.scoreJoueur1, Board.scoreJoueur2)) {
+                if (selectedPiece.deplacementTerrestre(sourceX, sourceY, nextX, nextY) || Game.isValidMove(sourceX, sourceY, nextX, nextY, Game.scoreJoueur1, Game.scoreJoueur2)) {
                     // Si la pièce est une Glace ou un véhicule non activé
                     if (selectedPiece instanceof Vehicule && !((Vehicule) selectedPiece).isActive()) {
                         //Si on peut capturer un nuage

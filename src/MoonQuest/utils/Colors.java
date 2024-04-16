@@ -1,6 +1,6 @@
 package utils;
 
-public enum Couleurs {
+public enum Colors {
     // Constantes pour les couleurs du texte
     RESET("\u001B[0m"),
     BLACK("\u001B[30m"),
@@ -17,7 +17,7 @@ public enum Couleurs {
     private final String code;
 
     // Constructeur privé pour initialiser le code ANSI de la couleur
-    private Couleurs(String code) {
+    private Colors(String code) {
         this.code = code;
     }
 
