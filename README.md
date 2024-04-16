@@ -1,73 +1,50 @@
+# MoonQuest
 Author : Céline Hosteins
 
-Conditions respectées : 
+## Bienvenue dans MoonQuest, une aventure spatiale épique où vous devrez conquérir les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
 
---------------------------------------------------------------------------------------------------------------------------------
-Pièces : OK
+Vous aurez pour mission de capturer un maximum de nuages avec vos véhicules afin de conquérir le territoire. Mais gare à l'adversaire et aux obstacles qui menaceront votre conquête !
 
-Fait : 
-• Glace : ce sont vos murs, ils défendent l’intégrité de votre conquête.
-• Nuages : ce sont des ressources, ils permettent d’activer vos véhicules et d’ augmenter votre score.
-• Il existe deux types de nuages : Méthane et Eau
-• Véhicules : c’est votre richesse, ils capturent les Nuages et les stockent.
-• Un Véhicule est spécialisé, soit pour capturer du Méthane, soit pour capturer de l’Eau.
-• Un plateau de jeu de 16 x 16 cases.
+---
 
-------------------------------------------------------------------------------------------------------------------------------
+## Comment jouer :
 
-Interactions entre les pièces : OK
+1. **Sélectionner une nouvelle partie (N) ou charger une partie sauvegardée (R)**
+2. **Choisir le mode de jeu :**
+   - **Joueur contre Joueur (PvP) :** chaque joueur entre les coordonnées de la pièce à déplacer puis de la case d'arrivée (ex: taper "A1", entrée, puis taper "B1")
+   - **Joueur contre IA :** le joueur 1 entre les coordonnées au clavier comme décrit précédemment puis les mouvements de l'IA sont sélectionnés automatiquement (joueur 2)
+   - **IA contre IA :** les mouvements des deux joueurs sont sélectionnés automatiquement et le déroulement de la partie se fait sans intervention humaine.
 
-Fait : 
-1.2 Les interactions entre les pièces :
-• Un Véhicule peut capturer jusqu’à 3 nuages du même type.
-• Si le Véhicule ne peux plus capturer de Nuages, le Nuage est éliminé.
-• Si un Véhicule rentre en contact avec de la Glace ou un Nuage d’un autre type, il est détruit.
-• Un Nuage ou une Glace qui se déplace élimine toute les pièces situés sur la case où elle arrive.
+   NB: Pour les modes 1 et 2, vous pouvez quitter la partie lorsque c'est à votre tour de jouer en tapant "q" puis la sauvegarder en sélectionnant "O" lorsque le message de sauvegarde s'affiche.
 
----------------------------------------------------------------------------------------------------------------------------------
-Déplacements : 
+---
 
-Fait : 
-• A chaque tour les joueurs peuvent décider de bouger un Véhicule ou une Glace. Si la case de destination est occupée par une autre pièce, les interactions suivent les règles citées plus haut.
-• Déplacement terrestre pour les Véhicules vides et la Glace : les pièces ne bougent que d’une seule case à la fois, haut, bas, droite a gauche. Le déplacement en diagonal est interdit.
-• Déplacement aériens pour les Nuages et les Véhicules activés : les pièces volent de deux cases à chaque fois dans n’importe quelle direction.
-• Lors des déplacements aériens, les pièces peuvent “survoler” toutes les autres pièces sauf les Glaces. Si un déplacement survole une Glace, il est interdit.
+## Éléments du jeu :
+- Chaque joueur possède 8 Véhicules (V), 4 de chaque type ("Méthane" ou "Eau") ainsi que 24 blocs de glace (G)
+- Le score d'un joueur correspond au nombre total de Nuages capturés par ses véhicules
 
-Manque : 
---> • A chaque tour, chaque nuage a une chance sur 5 de se déplacer dans n’importe quelle direction. Il n’y a pas de direction privilégiée.
+### Véhicules (attaque) :
+- Un Véhicule peut être déplacé d'une seule case selon un déplacement terrestre, soit verticalement ou horizontalement (hors diagonale)
+- Les Véhicules ne peuvent capturer que les nuages de leur type (même couleur) ; lorsqu'il entre en contact avec un nuage de type différent, il est détruit et ses nuages
+- Lorsqu'un véhicule capture 3 nuages, il est activé (devient blanc), et peut alors se déplacer de deux cases à la fois (dans n'importe quelle direction) selon le déplacement aérien
+- Un véhicule activé peut détruire n'importe quel nuage. Il peut survoler les nuages et les autres véhicules, mais ne peut pas survoler les blocs de glace.
 
-------------------------------------------------------------------------------------------------------------------------------
+### Blocs de glace (défense) :
+- Les blocs de glaces peuvent être déplacés d'une seule case selon un déplacement terrestre
+- Ils détruisent toutes les pièces adverses ainsi que tous les nuages sur leur passage
+- Ils ne peuvent être détruits que par les nuages ou les blocs de glace adverses
 
-Objectif du jeu : 
+### Nuages (ressources) :
+- Les Nuages sont de deux types différents : Méthane (vert, "NM") et Eau (bleu, "NE")
+- Les Nuages ne sont pas contrôlés par les joueurs ; ils ont 1 chance sur 5 de se déplacer aléatoirement sur le plateau selon un déplacement aérien.
+- Comme les blocs de Glace, un Nuage détruit toutes les pièces situées sur sa case d'arrivée
+- Ils ne peuvent être capturés que par les Véhicules de même types.
 
-Fait : 
+---
 
+## Fin de la partie :
+1. La partie se termine lorsque tous les nuages ont été capturés/détruits par les joueurs
+2. Le joueur ayant capturé le plus de nuages remporte la partie
 
-Manque : 
-Établir un score final : Vous devez augmenter votre score en capturant le maximum de Nuages. Chaque nuage capturé rapporte 1 point. Le score comtpe le nombre de Nuage que détient un Joueur : si un Véhicule chargé de Nuages est détruit, les points sont décomptés du score.
-
-------------------------------------------------------------------------------------------------------------------------------
-
-Règles du jeu : 
-
-Fait : 
-- Les Nuages sont commun à tous les joueurs, ils sont au nombre de 30. On dispose de 15 Nuages de chaque type, disposés aléatoirement sur le plateau de jeu au début de la partie. 
-- Vous disposez de 8 Véhicules par joueur, 4 Véhicules de chaque type. Vous disposez de 24 Glaces par joueur, ils délimitent votre Camp.
-- Au début du jeu, les Glaces et les Véhicules de chaque joueur sont placés comme sur la figure ci-dessous,
-- ensuite les Nuages sont placés aléatoirement entre les lignes E et L de la grille
-
-Manque : 
-- Ils ont un chance sur 5 de bouger aléatoirement à chaque tour du jeu.
-- A chaque tour, après que les Nuages aient bougé, les joueurs peuvent à tour de rôle déplacer une pièce qui leur appartient.
-
-------------------------------------------------------------------------------------------------------------------------------
-
-Fin de partie : 
-Fait : 
-
-
-Manque :
-- soit quand un joueur a réussi à capturer les 16 Nuages possible à capturer par ses véhicules
-- soit parce que tous les Nuages sont capturés. 
-- Si plus aucun mouvement de Nuages n’est possible, on déplace aléatoirement tous les Nuages parmi les cases vides pour permettre au jeu de continuer (relancer la fonction addClouds)
+NB: si un joueur capture 16 nuages ou plus, il remporte automatiquement la partie. De même, s'il n'a plus aucune pièce sur le plateau, il perd automatiquement la partie.
 

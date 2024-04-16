@@ -1,4 +1,5 @@
 package display;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -172,7 +173,7 @@ public class Board {
                     destX = (destX + Board.board[0].length) % Board.board[0].length;
                     destY = (destY + Board.board.length) % Board.board.length;
     
-                    if (!Board.IsGlaceBetween(x, y, destX, destY) && Board.board[destY][destX] == null) {
+                    if (!Board.IsGlaceBetween(x, y, destX, destY) /*&& Board.board[destY][destX] == null*/) {
                         Board.board[destY][destX] = Board.board[y][x];
                         Board.board[y][x] = null;
                     }

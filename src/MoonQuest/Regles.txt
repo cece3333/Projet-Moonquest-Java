@@ -1,21 +1,33 @@
-Bienvenue dans MoonQuest, une aventure spatiale épique où vous devrez conquérir 
-les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
+Bienvenue dans MoonQuest, une aventure spatiale épique où vous devrez conquérir les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
 
-Vous aurez pour mission de capturer un maximum de nuages avec vos véhicules 
-afin de conquérir le territoire. Mais gare à l'adversaire et aux obstacles qui
-menaceront votre conquête !
+Vous aurez pour mission de capturer un maximum de nuages avec vos véhicules afin de conquérir le territoire. Mais gare à l'adversaire et aux obstacles 
+qui menaceront votre conquête !
 
 ####################################################################################################
+COMMENT JOUER :
 
+1. Sélectionner une nouvelle partie (N) ou charger une partie sauvegardée (R)
+2. Choisir le mode de jeu :
+    a. Joueur contre Joueur (PvP) : chaque joueur entre les coordonnées de la pièce à déplacer puis
+    de la case d'arrivée (ex: taper "A1", entrée, puis taper "B1")
+    b. Joueur contre IA : le joueur 1 entre les coordonnées au clavier comme décrit précedemment
+    puis les mouvements de l'IA sont sélectionnés automatiquement (joueur 2)
+    3. IA contre IA : les mouvements des deux joueurs sont sélectionnés automatiquement et le déroulement
+    de la partie se fait sans intervention humaine.
+
+NB: Pour les modes 1 et 2, vous pouvez quitter la partie en lorsque c'est à votre tour de jouer en 
+tapant "q" puis la sauvegarder en sélectionnant "O" lorsque le message de sauvegarde s'affiche.
+
+####################################################################################################
 Éléments du jeu :
-- Chaque joueur possède 8 véhicules (V), 4 de chaque type ("Méthane" ou "Eau") ainsi
+- Chaque joueur possède 8 Véhicules (V), 4 de chaque type ("Méthane" ou "Eau") ainsi
 que 24 blocs de glace (G)
-- Le score d'un joueur correspond au nombre total de nuages capturés par ses véhicules
+- Le score d'un joueur correspond au nombre total de Nuages capturés par ses véhicules
 
 VÉHICULES (attaque) :
-- Un véhicule peut être déplacé d'une seule case selon un déplacement terrestre, 
+- Un Véhicule peut être déplacé d'une seule case selon un déplacement terrestre, 
 soit verticalement ou horizontalement (hors diagonale)
-- Les véhicules ne peuvent capturer que les nuages de leur type (même couleur) ;
+- Les Véhicules ne peuvent capturer que les nuages de leur type (même couleur) ;
 lorsqu'il entre en contact avec un nuage de type différent, il est détruit et ses nuages
 - Lorsqu'un véhicule capture 3 nuages, il est activé (devient blanc), et peut alors se déplacer
 de deux cases à la fois (dans n'importe quelle direction) selon le déplacement aérien
@@ -28,11 +40,11 @@ BLOCS DE GLACE (défense) :
 - Ils ne peuvent être détruits que par les nuages ou les blocs de glace adverses 
 
 NUAGES (ressources) :
-- Les nuages sont de deux types différents : Méthane (vert, "NM") et Eau (bleu, "NE")
-- Les nuages ne sont pas controlés par les joueurs ; ils ont 1 chance sur 5 de se déplacer
+- Les Nuages sont de deux types différents : Méthane (vert, "NM") et Eau (bleu, "NE")
+- Les Nuages ne sont pas controlés par les joueurs ; ils ont 1 chance sur 5 de se déplacer
 aléatoirement sur le plateau selon un déplacement aérien.
-- Comme les blocs de glace, un nuage détruit toutes les pièces situées sur sa case d'arrivée
-- Ils ne peuvent être capturés que par les véhicules de même types.
+- Comme les blocs de Glace, un Nuage détruit toutes les pièces situées sur sa case d'arrivée
+- Ils ne peuvent être capturés que par les Véhicules de même types.
 
 ####################################################################################################
 

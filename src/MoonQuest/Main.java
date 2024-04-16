@@ -1,3 +1,4 @@
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,7 +22,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Save.readFiles("Regles.txt");
+        System.out.println("Bienvenue dans MoonQuest !\n Les informations concernant les règles du jeu sont disponibles dans le fichier README.md, ainsi .\n");
         // Demander au joueur s'il veut commencer une nouvelle partie ou reprendre la partie précédente
         System.out.println();
         System.out.println("Voulez-vous commencer une nouvelle partie (N) ou reprendre la partie précédente (R) ?");

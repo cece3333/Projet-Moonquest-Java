@@ -26,6 +26,8 @@ public class AIgenerator {
             // Vérifiez si la pièce est un véhicule avec un nuage de même type à côté
             if (selectedPiece instanceof Vehicule && logicAdjacentChoice(sourceX, sourceY)) {
                 return String.format("%c%d", sourceX + 'A', sourceY + 1);
+            } else if (selectedPiece instanceof Glace && logicAdjacentChoice(sourceX, sourceY)) {
+                return String.format("%c%d", sourceX + 'A', sourceY + 1);
             }
         } while (!(selectedPiece != null && Board.currentPlayer.contains(selectedPiece)));
     
@@ -83,13 +85,6 @@ public class AIgenerator {
     
         Piece selectedPiece = Board.board[sourceY][sourceX];
 
-        // Vérifier que la pièce appartient bien au joueur
-        while (!(selectedPiece != null && Board.currentPlayer.contains(selectedPiece))) {
-            sourceX = random.nextInt(Board.BOARD_SIZE);
-            sourceY = random.nextInt(Board.BOARD_SIZE);
-            selectedPiece = Board.board[sourceY][sourceX];
-        }
-
         // Parcourir les directions possibles
         for (int[] direction : terrianDirections) {
             int nextX = sourceX + direction[0];
@@ -125,4 +120,3 @@ public class AIgenerator {
     }
 
 }
-

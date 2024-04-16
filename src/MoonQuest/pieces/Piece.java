@@ -1,4 +1,5 @@
 package pieces;
+
 import java.io.Serializable;
 
 import display.Board;
