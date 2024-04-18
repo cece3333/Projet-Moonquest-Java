@@ -4,7 +4,22 @@
 Auteur : Céline Hosteins  
 Enseignant : Slim Karkar  
 
-Ce projet a été réalisé dans le cadre du Master 1 de Bioinformatique à l'Université de Bordeaux.  
+Ce projet a été réalisé dans le cadre du Master 1 de Bioinformatique à l'Université de Bordeaux.
+
+### Contenu du Projet :
+
+#### Exécutables (.jar) :
+- Le dossier *bin* contient l'exécutable de l'application MoonQuestApp_CH.jar
+- Pour exécuter le jeu, vous pouvez utiliser la commande "java -jar MoonQuestApp_CH.jar" dans votre terminal.
+
+##### Source du Code (.java) :
+- Le dossier *src* contient le code source de l'application, écrit en langage Java.
+- Vous pouvez explorer ce dossier pour voir les fichiers source individuels qui composent le jeu MoonQuest.
+
+#### Documentation (Javadoc) :
+- Le dossier *docs* contient la documentation Java (Javadoc) générée pour le projet fournissant une référence complète pour les classes, les méthodes et les packages utilisés dans le projet.
+- Vous pouvez accéder à la documentation en ouvrant le fichier *index.html*.
+
 
 ## Bienvenue dans MoonQuest !
 ### Une aventure spatiale épique où vous devrez conquérir les lunes de Jupiter pour asseoir votre suprématie dans l'univers !
