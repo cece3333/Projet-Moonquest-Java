@@ -1,5 +1,5 @@
-unnamed package
-MoonQuest.display
-MoonQuest.game
-MoonQuest.pieces
-MoonQuest.utils
+display
+game
+moonquest
+pieces
+utils

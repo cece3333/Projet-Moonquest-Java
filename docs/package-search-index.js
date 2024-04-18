@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"MoonQuest.display"},{"l":"MoonQuest.game"},{"l":"MoonQuest.pieces"},{"l":"MoonQuest.utils"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"display"},{"l":"game"},{"l":"moonquest"},{"l":"pieces"},{"l":"utils"}];updateSearchResults();
