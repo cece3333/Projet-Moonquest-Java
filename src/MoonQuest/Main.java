@@ -1,5 +1,4 @@
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -9,12 +8,8 @@ import java.util.Scanner;
 import display.Board;
 import game.AIgenerator;
 import game.GameLogic;
-import pieces.Glace;
-import pieces.Nuage;
 import pieces.Piece;
-import pieces.Vehicule;
 import utils.Save;
-import utils.Colors;
 
 
 /**
@@ -130,8 +125,6 @@ public class Main {
 
                 
                 Piece selectedPiece = Board.board[sourceY][sourceX];
-                Piece destinationPiece = Board.board[destY][destX];
-                
                 // Vérifier si la pièce sélectionnée appartient au joueur actuel
                 if (selectedPiece == null || !Board.currentPlayer.contains(selectedPiece)) {
                     System.out.println("Sélection invalide. Réessayez.");

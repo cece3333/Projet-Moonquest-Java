@@ -2,7 +2,6 @@ package game;
 
 import display.Board;
 import pieces.Glace;
-import pieces.Nuage;
 import pieces.Piece;
 import pieces.Vehicule;
 

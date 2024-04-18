@@ -1,6 +1,5 @@
 package pieces;
 
-import display.Board;
 import utils.Colors;
 
 /**

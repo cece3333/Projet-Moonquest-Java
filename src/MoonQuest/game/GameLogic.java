@@ -1,14 +1,7 @@
 package game;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Random;
-
 import display.Board;
 import pieces.*;
-import utils.Save;
 
 /**
  * La classe GameLogic contient les méthodes permettant de gérer la logique du jeu.
