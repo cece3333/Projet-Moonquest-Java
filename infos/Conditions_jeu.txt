@@ -70,7 +70,7 @@ Fin de partie : OK
 Fait :
 - soit quand un joueur a réussi à capturer les 16 Nuages possible à capturer par ses véhicules
 - soit parce que tous les Nuages sont capturés. 
-- Si plus aucun mouvement de Nuages n’est possible, on déplace aléatoirement tous les Nuages parmi les cases vides pour permettre au jeu de continuer (relancer la fonction addClouds)
+- Si plus aucun mouvement de Nuages n’est possible, on déplace aléatoirement tous les Nuages parmi les cases vides pour permettre au jeu de continuer (relancer la fonction addNuages)
 - A la fin d’ un partie, le programme affiche l’ensemble des coups joués et le score sous la forme : 
 1. A13-B11. 0-0 
 2. M2-M3. 0-0 

@@ -5,7 +5,7 @@ Problèmes notés :
 - tester si un joueur capture 16 nuages
 - si un joueur n'a plus de glace/véhicule, partie terminée et le joueur deux gagne par défaut
 - tester si moveCloud fonctionne bien
-- 
+- ajouter un gagnant lorsque plus de Nuages
 
 
 
@@ -41,7 +41,7 @@ Problèmes résolus / Job done :
 - les mouvements sont bien indiqués sur le fichier .ser (pour sauvegarder la partie) mais faire en sorte qu'ils soient indiqués dans le bon format (avec le score par mouvement si il y a, voiture détruite etc.)
 - permettre la sauvegarde à récupérer en début de partie (j'avais placé la sauvegarde de partie dans playgame au lieu de le mettre dans le main !!!!)
 - permettre d'entrer minuscule ou majuscule pour éviter que le jeu quitte à cause d'une erreur
-- 30 autres nuages sont ajoutés même après la reprise de la partie (enlevé addClouds après avoir load une partie)
+- 30 autres nuages sont ajoutés même après la reprise de la partie (enlevé addNuages après avoir load une partie)
 - scinder la classe Plateau en 1-2 classe pour éviter d'avoir trop de lignes de codes
 - vérifier que le tour n'est pas enregistré dans la sauvegarde de la partie (je crois pas mais facile à ajouter)
 - mouvements enregistrés dans un fichier.txt mais il faut pouvoir les afficher à la fin de la partie (gameOver ou sauvegarder : afficher les données de moves.txt)

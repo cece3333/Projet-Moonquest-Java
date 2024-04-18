@@ -14,7 +14,7 @@
             
             //Si la pièce est une glace (déplacement où elle veut sauf sur une autre glace)
             if (piece instanceof Glace && !(destination instanceof Glace)) {
-                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                return piece.terrestrialMove(sourceX, sourceY, destX, destY);
             
             //Vérification lorsqu'on déplace un véhicule :
             } else if (piece instanceof Vehicule) {
@@ -29,7 +29,7 @@
                         
                         //Collision avec un nuage (du même type) :
                         if (destination instanceof Nuage && ((Vehicule) piece).getType().equals(((Nuage) destination).getType())) {
-                            if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
+                            if (piece.terrestrialMove(sourceX, sourceY, destX, destY)) {
                                 ((Vehicule) piece).captureNuage();
                                 //mise à jour des scores:
                                 if (currentPlayer == joueur1) {
@@ -41,7 +41,7 @@
                                 System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType());
                                 System.out.println("Nombre de nuages capturés pour ce véhicule : " + ((Vehicule) piece).getNuagesCaptures());
                                 //si le véhicule est activé, il peut supprimer n'importe
-                                } if (((Vehicule) piece).isActive() && piece.deplacementAerien(sourceX, sourceY, destX, destY)) {
+                                } if (((Vehicule) piece).isActive() && piece.aerialMove(sourceX, sourceY, destX, destY)) {
                                     return true;
                                 }
                                 return true;
@@ -58,10 +58,10 @@
                 if (destination == null) {
                     if (!((Vehicule) piece).isActive()) {
                         System.out.println("Déplacement terrestre.");
-                        return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
+                        return piece.terrestrialMove(sourceX, sourceY, destX, destY);
                     } if ((((Vehicule) piece).isActive()) && !(IsGlaceBetween(sourceX, sourceY, destX, destY))) {
                         System.out.println("Déplacement aérien.");
-                        return piece.deplacementAerien(sourceX, sourceY, destX, destY);
+                        return piece.aerialMove(sourceX, sourceY, destX, destY);
                     } else {
                         System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
                         return false;

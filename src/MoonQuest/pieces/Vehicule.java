@@ -2,17 +2,30 @@ package pieces;
 
 import display.Board;
 import utils.Colors;
-import game.Game;
 
+/**
+ * La classe Vehicule permet de créer des instances de Vehicule aux attributs communs.
+ * Elle hérite de la classe abstraite Piece.
+ */
 public class Vehicule extends Piece {
     private boolean isActivated;
-    private int nuagesCaptures;
+    private int nuagesCaptured;
 
+    /**
+     * Constructeur de la classe Vehicule.
+     *
+     * @param x           La coordonnée x du véhicule.
+     * @param y           La coordonnée y du véhicule.
+     * @param icon        L'icône représentant le véhicule.
+     * @param type        Le type de nuage que le véhicule peut capturer.
+     * @param color       La couleur du véhicule.
+     * @param isActivated L'état d'activation du véhicule.
+     */
     public Vehicule(int x, int y, String icon, String type, Colors color, boolean isActivated) {
         super(x, y, icon, type, color);
         this.isActivated = isActivated;
         isActivated = false;
-        this.nuagesCaptures = 0;
+        this.nuagesCaptured = 0;
 
         // Assignation de la color en fonction du type de nuage
         if (type.equals("Methane")) {
@@ -26,18 +39,39 @@ public class Vehicule extends Piece {
         }
     }
 
+    /**
+     * Getter pour l'état d'activation du véhicule.
+     *
+     * @return L'état d'activation du véhicule.
+     */
     public boolean isActive() {
         return isActivated;
     }
 
-    public int getNuagesCaptures() {
-        return nuagesCaptures;
-    }
-    
-    public void setNuagesCaptures(int nuagesCaptures) {
-        this.nuagesCaptures = nuagesCaptures;
+    /**
+     * Renvoie le nombre de nuages capturés par le véhicule.
+     *
+     * @return Le nombre de nuages capturés.
+     */
+    public int getNuagesCaptured() {
+        return nuagesCaptured;
     }
 
+    /**
+     * Modifie le nombre de nuages capturés par le véhicule.
+     *
+     * @param nuagesCaptured Le nouveau nombre de nuages capturés.
+     */
+    public void setNuagesCaptured(int nuagesCaptured) {
+        this.nuagesCaptured = nuagesCaptured;
+    }
+
+    /**
+     * Vérifie si le véhicule peut capturer un nuage.
+     *
+     * @param piece La pièce à vérifier.
+     * @return true si le véhicule peut capturer le nuage, false sinon.
+     */
     public boolean canCapture(Piece piece) {
         if ((piece instanceof Nuage) && (isActivated == false)) {
             if (((Nuage) piece).getType().equals(this.getType())) {
@@ -47,74 +81,19 @@ public class Vehicule extends Piece {
         return false;
     }
 
-    //si le score de nuages capturés est égal à 3, le véhicule est activé (isActivated = true) :
-    // Méthode pour capturer un nuage
+    /**
+     * Capture un nuage avec le véhicule.
+     * Si le nombre de nuages capturés atteint 3, le véhicule est activé.
+     */
     public void captureNuage() {
-        if (nuagesCaptures < 3) { // Vérifier si le véhicule peut encore capturer des nuages
-            nuagesCaptures++;
-            if (nuagesCaptures == 3) { // Activer le véhicule si le nombre de nuages capturés atteint 3
+        if (nuagesCaptured < 3) { 
+            nuagesCaptured++;
+            if (nuagesCaptured == 3) { 
                 isActivated = true;
                 System.out.println("Véhicule activé");
-                setColor(Colors.WHITE); // Mettre à jour la color du véhicule
+                setColor(Colors.WHITE);
             }
         }
-    }
-    
-    public static boolean isVehiculeMove(Piece piece, Piece destination, int sourceX, int sourceY, int destX, int destY) {
-
-        //1. Cas où la destination est occupée par une autre pièce :
-        if (destination instanceof Vehicule) { //si c'est un autre véhicule
-        System.out.println("La destination est occupée par un autre véhicule.");
-        return false;
-    
-    //cas où la case est un nuage ou de la glace : 
-        } else if ((!(destination instanceof Vehicule)) && (destination != null)) {
-            System.out.println("La destination est occupée par un nuage ou de la glace, collision en cours...");
-            //si le véhicule est activé, il peut supprimer n'importe quel nuage
-            if ((((Vehicule) piece).isActive()) && !(destination instanceof Glace)) {
-                System.out.println("Un nuage a été supprimé par le véhicule!");
-                return piece.deplacementAerien(sourceX, sourceY, destX, destY);
-        
-        //si la destination est un nuage de même type que le véhicule :
-            } else if (((Vehicule) piece).canCapture(destination)) {
-                if (piece.deplacementTerrestre(sourceX, sourceY, destX, destY)) {
-                    ((Vehicule) piece).captureNuage();
-                    // Mise à jour des scores:
-                    if (Board.currentPlayer == Board.joueur1) {
-                        Game.scoreJoueur1++; //important de laisser pour bien actualiser les scores de Board
-                    } else {
-                        Game.scoreJoueur2++;
-                    }
-                    System.out.println("Le véhicule a capturé un nuage de type " + ((Nuage) destination).getType() +"\n" + "Nuages capturés : " + ((Vehicule) piece).getNuagesCaptures());       
-                    return true;           
-        }
-        } else { //Collision avec un nuage (de type différent) ou de la glace :
-            System.out.println("Le véhicule a été détruit dans la collision ! Les nuages capturés sont perdus.");
-            if (Board.currentPlayer == Board.joueur1) {
-                Game.scoreJoueur1 -= ((Vehicule)piece).getNuagesCaptures();
-            } else {
-                Game.scoreJoueur2 -= ((Vehicule)piece).getNuagesCaptures();
-            }
-            // Supprimer le véhicule du plateau
-            Board.board[sourceY][sourceX] = null;
-            Game.turn++;
-            return false; //pour éviter que le joueur joue deux fois
-    }
-    
-    //Si la destination est vide, on peut déplacer le véhicule (en fonction de son état)
-    } if (destination == null) {
-            if (!((Vehicule) piece).isActive()) {
-                System.out.println("Déplacement terrestre.");
-                return piece.deplacementTerrestre(sourceX, sourceY, destX, destY);
-            } else if ((((Vehicule) piece).isActive()) && !(Board.IsGlaceBetween(sourceX, sourceY, destX, destY))) {
-                System.out.println("Déplacement aérien.");
-                return piece.deplacementAerien(sourceX, sourceY, destX, destY);
-            } else {
-                System.out.println("Déplacement aérien impossible : il y a une glace entre la source et la destination.");
-                return false;
-            }
-        }
-        return false; 
     }
     
 }

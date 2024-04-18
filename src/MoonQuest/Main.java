@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import display.Board;
 import game.AIgenerator;
-import game.Game;
+import game.GameLogic;
 import pieces.Glace;
 import pieces.Nuage;
 import pieces.Piece;
@@ -16,10 +16,23 @@ import pieces.Vehicule;
 import utils.Save;
 import utils.Colors;
 
+
+/**
+ * Classe principale du jeu MoonQuest.
+ */
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static int sourceX, sourceY, destX, destY;
 
+    /**
+     * Classe principale du jeu MoonQuest.
+     * Cette classe gère le déroulement du jeu en permettant aux joueurs de jouer tour à tour,
+     * en déplaçant les pièces sur le plateau selon les règles du jeu.
+     * Elle offre également la possibilité de sauvegarder et de charger une partie,
+     * ainsi que de choisir entre différents modes de jeu (joueur contre joueur, joueur contre IA, IA contre IA).
+     *
+     * @param args Les arguments de ligne de commande (non utilisés dans cette application)
+     */
     public static void main(String[] args) {
 
         System.out.println("Bienvenue dans MoonQuest !");
@@ -38,8 +51,8 @@ public class Main {
         scanner.nextLine(); // Pour consommer la nouvelle ligne
 
         if (isSavedGame) {
-            // Charger la partie précédente depuis le fichier game.ser
-            Save.loadGame(Board.joueur1, Board.joueur2);
+            // Charger la partie précédente depuis le fichier GameLogic.ser
+            Save.loadGame(Board.getJoueur1(), Board.getJoueur2());
             Save.clearFile("utils/new_game_moves.txt");
             //modif:
             try {
@@ -47,11 +60,11 @@ public class Main {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            //Game.playGame(isSavedGame, mode, sourceX, sourceY, destX, destY);
+            //GameLogic.playGame(isSavedGame, mode, sourceX, sourceY, destX, destY);
         } else if (startChoice.equalsIgnoreCase("N")) {
             // Si le joueur choisit de commencer une nouvelle partie, démarrer le jeu et initialiser le plateau
             Board.initializeBoard();
-            Board.addClouds(); // Ajouter des nuages aléatoirement sur le plateau
+            Board.addNuages(); // Ajouter des nuages aléatoirement sur le plateau
             Save.clearFile("utils/new_game_moves.txt"); // Vider le fichier new_game_moves.txt
         }
 
@@ -60,22 +73,22 @@ public class Main {
                 Board.printBoard();
 
                 // Afficher le numéro de tour
-                System.out.println("Tour " + Game.turn);
+                System.out.println("Tour " + GameLogic.turn);
 
                 // Déterminer quel joueur doit jouer en fonction du numéro de tour
-                if (Game.turn % 2 == 1) { // Tour impair : Joueur 1
-                    Board.currentPlayer = Board.joueur1;
+                if (GameLogic.turn % 2 == 1) { // Tour impair : Joueur 1
+                    Board.currentPlayer = Board.getJoueur1();
                     System.out.println("Tour du joueur 1 (CYAN)");
-                    System.out.println("Nombre total de nuages capturés : " + Game.scoreJoueur1);
+                    System.out.println("Nombre total de nuages capturés : " + GameLogic.scoreJoueur1);
                 } else { // Tour pair : Joueur 2
-                    Board.currentPlayer = Board.joueur2;
+                    Board.currentPlayer = Board.getJoueur2();
                     System.out.println("Tour du joueur 2 (PURPLE)");
-                    System.out.println("Nombre total de nuages capturés : " + Game.scoreJoueur2);
+                    System.out.println("Nombre total de nuages capturés : " + GameLogic.scoreJoueur2);
                 }
 
                 // Récupérer les coordonnées de la pièce à déplacer
                 String source = "";
-                if (mode == 1 || (mode == 2 && Game.turn % 2 == 1)) {
+                if (mode == 1 || (mode == 2 && GameLogic.turn % 2 == 1)) {
                     System.out.print("Entrez les coordonnées de la pièce à déplacer (ou q pour quitter) : ");
                     source = scanner.next().toUpperCase();
                     if (source.equalsIgnoreCase("q")) {
@@ -89,7 +102,7 @@ public class Main {
                         System.out.println("Voulez-vous sauvegarder avant de quitter ? (O/N)");
                         String saveInput = scanner.next();
                         if (saveInput.equalsIgnoreCase("O")&& (!isSavedGame)) {
-                            Save.saveGame(Board.board, Board.joueur2, Board.joueur1, Game.scoreJoueur1, Game.scoreJoueur2, Game.turn);
+                            Save.saveGame(Board.board, Board.getJoueur2(), Board.getJoueur1(), GameLogic.scoreJoueur1, GameLogic.scoreJoueur2, GameLogic.turn);
                             //Si partie sauvegardée, copier le contenu de new_moves.txt dans saved_moves.txt
                             try {
                                 Files.copy(Paths.get("utils/new_game_moves.txt"), Paths.get("utils/saved_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
@@ -97,7 +110,7 @@ public class Main {
                                 e.printStackTrace();
                             }
                         } else if ((saveInput.equalsIgnoreCase("O")) && (isSavedGame)) {
-                            Save.saveGame(Board.board, Board.joueur2, Board.joueur1, Game.scoreJoueur1, Game.scoreJoueur2, Game.turn);
+                            Save.saveGame(Board.board, Board.getJoueur2(), Board.getJoueur1(), GameLogic.scoreJoueur1, GameLogic.scoreJoueur2, GameLogic.turn);
                             try {
                                 Files.copy(Paths.get("utils/new_moves.txt"), Paths.get("utils/saved_moves.txt"), StandardCopyOption.REPLACE_EXISTING); //changer en saved_moves.txt
                             } catch (IOException e) {
@@ -109,7 +122,7 @@ public class Main {
                     sourceX = source.charAt(0) - 'A';
                     sourceY = Integer.parseInt(source.substring(1)) - 1;
                 } else if (mode == 2 || mode == 3) {
-                    source = AIgenerator.generateAISource();
+                    source = AIgenerator.generateLogicAISource();
                     System.out.println("L'IA a choisi la source : " + source);
                     sourceX = source.charAt(0) - 'A';
                     sourceY = Integer.parseInt(source.substring(1)) - 1;
@@ -127,7 +140,7 @@ public class Main {
             
                 // Récupérer les coordonnées de la destination
                 String destination = "";
-                if (mode == 1 || (mode == 2 && Game.turn % 2 == 1)) {
+                if (mode == 1 || (mode == 2 && GameLogic.turn % 2 == 1)) {
                     System.out.print("Entrez les coordonnées de la destination (ex: B4): ");
                     destination = scanner.next().toUpperCase();
                 } else if (mode == 2 || mode == 3) {
@@ -145,27 +158,27 @@ public class Main {
                     }
                 }
                 // Déplacer la pièce
-                if (Game.isValidMove(sourceX, sourceY, destX, destY, Game.scoreJoueur1, Game.scoreJoueur2)) {
+                if (GameLogic.isValidMove(sourceX, sourceY, destX, destY, GameLogic.scoreJoueur1, GameLogic.scoreJoueur2)) {
                     if (isSavedGame) {
-                        Save.saveMoveToFile(source, destination, Game.turn, Game.scoreJoueur1, Game.scoreJoueur2, "utils/new_moves.txt"); //saved_moves.txt
+                        Save.saveMoveToFile(source, destination, GameLogic.turn, GameLogic.scoreJoueur1, GameLogic.scoreJoueur2, "utils/new_moves.txt"); //saved_moves.txt
                     } else { // Sinon, c'est une nouvelle partie
-                        Save.saveMoveToFile(source, destination, Game.turn, Game.scoreJoueur1, Game.scoreJoueur2, "utils/new_game_moves.txt");
+                        Save.saveMoveToFile(source, destination, GameLogic.turn, GameLogic.scoreJoueur1, GameLogic.scoreJoueur2, "utils/new_game_moves.txt");
                     }
                     //bouger la pièce si isValidMove: 
                     Board.movePiece(sourceX, sourceY, destX, destY);
                 // Incrémenter le numéro de tour (déplacé dans Main.java)
-                Game.turn++;
+                GameLogic.turn++;
         
             } else {
                     System.out.println("Déplacement invalide. Réessayez.");
                 }
             
             // Vérifier s'il y a un gagnant ou un match nul
-            if (Game.isGameOver(Game.scoreJoueur1, Game.scoreJoueur2)) {
+            if (GameLogic.isGameOver(GameLogic.scoreJoueur1, GameLogic.scoreJoueur2)) {
                 // Afficher le résultat final
                 Board.printBoard();
                 System.out.println("La partie est terminée. Résultats finaux : \n");
-                System.out.println("Score du joueur 1 : " + Game.scoreJoueur1 + "\nScore du joueur 2 : " + Game.scoreJoueur2 + "\n");
+                System.out.println("Score du joueur 1 : " + GameLogic.scoreJoueur1 + "\nScore du joueur 2 : " + GameLogic.scoreJoueur2 + "\n");
                 if (isSavedGame) {
                     Save.readFiles("utils/new_moves.txt"); //used to be saved_moves.txt
                 } else { // Sinon, c'est une nouvelle partie
@@ -173,7 +186,7 @@ public class Main {
                 }
                 break;
             }   
-            Board.moveCloudsRandomly(); // Déplacer les nuages 
+            Board.moveNuagesRandomly(); // Déplacer les nuages 
         }
         scanner.close(); // Fermer le scanner après utilisation
     }

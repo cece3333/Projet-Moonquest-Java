@@ -3,17 +3,29 @@ package pieces;
 import display.Board;
 import utils.Colors;
 
+/**
+ * Représente un nuage sur le plateau de jeu.
+ * Hérite de la classe abstraite Piece.
+ */
 public class Nuage extends Piece {
 
+        /**
+     * Constructeur de la classe Nuage.
+     *
+     * @param x     Position en abscisse du nuage sur le plateau.
+     * @param y     Position en ordonnée du nuage sur le plateau.
+     * @param icon  Icône représentant le nuage.
+     * @param type  Type de nuage ("Methane" ou "Eau").
+     * @param color Couleur du nuage.
+     */
     public Nuage(int x, int y, String icon, String type, Colors color) {
-        super(x, y, icon, type, color); // 'N' pour l'icône du nuage
-        this.color = color; // Initialisation de la color dans le constructeur de Nuage
+        super(x, y, icon, type, color);
+        this.color = color;
 
-        // Assignation de la color en fonction du type de nuage
         if (type.equals("Methane")) {
-            setColor(Colors.YELLOW); // Utilisation de la constante Colors.YELLOW
+            setColor(Colors.YELLOW); 
         } else if (type.equals("Eau")) {
-            setColor(Colors.BLUE);; // Utilisation de la constante Colors.BLUE
+            setColor(Colors.BLUE);;
         }
     }
 }
