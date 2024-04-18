@@ -109,7 +109,6 @@ public class Board {
      * Initialise le plateau avec les pièces des deux joueurs.
      */
     public static void initializeBoard() {
-        System.out.println("Ajout des pièces sur le plateau :");
         
         // Initialisation des pièces du joueur 1
         

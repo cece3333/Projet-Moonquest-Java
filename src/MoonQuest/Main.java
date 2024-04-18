@@ -35,7 +35,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        System.out.println("Bienvenue dans MoonQuest !");
+        System.out.println("Bienvenue dans MoonQuest ! \n");
         System.out.println("Les informations concernant les règles du jeu sont disponibles dans le fichier README.md.\n");
         // Demander au joueur s'il veut commencer une nouvelle partie ou reprendre la partie précédente
         System.out.println("Voulez-vous commencer une nouvelle partie (N) ou reprendre la partie précédente (R) ?");
